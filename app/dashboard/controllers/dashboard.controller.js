@@ -21,11 +21,7 @@
         //functions
         scope.logout = logout;
         
-        
-        //objets
-        scope.institucion={};
-        
-         if ($localStorage.globals) {
+        if ($localStorage.globals) {
             console.log($localStorage.globals);
             $rootScope.isAuth=true;
             $rootScope.tipoUsuario=$localStorage.globals.type;
@@ -46,6 +42,7 @@
                             function(response){
                                 console.log('se obtuvo la institucion');
                                 scope.institucion=response.data;
+                                $rootScope.institucion=response.data;
                                 hide();
                             }, function(){
                                 console.log('Error al obtener la institucion');

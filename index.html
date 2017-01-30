@@ -34,12 +34,15 @@
     <script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="assets/js/material.min.js" type="text/javascript"></script>
     
-    
-    <!-- Bootstrap core CSS     -->
+     <!-- Bootstrap core CSS     -->
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
 
     <!--  Material Dashboard CSS    -->
     <link href="assets/css/material-dashboard.css" rel="stylesheet"/>
+    
+    <!--  CSS for Demo Purpose, don't include it in your project     -->
+    <!--<link href="assets/css/demo.css" rel="stylesheet" />-->
+    
     
     <!--     Fonts and icons     -->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
@@ -51,7 +54,7 @@
     <!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>-->
 
     <!-- Material Dashboard javascript methods -->
-    <!--<script src="assets/js/material-dashboard.js"></script>-->
+    <script src="assets/js/material-dashboard.js"></script>
 
     <!-- Material Dashboard DEMO methods, don't include it in your project! -->
     <!--<script src="assets/js/demo.js"></script>-->
@@ -91,6 +94,7 @@
 
     <!-- inject: app global js -->
     <script src="app/app.js"></script>
+    <script src="app/app.filters.js"></script>
     <script src="app/app-config.js"></script>
     <script src="app/app-run.js"></script>
     <script src="app/app-constants.js"></script>
@@ -119,6 +123,7 @@
     <!-- endinject -->
 
     <!-- inject: dashboard js -->
+    <script src="app/estudios/services/estudios.service.js"></script>
     <script src="app/estudios/controllers/estudios.controller.js"></script>
     <!-- endinject -->
 	<script>
@@ -174,11 +179,15 @@
             location.href= "#/";
             window.scrollTo(0, 0); 
         };
+        
+        function json(json){
+            return JSON.stringify(json);
+        }
 	
         function confirmaMsj(titulo,mensaje,bottonOK,accionOK,bottonCancelar,accionCancelar){
     
             var options = {
-                "type": "notificacion",
+                "type": "info",
                 "img": "assets/img/icons/info.png",
                 "width": "400",
                 "content": "<strong>" + titulo + "</strong> <br/>" + mensaje,
@@ -212,132 +221,7 @@
             $.notification(options);
         };
 	</script>
-        <style>
-            #loader {
-        bottom: 0;
-    /* height: 50%; */
-    left: 0;
-    margin: auto;
-    position: absolute;
-    right: 0;
-    top: 0;
-    /* width: 175px; */
-    background: white;
-    z-index: 30;
-}
-/*#loader {
-    bottom: 0;
-    height: 175px;
-    left: 0;
-    margin: auto;
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 175px;
-}*/
-#loader .dot {
-    bottom: 0;
-    height: 30%;
-    left: 0;
-    margin: auto;
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 87.5px;
-}
-#loader .dot::before {
-    border-radius: 100%;
-    content: "";
-    height: 87.5px;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-    transform: scale(0);
-    width: 87.5px;
-}
-#loader .dot:nth-child(7n+1) {
-    transform: rotate(45deg);
-}
-#loader .dot:nth-child(7n+1)::before {
-    animation: 0.8s linear 0.1s normal none infinite running load;
-    background: #00ff80 none repeat scroll 0 0;
-}
-#loader .dot:nth-child(7n+2) {
-    transform: rotate(90deg);
-}
-#loader .dot:nth-child(7n+2)::before {
-    animation: 0.8s linear 0.2s normal none infinite running load;
-    background: #00ffea none repeat scroll 0 0;
-}
-#loader .dot:nth-child(7n+3) {
-    transform: rotate(135deg);
-}
-#loader .dot:nth-child(7n+3)::before {
-    animation: 0.8s linear 0.3s normal none infinite running load;
-    background: #00aaff none repeat scroll 0 0;
-}
-#loader .dot:nth-child(7n+4) {
-    transform: rotate(180deg);
-}
-#loader .dot:nth-child(7n+4)::before {
-    animation: 0.8s linear 0.4s normal none infinite running load;
-    background: #0040ff none repeat scroll 0 0;
-}
-#loader .dot:nth-child(7n+5) {
-    transform: rotate(225deg);
-}
-#loader .dot:nth-child(7n+5)::before {
-    animation: 0.8s linear 0.5s normal none infinite running load;
-    background: #2a00ff none repeat scroll 0 0;
-}
-#loader .dot:nth-child(7n+6) {
-    transform: rotate(270deg);
-}
-#loader .dot:nth-child(7n+6)::before {
-    animation: 0.8s linear 0.6s normal none infinite running load;
-    background: #9500ff none repeat scroll 0 0;
-}
-#loader .dot:nth-child(7n+7) {
-    transform: rotate(315deg);
-}
-#loader .dot:nth-child(7n+7)::before {
-    animation: 0.8s linear 0.7s normal none infinite running load;
-    background: magenta none repeat scroll 0 0;
-}
-#loader .dot:nth-child(7n+8) {
-    transform: rotate(360deg);
-}
-#loader .dot:nth-child(7n+8)::before {
-    animation: 0.8s linear 0.8s normal none infinite running load;
-    background: #ff0095 none repeat scroll 0 0;
-}
-#loader .lading {
-    /*background-image: url("assets/img/loading.gif");*/
-    background-position: 50% 50%;
-    background-repeat: no-repeat;
-    bottom: -40px;
-    height: 20px;
-    left: 0;
-    position: absolute;
-    right: 0;
-    width: 180px;
-}
-@keyframes load {
-100% {
-    opacity: 0;
-    transform: scale(1);
-}
-}
-@keyframes load {
-100% {
-    opacity: 0;
-    transform: scale(1);
-}
-}
-
-            
-        </style>
+        
 	<div class="" id="loading">
 		<div class="row">
 			<div id="loader">

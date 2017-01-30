@@ -10,22 +10,95 @@
             </div>
             <div class="card-content">
                 
-                <md-radio-group ng-model="estudios.opcion">
+                <div ng-show="estudios.bandera_menu">
+                    <md-radio-group  ng-model="estudios.opcion">
 
-                    <md-radio-button value="1" class="md-primary">Renovación</md-radio-button>
-                    <md-radio-button value="2">Nuevo ingreso </md-radio-button>
+                        <md-radio-button ng-click="estudios.accionInicial(1)" value="1" class="md-primary">Renovación</md-radio-button>
+                        <md-radio-button ng-click="estudios.accionInicial(2)" value="2">Nuevo ingreso </md-radio-button>
 
                     </md-radio-group>
+
+                    <button type="button" class="btn btn-default" onclick="location.href='#/estudios/ver'">Regresar...</button>
+                </div>
                 <form ng-show="estudios.opcion==='1'">
                      <div class="row">
                         <div class="col-md-8">
                             <div class="form-group label-floating">
-                                    <label class="control-label">Buscar familia:</label>
-                                    <input type="text" class="form-control" ng-model="estudios.filtro.familia" ng-change="estudios.filtro.familia=estudios.filtro.familia.toUpperCase();">
-                                    <button type="button" class="btn btn-success" ng-click="estudios.buscar_familias()">Buscar...</button>
+                                <label class="control-label">Buscar familia:</label>
+                                <input type="text" class="form-control" ng-model="estudios.filtroFamilia" ng-change="estudios.filtroFamilia=estudios.filtroFamilia.toUpperCase();">
+                                <button type="submit" class="btn btn-success" ng-disabled="estudios.load" ng-click="estudios.buscar_familias()">Buscar...</button>
+                                <img style="width: 15px" ng-if="estudios.load" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
                             </div>
-                            
-                            
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="well white">
+                                <div class="datatables table-responsive">
+                                    <table class="table table-full table-full-small" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">ID</th>
+                                                <th class="text-center">Clave</th>
+                                                <th class="text-center">Familia</th>
+                                                <th class="text-center">Dirección</th>
+                                                <th class="text-center">Fecha de registro</th>
+                                                <th class="text-center">Seleccionar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="familia in estudios.listaFamiliasEncontradas | startFrom:estudios.currentPage * estudios.pageSize | limitTo:estudios.pageSize">
+                                                <td class="text-center">{{familia.id_familia}}</td>
+                                                <td class="text-center">{{familia.clave_familia}}</td>
+                                                <td class="text-center">{{familia.familia}} </td>
+                                                <td class="text-center">
+                                                    {{familia.calle}}, 
+                                                    {{familia.num_ext}}, 
+                                                    {{familia.num_int}},
+                                                    {{familia.num_int}},
+                                                    {{familia.colonia}},
+                                                    {{familia.localidad}},
+                                                    {{familia.municipio}},
+                                                    {{familia.estado}}
+                                                </td>
+                                                <td class="text-center">{{familia.fecha_registro}}</td>
+                                                <td class="text-center">
+                                                    <div class="switch">
+                                                        <label class="filled">
+                                                            <input type="radio" name="seleccionar_familia" ng-click="estudios.seleccionarFamilia(familia)">
+                                                            <span class="lever"></span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="form-group p-t-20 text-right" ng-show="estudios.listaFamiliasEncontradas.length > 0">
+                                    <div>
+                                        <ul class="pager">
+                                            <li>
+                                                <button type="button" class="btn btn-default btn-flat-border pull-left" ng-disabled="estudios.currentPage == 0" ng-click="estudios.currentPage=estudios.currentPage-1">Anterior</button>
+                                                <button type="button" class="btn btn-default btn-flat-border pull-right" ng-disabled="estudios.currentPage >= estudios.listaFamiliasEncontradas.length / estudios.pageSize - 1" ng-click="estudios.currentPage=estudios.currentPage+1">Siguiente</button>
+                                            </li>
+                                            <li>
+                                                <div class="col-md-3 col-md-push-2 col-xs-3 col-xs-push-2 col-lg-push-3 text-center">
+                                                    <div class="col-sm-6 text-center">
+                                                        <span class="pager-number">{{estudios.currentPage + 1}}</span>
+                                                        <span class="pager-number"> de </span>
+                                                        <span class="pager-number">{{estudios.numberOfPages()}}</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="form-group p-t-20 text-right">
+                                    <button type="reset" class="btn btn-default" ng-click="estudios.regresar()">Regresar</button>
+                                    <button type="button" class="btn btn-primary" ng-click="estudios.continuarFamilia()">Continuar</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="clearfix"></div>
@@ -42,7 +115,7 @@
                         <div class="col-md-3">
                             <div class="form-group label-floating">
                                     <label class="control-label">Institución:</label>
-                                    <input type="text" class="form-control" value="{{dash.institucion.clave}}" disabled>
+                                    <input type="text" class="form-control" value="{{dash.institucion.clave}}" ng-model="estudios.clave_institucion" disabled>
                                     <input type="hidden" class="form-control" ng-model="estudios.familia.id_institucion" value="{{dash.institucion.id_institucion}}">
                             </div>
                         </div>
@@ -106,28 +179,39 @@
                     </div>
                     
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-5">
                             <div class="form-group label-floating">
                                         <label class="control-label">Colonia:</label>
                                     <input type="text" class="form-control" ng-model="estudios.familia.colonia" ng-change="estudios.familia.colonia=estudios.familia.colonia.toUpperCase();">
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-5">
                             <div class="form-group label-floating">
                                     <label class="control-label">Localidad:</label>
                                     <input type="text" class="form-control" ng-model="estudios.familia.localidad" ng-change="estudios.familia.localidad=estudios.familia.localidad.toUpperCase();">
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-5">
                             <div class="form-group label-floating">
-                                    <label class="control-label">Municipio:</label>
-                                    <input type="text" class="form-control" ng-model="estudios.familia.municipio" ng-change="estudios.familia.municipio=estudios.familia.municipio.toUpperCase();">
+                                        <label class="control-label">Municipio:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.municipio" ng-change="estudios.familia.colonia=estudios.familia.colonia.toUpperCase();">
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-5">
                             <div class="form-group label-floating">
                                     <label class="control-label">Estado</label>
-                                    <input type="text" class="form-control" ng-model="estudios.familia.estado" ng-change="estudios.familia.estado=estudios.familia.estado.toUpperCase();">
+                                    <input type="text" class="form-control" ng-model="estudios.familia.estado" ng-change="estudios.familia.localidad=estudios.familia.localidad.toUpperCase();">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Telefono casa:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.telefono_casa" ng-change="estudios.familia.localidad=estudios.familia.localidad.toUpperCase();">
                             </div>
                         </div>
                     </div>
@@ -136,7 +220,7 @@
             </div>
             <div ng-show="estudios.opcion==='2' || (estudios.opcion==='1'&&estudios.bandera)">
                 
-                <button type="button" class="btn btn-default pull-right" onclick="location.href='#/estudios/ver'">Regresar</button>
+                <button type="button" class="btn btn-default pull-right" ng-click="estudios.regresar()">Regresar</button>
                 <button type="button" class="btn btn-warning pull-right" ng-click="estudios.guardar_solicitud();">Enviar solicitud</button>
             </div>
             

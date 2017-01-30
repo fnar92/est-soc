@@ -11,6 +11,7 @@
         $rootScope.isAuth=false;
         $rootScope.tipoUsuario=0;
         $rootScope.rolUsuario=0;
+        $rootScope.institucion={};
 		
         if ($localStorage.globals) {
             console.log($localStorage.globals);
