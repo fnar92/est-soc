@@ -9,7 +9,7 @@ body{
     text-transform: uppercase;
 }
 .back-blue,.title-content,.md-title, md-tooltip{
-    background-color: #131c49;
+    background-color: coral;
     color: #fff;
 }
 .margin-top5{

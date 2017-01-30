@@ -8,15 +8,14 @@
     function LoginController ($rootScope, $location, $state, $mdToast, $mdDialog, UserService, RestService, AuthenticationService, Constants) {
         /* jshint validthis: true */
         console.log('init login');
-        var scope = this;       
+        var scope = this;   
         
         AuthenticationService.isAuth;
         
-        /*
-		if($rootScope.isAuth===true){
+       if($rootScope.isAuth===true){
             window.location.href="#/";
         }
-		*/
+        
         
         scope.login = login;
         scope.registrar = registrar;
@@ -28,7 +27,6 @@
         function login() {
             scope.dataLoading = true;
             var objParams = {"username":scope.username, "password":scope.password };
-            console.log(objParams);
             var url = Constants.BaseURLBack + '/auth/login';
             
             RestService.post(url,'',objParams)
@@ -42,8 +40,6 @@
                     }
                     
                     var data=response.data.userdata;
-                    
-                    console.log(response.data);
                     $rootScope.isAuth=true;
                     AuthenticationService.SetCredentials(
                         data.id, 
@@ -52,22 +48,15 @@
                         data.rol, 
                         data.user_type
                     );
-                    UserService.getUser();
-                    window.location.href='#/';
-                    //AuthenticationService.isAuth();
-                    //window.location.reload();
-                    //$state.go('/home', {}, {reload: true});    
-                    /*var total = data.headers('perfiles').split(",");
-                    var patt = /1/;
-                    if(patt.test(total.length)){ //one rol
-                        $state.go('home.configuration-ur');
-                    }else{
-                        showProfile();
-                    }*/
+            
+                    show();
+                    window.location.href="#/";
+                    
                 }
             })
             .catch(function(err){
-                scope.error = 'El usuario y/o contraseña son incorrectos, favor de verificar los datos.';
+                console.log('Error login: '+err);
+                error();
                 scope.dataLoading = false;
                 setTimeout(function(){
                     scope.error=false;

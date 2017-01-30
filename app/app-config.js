@@ -12,17 +12,37 @@
 	$urlRouterProvider.otherwise('/');
 		
 	$stateProvider
-			.state('/app', {
-				abstract: true,
-				controller: 'DashboardController',
-				controllerAs: 'dash',
-				templateUrl: 'app/dashboard/views/tpl.html'
-			})
+        
+            .state('/app', {
+                    abstract: true,
+                    controller: 'DashboardController',
+                    controllerAs: 'dash',
+                    templateUrl: 'tpl.html'
+            })
+            
             .state('/app.dashboard', { 
                 url: '/',
                 views: {
                     'page': { 
                         templateUrl: 'app/dashboard/views/dashboard.tpl.html'
+                    }
+                }      
+            })
+            
+            .state('/app.estudios', { 
+                url: '/estudios/ver',
+                views: {
+                    'page': { 
+                        templateUrl: 'app/estudios/views/estudios.ver.tpl.html'
+                    }
+                }      
+            })
+            
+            .state('/app.estudios_ver', { 
+                url: '/estudios/crear',
+                views: {
+                    'page': { 
+                        templateUrl: 'app/estudios/views/estudios.crear.tpl.html'
                     }
                 }      
             })

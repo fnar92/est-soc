@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="es" ng-app="app">
 <head>
-	<meta charset="utf-8" />
-	<link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png" />
-	<link rel="icon" type="image/png" href="assets/img/favicon.png" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8" />
+    <link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png" />
+    <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="robots" content="noindex">
-	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
 
     <title>HRWise</title>
 	
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="assets/css/bootstrap/bootstrap.min.css"/>
+    <link rel="stylesheet" href="assets/css/bootstrap/bootstrap.min.css"/>
     <link rel="stylesheet" href="assets/css/material/angular-material.min.css" />
     <link rel="stylesheet" href="assets/css/angular-moment-picker/angular-moment-picker.min.css"> <!-- moment picker -->
     <link rel="stylesheet" href="assets/css/font-awesome/css/font-awesome.min.css">
@@ -22,14 +22,42 @@
     <link rel="stylesheet" href="assets/css/data-tables/angular-datatables.min.css" />
     <link rel="stylesheet" href="assets/css/angular-text-editor/textAngular.css" />
     <link rel="stylesheet" href="assets/css/main.css" />
-	<link href="assets/css/sweetalert.css" rel="stylesheet">
+    <link href="assets/css/sweetalert.css" rel="stylesheet">
+    <link href="assets/css/loader_custom.css" rel="stylesheet">
 
-	<script src="assets/js/jquery-3.1.0.min.js"></script>
+    <script src="assets/js/jquery/jquery.min.js"></script>
     <script src="assets/libs/ie/modernizr.js" ></script>
     <script src="assets/js/jquery/bootstrap.min.js"></script>
-	<script type='text/javascript' src='assets/js/jquery/jquery-migrate.min-ver=1.2.1.js'></script>
+    <script src='assets/js/jquery/jquery-migrate.min-ver=1.2.1.js'></script>
+    
+    <!--   Core JS Files   -->
+    <script src="assets/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/js/material.min.js" type="text/javascript"></script>
+    
+    
+    <!-- Bootstrap core CSS     -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!--  Material Dashboard CSS    -->
+    <link href="assets/css/material-dashboard.css" rel="stylesheet"/>
+    
+    <!--     Fonts and icons     -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons' rel='stylesheet' type='text/css'>
+    <!--  Charts Plugin -->
+    <!--<script src="assets/js/chartist.min.js"></script>-->
+
+    <!--  Google Maps Plugin    -->
+    <!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>-->
+
+    <!-- Material Dashboard javascript methods -->
+    <!--<script src="assets/js/material-dashboard.js"></script>-->
+
+    <!-- Material Dashboard DEMO methods, don't include it in your project! -->
+    <!--<script src="assets/js/demo.js"></script>-->
+
 	
-	<!-- js angular -->
+    <!-- js angular -->
     <script src="assets/libs/angular/1.5.8/angular.min.js"></script>        
     <script src="assets/libs/data-tables/angular-resource.min.js"></script>
     <script src="assets/libs/data-tables/jquery.dataTables.min.js"></script>              
@@ -50,43 +78,49 @@
     <script src="assets/libs/angular/complements/angular-text-editor/textAngular.min.js"></script>
     <script src="assets/libs/angular/complements/angular-text-editor/textAngularSetup.js"></script>
     <!-- end js angular -->	   
-	
-	<!--  Notifications Plugin    -->
-	<script charset="utf-8" src="assets/js/jquery.easing.1.3.js"></script>
-	<script src="assets/js/bootstrap.notification.js"></script>
-	<script charset="utf-8" src="assets/js/sweetalert.min.js" type="text/javascript"></script>
+
+    <!--  Notifications Plugin    -->
+    <script charset="utf-8" src="assets/js/jquery.easing.1.3.js"></script>
+    <script charset="utf-8" src="assets/js/bootstrap.notification.js"></script>
+    <script charset="utf-8" src="assets/js/sweetalert.min.js" type="text/javascript"></script>
 	
 	
 </head>
 
-	<div ui-view></div>
+    <div ui-view></div>
 
-	<!-- inject: app global js -->
+    <!-- inject: app global js -->
     <script src="app/app.js"></script>
     <script src="app/app-config.js"></script>
     <script src="app/app-run.js"></script>
     <script src="app/app-constants.js"></script>
-	<!-- endinject -->
+    <!-- endinject -->
 	
-	<!-- inject: util services js -->
+    <!-- inject: util services js -->
     <script src="app/utils/services/rest.service.js"></script>
     <script src="app/utils/services/base64.service.js"></script>
     <script src="app/utils/services/dialog.service.js"></script>
     <script src="app/utils/services/validations/validation.service.js"></script>
     <script src="app/utils/services/shared.service.js"></script>
     <!-- endinject -->   
-	
-	<!-- inject: login js -->
+
+    <!-- inject: login js -->
     <script src="app/login/services/login.service.js"></script>
-    <script src="app/login/services/user.service.js"></script>
     <script src="app/login/controllers/login.controller.js"></script>
     <!-- endinject -->
-	
-	<!-- inject: login js -->
-    <!--<script src="app/login/services/user.service.js"></script>-->
+
+    <!-- inject: Usuario servicio -->
+    <script src="app/user/services/user.service.js"></script>
+    <!-- endinject -->
+    
+    
+    <!-- inject: dashboard js -->
     <script src="app/dashboard/controllers/dashboard.controller.js"></script>
     <!-- endinject -->
-	
+
+    <!-- inject: dashboard js -->
+    <script src="app/estudios/controllers/estudios.controller.js"></script>
+    <!-- endinject -->
 	<script>
 	
 	function mensaje(tipo, titulo, mensaje, duracion) {
@@ -134,10 +168,64 @@
 		};
 		$.notification(options);
 	};
+        
+        function error(){
+            mensaje("error","Error inesperado","Ocurrio un error al recuperar su información",4000);
+            location.href= "#/";
+            window.scrollTo(0, 0); 
+        };
 	
+        function confirmaMsj(titulo,mensaje,bottonOK,accionOK,bottonCancelar,accionCancelar){
+    
+            var options = {
+                "type": "notificacion",
+                "img": "assets/img/icons/info.png",
+                "width": "400",
+                "content": "<strong>" + titulo + "</strong> <br/>" + mensaje,
+                "html": true,
+                "autoClose": false,
+                "timeOut": 5,
+                "position": "topRight",
+                "effect": "slide",
+                "easing": "jswing",
+                "duration": 200,
+                "buttons":[
+                    {
+                        "text" : bottonOK,
+                        "addClass": "btn btn-primary",
+                        "click" : function (id){
+                             accionOK();
+                             $.notification('close',id);
+                        }
+                    },
+                    {
+                        "text" : bottonCancelar,
+                        "addClass": "btn btn-default",
+                        "click" : function (id){
+                             accionCancelar();
+                             $.notification('close',id);
+
+                        }
+                    }
+                ]
+            };
+            $.notification(options);
+        };
 	</script>
-	<style>
-	#loader {
+        <style>
+            #loader {
+        bottom: 0;
+    /* height: 50%; */
+    left: 0;
+    margin: auto;
+    position: absolute;
+    right: 0;
+    top: 0;
+    /* width: 175px; */
+    background: white;
+    z-index: 30;
+}
+/*#loader {
     bottom: 0;
     height: 175px;
     left: 0;
@@ -146,20 +234,10 @@
     right: 0;
     top: 0;
     width: 175px;
-}
-#loader {
-    bottom: 0;
-    height: 175px;
-    left: 0;
-    margin: auto;
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 175px;
-}
+}*/
 #loader .dot {
     bottom: 0;
-    height: 100%;
+    height: 30%;
     left: 0;
     margin: auto;
     position: absolute;
@@ -235,7 +313,7 @@
     background: #ff0095 none repeat scroll 0 0;
 }
 #loader .lading {
-    /*background-image: url("assets/images/loading.gif");*/
+    /*background-image: url("assets/img/loading.gif");*/
     background-position: 50% 50%;
     background-repeat: no-repeat;
     bottom: -40px;
@@ -258,8 +336,9 @@
 }
 }
 
-	</style>
-	<div class="container" id="loading">
+            
+        </style>
+	<div class="" id="loading">
 		<div class="row">
 			<div id="loader">
 				<div class="dot"></div>

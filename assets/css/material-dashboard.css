@@ -826,7 +826,7 @@ h2.title {
 .navbar .navbar-nav > li > a.btn.btn-primary.dropdown-toggle, .open >
 .navbar .navbar-nav > li > a.btn.btn-primary.dropdown-toggle:focus, .open >
 .navbar .navbar-nav > li > a.btn.btn-primary.dropdown-toggle:hover {
-  background-color: #9c27b0;
+  background-color: teal;
   color: #FFFFFF;
 }
 .btn.btn-primary:focus, .btn.btn-primary:active, .btn.btn-primary:hover,
@@ -1979,8 +1979,8 @@ label.control-label {
 .form-group label.control-label {
   font-size: 11px;
   line-height: 1.07143;
-  color: #AAAAAA;
-  font-weight: 400;
+  color: black;
+  font-weight: bold;
   margin: 16px 0 0 0;
 }
 .form-group .help-block {
@@ -1995,7 +1995,7 @@ label.control-label {
 .form-group.label-static label.control-label, .form-group.label-floating.is-focused label.control-label, .form-group.label-floating:not(.is-empty) label.control-label {
   top: -28px;
   left: 0;
-  font-size: 11px;
+  font-size: 14px;
   line-height: 1.07143;
 }
 .form-group.label-floating input.form-control:-webkit-autofill ~ label.control-label label.control-label {

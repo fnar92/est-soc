@@ -4,8 +4,8 @@
     angular
         .module('app')
         .constant('Constants', {
-            BaseURLBack : 'http://www.hrwise.com.mx/est-soc/api/',
-            BaseURLFront : 'http://www.hrwise.com.mx/est-soc/#/'
+            BaseURLBack : 'http://localhost/est-soc/api',
+            BaseURLFront : 'http://localhost/est-soc/#/'
         });
-
+        
 })();

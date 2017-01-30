@@ -1,0 +1,147 @@
+<script> </script>
+<div class="container-fluid" ng-controller="EstudiosController as estudios">
+   <div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header" data-background-color="blue">
+                <p class="category">Solicitud de estudio socioeconomico</p>
+                <h2 class="title">Siga cuidadosamente las instrucciones</h2>
+                
+            </div>
+            <div class="card-content">
+                
+                <md-radio-group ng-model="estudios.opcion">
+
+                    <md-radio-button value="1" class="md-primary">Renovación</md-radio-button>
+                    <md-radio-button value="2">Nuevo ingreso </md-radio-button>
+
+                    </md-radio-group>
+                <form ng-show="estudios.opcion==='1'">
+                     <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Buscar familia:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.filtro.familia" ng-change="estudios.filtro.familia=estudios.filtro.familia.toUpperCase();">
+                                    <button type="button" class="btn btn-success" ng-click="estudios.buscar_familias()">Buscar...</button>
+                            </div>
+                            
+                            
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </form>
+                
+                <form ng-show="estudios.opcion==='2'">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Familia:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.familia" ng-change="estudios.familia.familia=estudios.familia.familia.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Institución:</label>
+                                    <input type="text" class="form-control" value="{{dash.institucion.clave}}" disabled>
+                                    <input type="hidden" class="form-control" ng-model="estudios.familia.id_institucion" value="{{dash.institucion.id_institucion}}">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Pago encino:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.estudio.pago_encino">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Pago triana:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.estudio.pago_triana">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">No. de recibo:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.estudio.num_recibo">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">No. de hijos CET</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.num_hijos_cet" >
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">No. de hijos CEE</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.num_hijos_cee">
+                            </div>
+                        </div>
+                    </div>
+                    <p>Domicilio:</p>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Calle:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.calle" ng-change="estudios.familia.calle=estudios.familia.calle.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Número exterior:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.num_ext">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Número interior:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.num_int">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                        <label class="control-label">Colonia:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.colonia" ng-change="estudios.familia.colonia=estudios.familia.colonia.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Localidad:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.localidad" ng-change="estudios.familia.localidad=estudios.familia.localidad.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Municipio:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.municipio" ng-change="estudios.familia.municipio=estudios.familia.municipio.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Estado</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.estado" ng-change="estudios.familia.estado=estudios.familia.estado.toUpperCase();">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+            <div ng-show="estudios.opcion==='2' || (estudios.opcion==='1'&&estudios.bandera)">
+                
+                <button type="button" class="btn btn-default pull-right" onclick="location.href='#/estudios/ver'">Regresar</button>
+                <button type="button" class="btn btn-warning pull-right" ng-click="estudios.guardar_solicitud();">Enviar solicitud</button>
+            </div>
+            
+        </div>
+    </div>
+       
+</div>
+</div>

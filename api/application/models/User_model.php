@@ -17,4 +17,9 @@ class User_model extends CI_Model {
        
     }
     
+    public function getInstitucion($id) {
+        $this->db->where('id_institucion', $id);
+        return $this->db->get('institucion')->row();
+    }
+    
 }

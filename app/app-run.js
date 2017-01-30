@@ -9,13 +9,14 @@
         console.log('init run app');
         $rootScope.user={};
         $rootScope.isAuth=false;
-		$rootScope.tipoUsuario=0;
-		$rootScope.rolUsuario=0;
+        $rootScope.tipoUsuario=0;
+        $rootScope.rolUsuario=0;
 		
         if ($localStorage.globals) {
-			$rootScope.isAuth=true;
-			$rootScope.tipoUsuario=$localStorage.globals.type;
-			$rootScope.rolUsuario=$localStorage.globals.role;
+            console.log($localStorage.globals);
+            $rootScope.isAuth=true;
+            $rootScope.tipoUsuario=$localStorage.globals.type;
+            $rootScope.rolUsuario=$localStorage.globals.role;
             $http.defaults.headers.common['Authorization'] = 'Basic ' + $localStorage.globals.authdata;
         }
         

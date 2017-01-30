@@ -5,27 +5,67 @@
 	.module('app.dashboard')
 	.controller('DashboardController', DashboardController);
     
-    function DashboardController ($rootScope, $state, $mdDialog, $mdToast, DialogService, RestService, AuthenticationService, Constants, UserService) {
+    function DashboardController ($localStorage, $rootScope, $state, $mdDialog, $mdToast, DialogService, RestService, AuthenticationService, Constants, UserService) {
         /* jshint validthis: true */
         console.log('init dashboard');
-		hide();
+        
         //Check session
         AuthenticationService.isAuth();
         console.log('auth: '+$rootScope.isAuth);
         var scope = this;  
+        scope.user={};
+        scope.tipoUsuario=0;
+        scope.rolUsuario=0;
+        scope.institucion=0;
         
         //functions
         scope.logout = logout;
         
         
         //objets
-        $rootScope.user={};
+        scope.institucion={};
         
+         if ($localStorage.globals) {
+            console.log($localStorage.globals);
+            $rootScope.isAuth=true;
+            $rootScope.tipoUsuario=$localStorage.globals.type;
+            $rootScope.rolUsuario=$localStorage.globals.role;
+        }
         
         if($rootScope.isAuth){
             console.log('entro a buscar');
-            UserService.getUser();
+            show();
+            UserService.getUser().then(
+                function(response){
+                    console.log('se obtuvo el usuario');
+                    $rootScope.user=response.data;
+                    scope.user=response.data;
+                    if(response.data.id_institucion!==undefined){
+                        show();
+                        UserService.getInstitucion(response.data.id_institucion).then(
+                            function(response){
+                                console.log('se obtuvo la institucion');
+                                scope.institucion=response.data;
+                                hide();
+                            }, function(){
+                                console.log('Error al obtener la institucion');
+                                error();
+                            }
+                        );
+                    }else{
+                        hide();
+                    }
+                    
+                }, function(){
+                    console.log('Error al obtener el usuario');
+                    error();
+                }
+            );
         }
+        
+        
+        
+        
          /*$mdDialog.show({
                 templateUrl: 'app/login/views/login.tpl.html',
                 parent: angular.element(document.body),
@@ -75,7 +115,7 @@
                 }
             })
             .catch(function(err){
-                scope.error = 'El usuario y/o contraseña son incorrectos, favor de verificar los datos.';
+                scope.error = 'El usuario y/o contraseï¿½a son incorrectos, favor de verificar los datos.';
                 scope.dataLoading = false;
             });
             

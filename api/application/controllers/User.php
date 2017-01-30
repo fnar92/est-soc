@@ -9,13 +9,17 @@ class User extends CI_Controller {
     
     public function __construct() {
         parent::__construct();
-        if(!$this->session->userdata('id_usuario')){
+        /*if(!$this->session->userdata('id_usuario')){
             exit('not_session');
-        }
+        }*/
     }
     
     public function getUser($id, $type) {
         echo json_encode($this->user_model->getUser($id, $type));
+    }
+    
+     public function getInstitucion($id) {
+        echo json_encode($this->user_model->getInstitucion($id));
     }
     
     

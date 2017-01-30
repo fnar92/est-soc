@@ -1,56 +1,23 @@
-
+<script> </script>
 <div class="container-fluid">
-					<div class="row">
-					
-						<div ng-show="tipoUsuario==1">
-							<div class="col-lg-12 col-md-12 col-sm-12" >
-								<div class="card card-stats">
-									<div class="card-header" data-background-color="orange">
-										<i class="material-icons">content_copy</i>
-									</div>
-									<div class="card-content">
-										<p class="category">HR Wise</p>
-									</div>
-									<div class="card-footer">
-										<div class="stats">
-											<h4><p>Bienvenido <strong>{{user.nombre}} {{user.apellido_paterno}} {{user.apellido_materno}}</strong></p></h4>
-										</div>
-									</div>
-								</div>
-							</div>
-							
-							<hr>
-							
-							<div class="col-lg-3 col-md-4 col-sm-4" >
-								<div class="card card-stats">
-								www
-								</div>
-							</div>
-						
-						</div>
-						
-						
-						<div ng-show="tipoUsuario==2">
-						<div class="col-lg-3 col-md-6 col-sm-6" >
-							<div class="card card-stats">
-								<div class="card-header" data-background-color="green">
-									<i class="material-icons">store</i>
-								</div>
-								<div class="card-content">
-									<p class="category">Revenue</p>
-									<h3 class="title">$34,245</h3>
-								</div>
-								<div class="card-footer">
-									<div class="stats">
-										<i class="material-icons">date_range</i> Last 24 Hours
-									</div>
-								</div>
-							</div>
-						</div>
-						</div>
-
-
-					</div>
-				</div>
-			
-	
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header" data-background-color="blue">
+                    <h4 class="title">Bienvenido <strong>{{dash.user.nombre}} {{dash.user.apellido_paterno}} {{dash.user.apellido_materno}}</strong></h4>
+                    <p class="category">Estudios socioeconomicos escolares</p>
+                    <h3 ng-show="tipoUsuario=='1'"> HRWise (<span ng-show="rolUsuario==1">Administrador</span><span ng-show="rolUsuario==2">Captura</span>)</h3>
+                    <h3 ng-show="tipoUsuario=='2'"> {{dash.institucion.nombre}} - {{dash.institucion.clave}}  (<span ng-show="rolUsuario==1">Administrador</span><span ng-show="rolUsuario==2">Captura</span>)</h3>
+                </div>
+                <div class="card-content">
+                    <div id="typography">
+                        <div class="row">
+                            <h4>Navega en las diferentes opciones del menú lateral izquierdo.</h4>
+                            {{dash.user}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

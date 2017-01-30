@@ -7,7 +7,9 @@
 
     function UserService($http, RestService, $localStorage, $rootScope, Base64Service, Constants) {
         var service = {};
+        service.user={};
         service.getUser=getUser;
+        service.getInstitucion=getInstitucion;
         return service;
         
         function getUser(){
@@ -15,13 +17,13 @@
             var id=$localStorage.globals.id;
             var type=$localStorage.globals.type;
             var url=Constants.BaseURLBack+'/user/getUser/'+id+'/'+type;
-            RestService.get(url,'').then(function(response) {
-                console.log('se obtuvo el usuario');
-                $rootScope.user=response.data;
-            })
-            .catch(function(err){
-                console.log('error al obtener usuario: '+JSON.stringify(err));
-            });
+            return RestService.get(url,'');
+        }
+        
+        function getInstitucion(id){
+            console.log('buscando institucion service');
+            var url=Constants.BaseURLBack+'/user/getInstitucion/'+id;
+            return RestService.get(url,'');
         }
     }
 

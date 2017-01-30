@@ -1,0 +1,62 @@
+<script> </script>
+<div class="container-fluid" ng-controller="EstudiosController as estudios">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header" data-background-color="orange">
+                    <h1 class="title">
+                        <strong ng-show="tipoUsuario=='1'">Estudios socioeconomicos (HRWise)</strong>
+                        <strong ng-show="tipoUsuario=='2'">Estudios socioeconomicos ({{dash.institucion.nombre}})</strong>
+                    </h1>
+                    
+                </div>
+                
+                
+                <div class="card-content">
+                    <div class="col-lg-6 col-md-12">
+							<div class="card">
+                                                            <button onclick="location.href='#/estudios/crear'" ng-show="tipoUsuario==='2'" type="button" class="btn btn-success">Nuevo estudio</button>
+	                                          
+	                            <div class="card-content table-responsive">
+	                                <table class="table table-hover">
+	                                    <thead class="text-warning">
+	                                        <th>ID</th>
+	                                    	<th>Name</th>
+	                                    	<th>Salary</th>
+	                                    	<th>Country</th>
+	                                    </thead>
+	                                    <tbody>
+	                                        <tr>
+	                                        	<td>1</td>
+	                                        	<td>Dakota Rice</td>
+	                                        	<td>$36,738</td>
+	                                        	<td>Niger</td>
+	                                        </tr>
+	                                        <tr>
+	                                        	<td>2</td>
+	                                        	<td>Minerva Hooper</td>
+	                                        	<td>$23,789</td>
+	                                        	<td>Curaçao</td>
+	                                        </tr>
+	                                        <tr>
+	                                        	<td>3</td>
+	                                        	<td>Sage Rodriguez</td>
+	                                        	<td>$56,142</td>
+	                                        	<td>Netherlands</td>
+	                                        </tr>
+	                                        <tr>
+	                                        	<td>4</td>
+	                                        	<td>Philip Chaney</td>
+	                                        	<td>$38,735</td>
+	                                        	<td>Korea, South</td>
+	                                        </tr>
+	                                    </tbody>
+	                                </table>
+	                            </div>
+	                        </div>
+						</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

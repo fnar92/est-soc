@@ -12,12 +12,14 @@
             'ngResource',
             'app.authentication', 
             'app.home', 
-			'app.dashboard',
+            'app.dashboard',
+            'app.estudios',
             'app.utils'
         ]);
 		
         angular.module('app.authentication', []);
-		angular.module('app.dashboard', []);
+        angular.module('app.dashboard', []);
+        angular.module('app.estudios', []);
         angular.module('app.home', ['ngMaterial']);
         angular.module('app.utils', []);
 		
@@ -27,10 +29,12 @@
 /*Prueba cambio*/
 
 var hide=function(){
+    console.log('loading hide');
     $("#loading").hide();
 };
 
 var show=function(){
+    console.log('loading show');
     $("#loading").show();
 };
 
