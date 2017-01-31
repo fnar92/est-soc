@@ -7,9 +7,11 @@
 
     function EstudiosService($http, RestService, $localStorage, $rootScope, Base64Service, Constants) {
         var service = {};
+        service.estudioSeleccionado={};
         service.obtenerFamilias=obtenerFamilias;
         service.guardarFamilia=guardarFamilia;
         service.guardarEstudio=guardarEstudio;
+        service.obtenerEstudios=obtenerEstudios;
         return service;
         
         function obtenerFamilias(idInstitucion, filterFamilia){
@@ -28,6 +30,14 @@
         function guardarEstudio(data){
             var url=Constants.BaseURLBack+'/estudio/saveEstudio';
             return RestService.post(url,'',data);
+        }
+        
+        function obtenerEstudios(tipoUsuario, rolUsuario, idUsuario, idInstitucion, filterFamilia){
+            if(filterFamilia===undefined|| filterFamilia===''){
+                filterFamilia='all';
+            }
+            var url=Constants.BaseURLBack+'/estudio/getEstudios/'+tipoUsuario+'/'+rolUsuario+'/'+idUsuario+'/'+idInstitucion+'/'+filterFamilia;
+            return RestService.get(url,'');
         }
         
         

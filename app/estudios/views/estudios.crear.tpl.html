@@ -1,5 +1,5 @@
 <script> </script>
-<div class="container-fluid" ng-controller="EstudiosController as estudios">
+<div class="container-fluid" ng-controller="EstudiosCrearController as estudios">
    <div class="row">
     <div class="col-md-12">
         <div class="card">
@@ -34,10 +34,9 @@
                     
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="well white">
-                                <div class="datatables table-responsive">
-                                    <table class="table table-full table-full-small" cellspacing="0" width="100%">
-                                        <thead>
+                                <div class="card-content table-responsive">
+                                    <table class="table table-hover" cellspacing="0" width="100%">
+                                        <thead >
                                             <tr>
                                                 <th class="text-center">ID</th>
                                                 <th class="text-center">Clave</th>
@@ -62,7 +61,7 @@
                                                     {{familia.municipio}},
                                                     {{familia.estado}}
                                                 </td>
-                                                <td class="text-center">{{familia.fecha_registro}}</td>
+                                                <td class="text-center">{{familia.fecha_registro | toJSDate}}</td>
                                                 <td class="text-center">
                                                     <div class="switch">
                                                         <label class="filled">
@@ -98,7 +97,6 @@
                                     <button type="reset" class="btn btn-default" ng-click="estudios.regresar()">Regresar</button>
                                     <button type="button" class="btn btn-primary" ng-click="estudios.continuarFamilia()">Continuar</button>
                                 </div>
-                            </div>
                         </div>
                     </div>
                     <div class="clearfix"></div>
@@ -220,8 +218,10 @@
             </div>
             <div ng-show="estudios.opcion==='2' || (estudios.opcion==='1'&&estudios.bandera)">
                 
-                <button type="button" class="btn btn-default pull-right" ng-click="estudios.regresar()">Regresar</button>
-                <button type="button" class="btn btn-warning pull-right" ng-click="estudios.guardar_solicitud();">Enviar solicitud</button>
+                <button ng-show="!estudios.guardo" type="button" class="btn btn-default pull-right" ng-click="estudios.regresar()">Regresar</button>
+                <button ng-show="!estudios.guardo" type="button" class="btn btn-warning pull-right" ng-click="estudios.guardar_solicitud();">Enviar solicitud</button>
+                <button ng-show="estudios.guardo" type="button" class="btn btn-success pull-right" onclick="location.href='#/estudios/ver'">Continuar</button>
+            
             </div>
             
         </div>

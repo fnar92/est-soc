@@ -1784,7 +1784,8 @@ output {
 .form-group .form-control[readonly],
 .form-group .form-control[disabled], fieldset[disabled]
 .form-group .form-control {
-  background-color: transparent;
+    background-color: gainsboro;
+    opacity: 0.8;
 }
 .form-control[disabled], fieldset[disabled] .form-control,
 .form-group .form-control[disabled], fieldset[disabled]
@@ -3526,7 +3527,7 @@ footer .btn {
   display: inline-block;
   position: relative;
   width: 100%;
-  margin: 25px 0;
+  margin: 10px 0;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
   border-radius: 3px;
   color: rgba(0,0,0, 0.87);

@@ -19,7 +19,20 @@ angular.module('app').filter('nospace', function () {
         }
         
     };
-});
+}).filter('toJSDate', function(){
+    return function (dateString) {
+        var t=dateString.split(/[- :]/);
+        //var d = new Date(Date.UTC(t[0], t[1]-1, t[2], t[3], t[4], t[5]));
+        return dateString;
+    };
+}).filter('estatusEstudio', function(){
+    return function (status) {
+        switch (status){
+            case '1':
+                return '<span class="label label-danger">Solicitado</span>';
+        }
+    };
+});;
 angular
         .module('app')
         .filter('startFrom', 

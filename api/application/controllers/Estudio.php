@@ -61,5 +61,9 @@ class Estudio extends CI_Controller {
         echo json_encode($this->estudio_model->updateEstudio($data));
     }
     
+    public function getEstudios($tipoUsuario, $rolUsuario, $idUsuario, $idInstitucion, $familia) {
+        echo json_encode($this->estudio_model->getEstudios($tipoUsuario, $rolUsuario, $idUsuario, $idInstitucion, $familia));
+    }
+    
     
 }

@@ -1,0 +1,284 @@
+<script> </script>
+<div class="container-fluid" ng-controller="EstudiosDetalleController as control">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header" data-background-color="orange">
+                    <h1 class="title">
+                        <strong ng-show="tipoUsuario==='1'">Estudios socioeconomicos (HRWise)</strong>
+                        <strong ng-show="tipoUsuario==='2'">Estudios socioeconomicos ({{dash.institucion.nombre}})</strong>
+                    </h1>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card">
+                    
+                        <div class="card-content">
+                            <h2 class="title">Folio: <strong>{{control.estudio.folio_estudio}}</strong></h2>
+                            <h2 class="title">Institución: <strong>{{control.estudio.clave}}</strong></h2>
+                            <!--<h2 class="title">Asigado: <strong>{{control.estudio.id_asignado}}</strong></h2>-->
+                            <h2 ng-show="control.estudio.id_usuario_asignado!=='0'" class="title">Asignado: <strong>{{control.estudio.id_usuario_asignado}}</strong></h2>
+                            
+                        
+                            <button ng-show="control.estudio.id_usuario_asignado==='0'" type="button" class="btn btn-warning btn-xs" ng-click="">Asignar</button>
+                        </div>
+                        <div class="card-footer">
+                                <div class="stats">
+                                    <p>Comentario institución</p>
+                                </div>
+                        </div>
+
+                </div>
+             </div>
+            
+            <div class="col-md-4">
+                <div class="card">
+                        <div class="card-content">
+                            <h2 class="title">Familia: <strong>{{control.estudio.familia}}</strong></h2>
+                            <h2 class="title">Estatus: <strong ng-switch="control.estudio.id_estatus_estudio">
+                                                        <span  ng-switch-when="1"class="label label-info">Recibido</span>
+                                                        <span  ng-switch-when="2" class="label label-warning">Asignado</span>
+                                                        <span  ng-switch-when="3" class="label label-default">Entrevista realizada</span>
+                                                        <span  ng-switch-when="4" class="label label-primary">En revisón</span>
+                                                        <span  ng-switch-when="5" class="label label-success">Terminado</span>
+                                                        <span  ng-switch-when="6" class="label label-danger">Cancelado</span>
+                                                    </strong></h2>
+                        </div>
+                        <div class="card-footer">
+                                <div class="stats">
+                                        
+                                </div>
+                        </div>
+
+                </div>
+             </div>
+             
+            <div class="col-lg-12 col-md-14 col-sm-12">
+                <div class="card card-stats">
+                    <div class="card-content">
+                        <div class="row">
+        <div class="col-lg-12 col-md-14 col-sm-14 col-xs-14 bhoechie-tab-container">
+            <div class="col-lg-3 col-md-1 col-sm-3 col-xs-3 bhoechie-tab-menu">
+              <div class="list-group">
+                <a href="#" class="list-group-item active text-center">
+                    <h4 class="title">Datos generales</h4>
+                </a>
+                <a href="#" class="list-group-item text-center">
+                    <h4 class="title">Datos papa</h4>
+                </a>
+                <a href="#" class="list-group-item text-center">
+                    <h4 class="title">Datos mama</h4>
+                </a>
+                <a href="#" class="list-group-item text-center">
+                    <h4 class="title">Datos hijos</h4>
+                </a>
+                <a href="#" class="list-group-item text-center">
+                    <h4 class="title">Dependientes</h4>
+                </a>
+                  <a href="#" class="list-group-item text-center">
+                    <h4 class="title">Motivos</h4>
+                </a>
+                  <a href="#" class="list-group-item text-center">
+                    <h4 class="title">Vehiculos</h4>
+                </a>
+                  <a href="#" class="list-group-item text-center">
+                    <h4 class="title">Propiedades</h4>
+                </a>
+                  <a href="#" class="list-group-item text-center">
+                    <h4 class="title">Ingresos</h4>
+                </a>
+                  <a href="#" class="list-group-item text-center">
+                    <h4 class="title">Egresos</h4>
+                </a>
+                  <a href="#" class="list-group-item text-center">
+                    <h4 class="title">Documentos</h4>
+                </a>
+                  <a href="#" class="list-group-item text-center">
+                    <h4 class="title">Evaluacion</h4>
+                </a>
+                  <a href="#" class="list-group-item text-center">
+                    <h4 class="title">Comentarios generales</h4>
+                </a>
+                  <a href="#" class="list-group-item text-center">
+                    <h4 class="title">Totales</h4>
+                </a>
+              </div>
+            </div>
+            <div class="col-lg-9 col-md-10 col-sm-9 col-xs-9 bhoechie-tab">
+                <!-- flight section -->
+                <div class="bhoechie-tab-content active">
+                    <form >
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Familia:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.familia" >
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Pago encino:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.pago_encino">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Pago triana:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.pago_triana">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">No. de recibo:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.num_recibo">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">No. de hijos CET</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.num_hijos_cet" >
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">No. de hijos CEE</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.num_hijos_cee">
+                            </div>
+                        </div>
+                    </div>
+                    <p>Domicilio:</p>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Calle:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.calle" >
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Número exterior:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.num_ext">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Número interior:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.num_int">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group label-floating">
+                                        <label class="control-label">Colonia:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.colonia" >
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Localidad:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.localidad" ng-change="">
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group label-floating">
+                                        <label class="control-label">Municipio:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.municipio" ng-change="">
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Estado</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.estado" ng-change="">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Telefono casa:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.telefono_casa" ng-change="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </form>
+                </div>
+                <!-- train section -->
+                <div class="bhoechie-tab-content">
+                    1
+                </div>
+    
+                <!-- hotel search -->
+                <div class="bhoechie-tab-content">
+                    2
+                </div>
+                <div class="bhoechie-tab-content">
+                    3
+                </div>
+                <div class="bhoechie-tab-content">
+                    4
+                </div>
+                <div class="bhoechie-tab-content">
+                    5
+                </div>
+                <div class="bhoechie-tab-content">
+                    6
+                </div>
+                <div class="bhoechie-tab-content">
+                    7
+                </div>
+                <div class="bhoechie-tab-content">
+                    8
+                </div>
+                <div class="bhoechie-tab-content">
+                    9
+                </div>
+                <div class="bhoechie-tab-content">
+                    10
+                </div>
+                <div class="bhoechie-tab-content">
+                    11
+                </div>
+                <div class="bhoechie-tab-content">
+                    12
+                </div>
+                <div class="bhoechie-tab-content">
+                    13
+                </div>
+            </div>
+        </div>
+  </div>
+                        
+                        
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<script>
+    
+    $(function() {
+    $("div.bhoechie-tab-menu>div.list-group>a").click(function(e) {
+        e.preventDefault();
+        $(this).siblings('a.active').removeClass("active");
+        $(this).addClass("active");
+        var index = $(this).index();
+        $("div.bhoechie-tab>div.bhoechie-tab-content").removeClass("active");
+        $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
+    });
+});
+</script>

@@ -38,11 +38,23 @@
                 }      
             })
             
-            .state('/app.estudios_ver', { 
+            .state('/app.estudios_crear', { 
                 url: '/estudios/crear',
                 views: {
                     'page': { 
                         templateUrl: 'app/estudios/views/estudios.crear.tpl.html'
+                    }
+                }      
+            })
+            
+            .state('/app.estudios_detalle', { 
+                url: '/estudios/detalle',
+                views: {
+                    'page': { 
+                        templateUrl: 'app/estudios/views/estudios.detalle.tpl.html'
+                    },
+                    'form1': { 
+                        templateUrl: 'app/estudios/views/forms/form1.html'
                     }
                 }      
             })
