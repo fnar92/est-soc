@@ -6,7 +6,7 @@
                 <div class="card-header" data-background-color="orange">
                     <h1 class="title">
                         <strong ng-show="tipoUsuario==='1'">Estudios socioeconomicos (HRWise)</strong>
-                        <strong ng-show="tipoUsuario==='2'">Estudios socioeconomicos ({{dash.institucion.nombre}})</strong>
+                        <strong ng-show="tipoUsuario==='2'">Estudios socioeconomicos ({{dash.institucion.nombre_institucion}})</strong>
                     </h1>
                 </div>
             </div>
@@ -34,8 +34,8 @@
                                         <thead >
                                             <tr>
                                                 <th class="text-center">FOLIO</th>
-                                                <th class="text-center">Institución</th>
-                                                <th class="text-center">Familia</th>
+                                                <th class="text-center">Institución Familia</th>
+                                                <th class="text-center">Institución solicito</th>
                                                 <th class="text-center">Dirección</th>
                                                 <th class="text-center">Fecha de registro</th>
                                                 <th class="text-center">Estatus</th>
@@ -45,8 +45,8 @@
                                         <tbody>
                                             <tr ng-repeat="estudio in estudios.listaEstudios | startFrom:estudios.currentPage * estudios.pageSize | limitTo:estudios.pageSize">
                                                 <td class="text-center">{{estudio.folio_estudio}}</td>
-                                                <td class="text-center">{{estudio.clave}}</td>
-                                                <td class="text-center">{{estudio.familia}} </td>
+                                                <td class="text-center">{{estudio.institucion_familia}}</td>
+                                                <td class="text-center">{{estudio.institucion_solicito}} </td>
                                                 <td class="text-center">
                                                     {{estudio.calle}}, 
                                                     {{estudio.num_ext}}, 
@@ -62,7 +62,7 @@
                                                     <div ng-switch="estudio.id_estatus_estudio">
                                                         <div ng-switch-when="1"><span class="label label-info">Recibido</span></div>
                                                         <div ng-switch-when="2"><span class="label label-warning">Asignado</span></div>
-                                                        <div ng-switch-when="3"><span class="label label-default">Entrevista realizada</span></div>
+                                                        <div ng-switch-when="3"><span class="label label-default">Capturado</span></div>
                                                         <div ng-switch-when="4"><span class="label label-primary">En revisón</span></div>
                                                         <div ng-switch-when="5"><span class="label label-success">Terminado</span></div>
                                                         <div ng-switch-when="6"><span class="label label-danger">Cancelado</span></div>

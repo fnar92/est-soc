@@ -16,7 +16,7 @@
         scope.user={};
         scope.tipoUsuario=0;
         scope.rolUsuario=0;
-        scope.institucion=0;
+        scope.institucion={};
         
         //functions
         scope.logout = logout;

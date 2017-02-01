@@ -17,7 +17,11 @@
             mensaje('error', 'Error', 'Error al obtener información');
             location.href='#/';
         }*/
+        if(EstudiosService.estudioSeleccionado.id_estudio===undefined){
+            error();
+        }
         scope.estudio=EstudiosService.estudioSeleccionado;
+        
         //Banderas
         scope.load=false;
         scope.verAccion=false;

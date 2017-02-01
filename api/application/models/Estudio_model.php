@@ -10,7 +10,12 @@ class Estudio_model extends CI_Model {
         if($filterFamilia!='all'){
             $this->db->like('familia', $filterFamilia);
         }
-        $this->db->where('id_institucion', $idInstitucion);
+        //$this->db->where('id_institucion', 1);
+        //$this->db->select('*');
+        //$this->db->from('estudio');
+        //$this->db->join('familia', 'familia.id_institucion = institucion.id_institucion');
+        $this->db->join('institucion', 'institucion.id_institucion = familia.id_institucion');
+        $this->db->order_by('familia.id_familia', 'ASC');
         return $this->db->get('familia')->result();
     }
     //Familia
@@ -52,18 +57,22 @@ class Estudio_model extends CI_Model {
     
     public function getEstudios($tipoUsuario, $rolUsuario, $idUsuario, $idInstitucion, $filterFamilia) {
         
-        $this->db->select('*');
-        $this->db->from('estudio');
-        $this->db->join('familia', 'estudio.id_familia = familia.id_familia');
-        $this->db->join('institucion', 'institucion.id_institucion = familia.id_institucion');
+        $this->db->select(
+                 'es.id_estudio, es.folio_estudio,'
+                .'es.institucion_familia, es.institucion_solicito,'
+                .'fam.calle, fam.num_ext, fam.num_int, fam.colonia, fam.localidad, fam.municipio, fam.estado,'
+                .'es.fecha_estudio, es.id_estatus_estudio');
+        $this->db->from('estudio es');
+        $this->db->join('familia fam', 'es.id_familia = fam.id_familia');
+        $this->db->join('institucion in', 'in.id_institucion = fam.id_institucion');
         if($tipoUsuario=='1'&&$rolUsuario=='2'){
-            $this->db->where('estudio.id_usuario_asignado', $idUsuario);
+            $this->db->where('es.id_usuario_asignado', $idUsuario);
         }
         if($tipoUsuario=='2'&&$idInstitucion!='0'){
-            $this->db->where('familia.id_institucion', $idInstitucion);
+            $this->db->where('es.id_institucion_solicito', $idInstitucion);
         }
         if($filterFamilia!='all'){
-            $this->db->like('familia.familia', $filterFamilia);
+            $this->db->like('fam.familia', $filterFamilia);
         }
         //$this->db->get();
         //return $this->db->last_query();

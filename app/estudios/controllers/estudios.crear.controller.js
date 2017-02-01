@@ -32,6 +32,7 @@
         scope.bandera_menu=true;
         scope.bandera=false;
         scope.bandera_busco=true;
+        scope.bandera_selecciono=false;
         scope.guardo=false;
         scope.load=false;
         
@@ -72,6 +73,7 @@
         };
         
         function seleccionarFamilia(familia){
+            scope.bandera_selecciono=true;
             scope.familia=familia;
         };
         
@@ -86,7 +88,9 @@
         function guardar_solicitud(){
             if(scope.familia.familia===''||
                 scope.familia.familia===null||
-                scope.familia.familia===undefined){
+                scope.familia.familia===undefined
+                || scope.estudio.pago===undefined 
+                    ){
                 mensaje('error','Error de validación','Completa todos los compos');
                 return;
             }
@@ -113,13 +117,17 @@
                         }else{
                             //Guardar el estudio
                             scope.estudio.id_estatus_estudio=1;//Enviado para solicitud
-                            scope.estudio.id_institucion= parseInt($rootScope.user.id_institucion);
+                            scope.estudio.id_institucion_solicito= parseInt($rootScope.user.id_institucion);
                             scope.estudio.id_familia=response.data.id_familia;
-                            scope.estudio.clave_institucion=$rootScope.institucion.clave;
+                            scope.estudio.clave_institucion=$rootScope.institucion.clave_institucion;
+                            scope.estudio.institucion_familia=$rootScope.institucion.clave_institucion;
+                            scope.estudio.institucion_solicito=$rootScope.institucion.clave_institucion;
                             scope.estudio.id_usuario_asignado=0;
                             scope.estudio.id_usuario_asigno=0;
                             scope.guardarEstudio(scope.estudio);
                             mensaje('success', 'Solicitud de estudio', 'Estudio enviado correctamente');
+                            location.href= "#/estudios/ver";
+                            window.scrollTo(0, 0); 
                         }
                     },
                     function(error){
@@ -130,19 +138,19 @@
                 
             }else{
                 scope.estudio.id_estatus_estudio=1;//Enviado para solicitud
-                scope.estudio.id_institucion= parseInt($rootScope.user.id_institucion);
+                scope.estudio.id_institucion_solicito= parseInt($rootScope.user.id_institucion);
                 scope.estudio.id_familia=scope.familia.id_familia;
-                scope.estudio.clave_institucion=$rootScope.institucion.clave;
+                scope.estudio.clave_institucion=scope.familia.clave_institucion;
+                scope.estudio.institucion_familia=scope.estudio.clave_institucion;
+                scope.estudio.institucion_solicito=$rootScope.institucion.clave_institucion;
                 scope.estudio.id_usuario_asignado=0;
                 scope.estudio.id_usuario_asigno=0;
                 
                 scope.guardarEstudio(scope.estudio);
                 mensaje('success', 'Solicitud de estudio', 'Estudio enviado correctamente');
+                location.href= "#/estudios/ver";
+                window.scrollTo(0, 0); 
             }
-            //Nueva familia
-            
-            
-            //Estudio siempre nuevo
             
             
         };

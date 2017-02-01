@@ -41,6 +41,7 @@
                                                 <th class="text-center">ID</th>
                                                 <th class="text-center">Clave</th>
                                                 <th class="text-center">Familia</th>
+                                                <th class="text-center">Institución</th>
                                                 <th class="text-center">Dirección</th>
                                                 <th class="text-center">Fecha de registro</th>
                                                 <th class="text-center">Seleccionar</th>
@@ -51,6 +52,7 @@
                                                 <td class="text-center">{{familia.id_familia}}</td>
                                                 <td class="text-center">{{familia.clave_familia}}</td>
                                                 <td class="text-center">{{familia.familia}} </td>
+                                                <td class="text-center">{{familia.clave_institucion}} </td>
                                                 <td class="text-center">
                                                     {{familia.calle}}, 
                                                     {{familia.num_ext}}, 
@@ -113,8 +115,8 @@
                         <div class="col-md-3">
                             <div class="form-group label-floating">
                                     <label class="control-label">Institución:</label>
-                                    <input type="text" class="form-control" value="{{dash.institucion.clave}}" ng-model="estudios.clave_institucion" disabled>
-                                    <input type="hidden" class="form-control" ng-model="estudios.familia.id_institucion" value="{{dash.institucion.id_institucion}}">
+                                    <input ng-if="estudios.bandera_selecciono" type="text" class="form-control" value="{{estudios.familia.clave_institucion}}" ng-model="estudios.estudio.clave_institucion" disabled>
+                                    <input ng-if="!estudios.bandera_selecciono" type="text" class="form-control" value="{{dash.institucion.clave_institucion}}" ng-model="estudios.familia.clave_institucion" disabled>
                             </div>
                         </div>
                     </div>
@@ -122,14 +124,14 @@
                     <div class="row">
                         <div class="col-md-5">
                             <div class="form-group label-floating">
-                                    <label class="control-label">Pago encino:</label>
-                                    <input type="text" class="form-control" ng-model="estudios.estudio.pago_encino">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group label-floating">
-                                    <label class="control-label">Pago triana:</label>
-                                    <input type="text" class="form-control" ng-model="estudios.estudio.pago_triana">
+                                    <label class="control-label">Pago:</label>
+                                    <br>
+                                    <md-radio-group  ng-model="estudios.estudio.pago">
+
+                                        <md-radio-button value="TRIANA" class="md-primary">Triana</md-radio-button>
+                                        <md-radio-button value="ENCINO">Encino</md-radio-button>
+
+                                    </md-radio-group>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -213,6 +215,81 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <h3>Datos padres</h3>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Nombre papa:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.nombre_papa" ng-change="estudios.familia.nombre_papa=estudios.familia.nombre_papa.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Apellido paterno:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.apellido_paterno_papa" ng-change="estudios.familia.apellido_paterno_papa=estudios.familia.apellido_paterno_papa.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Apellido materno:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.apellido_materno_papa" ng-change="estudios.familia.apellido_materno_papa=estudios.familia.apellido_materno_papa.toUpperCase();">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">RFC:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.rfc_papa" ng-change="estudios.familia.rfc_papa=estudios.familia.rfc_papa.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Celular:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.celular_papa" ng-change="estudios.familia.celular_papa=estudios.familia.celular_papa.toUpperCase();">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Nombre mama:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.nombre_mama" ng-change="estudios.familia.nombre_mama=estudios.familia.nombre_mama.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Apellido paterno:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.apellido_paterno_mama" ng-change="estudios.familia.apellido_paterno_mama=estudios.familia.apellido_paterno_mama.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Apellido materno:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.apellido_materno_mama" ng-change="estudios.familia.apellido_materno_mama=estudios.familia.apellido_materno_mama.toUpperCase();">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">RFC:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.rfc_mama" ng-change="estudios.familia.rfc_mama=estudios.familia.rfc_mama.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Celular:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.celular_mama" ng-change="estudios.familia.celular_mama=estudios.familia.celular_mama.toUpperCase();">
+                            </div>
+                        </div>
+                    </div>
+            
+            
                     <div class="clearfix"></div>
                 </form>
             </div>
