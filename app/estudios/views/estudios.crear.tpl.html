@@ -44,6 +44,7 @@
                                                 <th class="text-center">Institución</th>
                                                 <th class="text-center">Dirección</th>
                                                 <th class="text-center">Fecha de registro</th>
+                                                <th class="text-center">Observaciones</th>
                                                 <th class="text-center">Seleccionar</th>
                                             </tr>
                                         </thead>
@@ -54,6 +55,7 @@
                                                 <td class="text-center">{{familia.familia}} </td>
                                                 <td class="text-center">{{familia.clave_institucion}} </td>
                                                 <td class="text-center">
+                                                    <span class="small">
                                                     {{familia.calle}}, 
                                                     {{familia.num_ext}}, 
                                                     {{familia.num_int}},
@@ -62,14 +64,32 @@
                                                     {{familia.localidad}},
                                                     {{familia.municipio}},
                                                     {{familia.estado}}
+                                                    </span>
                                                 </td>
                                                 <td class="text-center">{{familia.fecha_registro | toJSDate}}</td>
                                                 <td class="text-center">
+                                                    <!--<button ng-show="familia.estudios.length>0">Ver estudio activo</button>-->
+                                                    
+                                                    
+                                                    <span ng-show="familia.estudio!==null" class="label label-warning">Con estudio activo</span>
+                                                    <span ng-show="familia.estudio===null" class="label label-success">Sin observaciones</span>
+                                                    <br>
+                                                     <div ng-switch="familia.estudio.id_estatus_estudio">
+                                                        <div ng-switch-when="1"><span class="label label-info">Recibido</span></div>
+                                                        <div ng-switch-when="2"><span class="label label-warning">Asignado</span></div>
+                                                        <div ng-switch-when="3"><span class="label label-default">Capturado</span></div>
+                                                        <div ng-switch-when="4"><span class="label label-primary">En revisón</span></div>
+                                                        <div ng-switch-when="5"><span class="label label-success">Terminado</span></div>
+                                                        <div ng-switch-when="6"><span class="label label-danger">Cancelado</span></div>
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
                                                     <div class="switch">
-                                                        <label class="filled">
-                                                            <input type="radio" name="seleccionar_familia" ng-click="estudios.seleccionarFamilia(familia)">
+                                                            <button ng-show="familia.estudio!==null&&familia.estudio.id_institucion!==estudios.id_institucion" class="btn btn-xs btn-primary" name="seleccionar_familia" ng-click="estudios.solicitarEstudio(familia, familia.estudio)">Solicitar</button>
+                                                            <input ng-show="familia.estudio===null&&familia.estudio.id_institucion!==estudios.id_institucion" type="radio" name="seleccionar_familia" ng-click="estudios.seleccionarFamilia(familia)">
+                                                            <span ng-show="familia.tomoFamilia" class="label label-danger">Tomaste esta familia</span>
                                                             <span class="lever"></span>
-                                                        </label>
+                                                        
                                                     </div>
                                                 </td>
                                             </tr>
@@ -156,7 +176,11 @@
                             </div>
                         </div>
                     </div>
-                    <p>Domicilio:</p>
+                    
+                    <div class="row text-left">
+                        <p>Domicilio:</p>
+                    </div>
+                    
                     <div class="row">
                         <div class="col-md-5">
                             <div class="form-group label-floating">

@@ -21,9 +21,17 @@ angular.module('app').filter('nospace', function () {
     };
 }).filter('toJSDate', function(){
     return function (dateString) {
-        var t=dateString.split(/[- :]/);
-        //var d = new Date(Date.UTC(t[0], t[1]-1, t[2], t[3], t[4], t[5]));
-        return dateString;
+        console.log(dateString);
+        var y=dateString.split(' ');
+        if(y[1]!==undefined){
+            var x=y[0].split('-');
+            var xx=y[1].split(':');
+            //return x[2]+'/'+x[1]+'/'+x[0]+' '+xx[0]+':'+xx[1];
+            return x[2]+'/'+x[1]+'/'+x[0];
+        }else{
+            var x=dateString.split('-');
+            return x[2]+'/'+x[1]+'/'+x[0];
+        }
     };
 }).filter('estatusEstudio', function(){
     return function (status) {

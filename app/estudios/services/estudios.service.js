@@ -12,6 +12,7 @@
         service.guardarFamilia=guardarFamilia;
         service.guardarEstudio=guardarEstudio;
         service.obtenerEstudios=obtenerEstudios;
+        service.guardarEstudioInstitucion=guardarEstudioInstitucion;
         return service;
         
         function obtenerFamilias(idInstitucion, filterFamilia){
@@ -24,6 +25,11 @@
         
         function guardarFamilia(data){
             var url=Constants.BaseURLBack+'/estudio/saveFamilia';
+            return RestService.post(url,'',data);
+        }
+        
+        function guardarEstudioInstitucion(data){
+            var url=Constants.BaseURLBack+'/estudio/saveEstudioInstitucion';
             return RestService.post(url,'',data);
         }
         

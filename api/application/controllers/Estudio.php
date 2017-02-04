@@ -33,6 +33,12 @@ class Estudio extends CI_Controller {
         echo json_encode(array('id_familia'=>$id_familia));
     }
     
+    public function saveEstudioInstitucion() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        $this->estudio_model->saveEstudioInstitucion($data);
+        echo json_encode(array('status'=>'200'));
+    }
+    
     public function updateFamilia($data) {
         echo json_encode($this->estudio_model->updateFamilia($data));
     }
@@ -54,7 +60,7 @@ class Estudio extends CI_Controller {
         
         $this->estudio_model->updateEstudio($data_update);
         
-        echo json_encode(array('folio'=>$clave));
+        echo json_encode(array('id_estudio'=>$id_estudio));
     }
     
     public function updateEstudio($data) {

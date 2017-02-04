@@ -21,12 +21,15 @@
         scope.estudios=[];
         scope.familia={};
         scope.estudio={};
+        scope.estudioInstitucion={};
         scope.filtroFamilia="";
         scope.listaFamiliasEncontradas=[];
         scope.opcion={};
         scope.currentPage =0;
         scope.pageSize = 7;
         scope.numberOfPages = numberOfPages;
+        scope.id_institucion=""+$rootScope.user.id_institucion+"";
+        scope.tomoFamilia=false;
         
         //Banderas
         scope.bandera_menu=true;
@@ -44,6 +47,7 @@
         scope.seleccionarFamilia=seleccionarFamilia;
         scope.continuarFamilia=continuarFamilia;
         scope.guardarEstudio=guardarEstudio;
+        scope.solicitarEstudio=solicitarEstudio;
         
        
         function accionInicial(){
@@ -63,6 +67,23 @@
                     function(response){
                         scope.load=false;
                         scope.listaFamiliasEncontradas=response.data;
+                        
+                        var temp=[];
+                        for(var i=0; i<scope.listaFamiliasEncontradas.length; i++){
+                            var estudio=scope.listaFamiliasEncontradas[i].estudio;
+                            //alert(json(scope.listaFamiliasEncontradas[i]));
+                            for(var j=0; j<estudio.length; j++){
+                                if(estudio[j].id_institucion===scope.id_institucion){
+                                    scope.tomoFamilia=true;
+                                }
+                            }
+                            var obj={};
+                            var fam=scope.listaFamiliasEncontradas[i];
+                            fam.estudio=obj=estudio[0];
+                            temp.push(fam);
+                        }
+                        scope.listaFamiliasEncontradas=temp;
+                        console.log(scope.listaFamiliasEncontradas[0]);
                     },
                     function(error){
                         scope.load=false;
@@ -84,6 +105,12 @@
             }
             scope.opcion='2';
         };
+        
+        function solicitarEstudio(familia, estudio){
+            scope.estudio=estudio;
+            scope.familia=familia;
+            scope.opcion='2';
+        }
         
         function guardar_solicitud(){
             if(scope.familia.familia===''||
@@ -124,7 +151,22 @@
                             scope.estudio.institucion_solicito=$rootScope.institucion.clave_institucion;
                             scope.estudio.id_usuario_asignado=0;
                             scope.estudio.id_usuario_asigno=0;
-                            scope.guardarEstudio(scope.estudio);
+                            EstudiosService.guardarEstudio(scope.estudio).then(
+                                function(response){
+                                    if(response.data.id_estudio===undefined){
+                                        mensaje('error','Solicitud de estudio','Ocurrio un error al guardar la información. Intente mas tarde.');
+                                        return;
+                                    }else{
+                                        scope.estudioInstitucion.id_estudio=response.data.id_estudio;
+                                        scope.estudioInstitucion.id_institucion=parseInt($rootScope.user.id_institucion);
+                                        EstudiosService.guardarEstudioInstitucion(scope.estudioInstitucion);
+                                    }
+                                },
+                                function(error){
+                                    console.log('Error al guardar el estudio: '+error);
+                                }
+                            );
+                            
                             mensaje('success', 'Solicitud de estudio', 'Estudio enviado correctamente');
                             location.href= "#/estudios/ver";
                             window.scrollTo(0, 0); 
@@ -137,19 +179,51 @@
                 );
                 
             }else{
-                scope.estudio.id_estatus_estudio=1;//Enviado para solicitud
-                scope.estudio.id_institucion_solicito= parseInt($rootScope.user.id_institucion);
-                scope.estudio.id_familia=scope.familia.id_familia;
-                scope.estudio.clave_institucion=scope.familia.clave_institucion;
-                scope.estudio.institucion_familia=scope.estudio.clave_institucion;
-                scope.estudio.institucion_solicito=$rootScope.institucion.clave_institucion;
-                scope.estudio.id_usuario_asignado=0;
-                scope.estudio.id_usuario_asigno=0;
-                
-                scope.guardarEstudio(scope.estudio);
-                mensaje('success', 'Solicitud de estudio', 'Estudio enviado correctamente');
-                location.href= "#/estudios/ver";
-                window.scrollTo(0, 0); 
+                if(scope.familia.id_familia!==undefined&&scope.estudio.id_estudio===undefined){
+                    scope.estudio.id_estatus_estudio=1;//Enviado para solicitud
+                    scope.estudio.id_institucion_solicito= parseInt($rootScope.user.id_institucion);
+                    scope.estudio.id_familia=scope.familia.id_familia;
+                    scope.estudio.clave_institucion=scope.familia.clave_institucion;
+                    scope.estudio.institucion_familia=scope.estudio.clave_institucion;
+                    scope.estudio.institucion_solicito=$rootScope.institucion.clave_institucion;
+                    scope.estudio.id_usuario_asignado=0;
+                    scope.estudio.id_usuario_asigno=0;
+
+                    EstudiosService.guardarEstudio(scope.estudio).then(
+                        function(response){
+                            if(response.data.id_estudio===undefined){
+                                mensaje('error','Solicitud de estudio','Ocurrio un error al guardar la información. Intente mas tarde.');
+                                return;
+                            }else{
+                                scope.estudioInstitucion.id_estudio=response.data.id_estudio;
+                                scope.estudioInstitucion.id_institucion=parseInt($rootScope.user.id_institucion);
+                                EstudiosService.guardarEstudioInstitucion(scope.estudioInstitucion);
+                            }
+                        },
+                        function(error){
+                            console.log('Error al guardar el estudio: '+error);
+                        }
+                    );
+                    mensaje('success', 'Solicitud de estudio', 'Estudio enviado correctamente',6000);
+                    location.href= "#/estudios/ver";
+                    window.scrollTo(0, 0); 
+                }else{
+                    if(scope.estudio.id_estudio!==undefined){
+                        scope.estudioInstitucion.id_estudio=scope.estudio.id_estudio;
+                        scope.estudioInstitucion.id_institucion=parseInt($rootScope.user.id_institucion);
+                        EstudiosService.guardarEstudioInstitucion(scope.estudioInstitucion).then(
+                            function(response){
+                                mensaje('success', 'Solicitud de estudio', 'Estudio enviado correctamente',6000);
+                                location.href= "#/estudios/ver";
+                                window.scrollTo(0, 0);
+                            },
+                            function(error){
+                                console.log('Error al guardar el estudio institucion: '+error);
+                            }
+                        );
+                        
+                    }
+                }
             }
             
             

@@ -10,17 +10,17 @@
                     </h1>
                 </div>
             </div>
-             <button onclick="location.href='#/estudios/crear'" ng-show="tipoUsuario==='2'" type="button" class="btn btn-success">Nuevo estudio</button>
+             <button onclick="location.href='#/estudios/crear'" ng-show="tipoUsuario==='2'" type="button" class="btn btn-primary">Nuevo estudio</button>
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="card card-stats">
                     <div class="card-content">
                         <div class="">
-                        <form>
-                        <label class="control-label">Buscar familia:</label>
-                        <input type="text" class="form-control" ng-model="estudios.filtroFamilia" ng-change="estudios.filtroFamilia=estudios.filtroFamilia.toUpperCase();">
-                        <button type="submit" class="btn btn-success" ng-disabled="estudios.load" ng-click="estudios.buscarEstudios()">Buscar...</button>
-                        <img style="width: 15px" ng-if="estudios.load" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-                        </form>
+                            <form class="text-left">
+                                <label class="control-label">Buscar familia:</label>
+                                <input type="text" class="" ng-model="estudios.filtroFamilia" ng-change="estudios.filtroFamilia=estudios.filtroFamilia.toUpperCase();">
+                                <button type="submit" class="btn btn-success" ng-disabled="estudios.load" ng-click="estudios.buscarEstudios()">Buscar...</button>
+                                <img style="width: 15px" ng-if="estudios.load" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -34,10 +34,11 @@
                                         <thead >
                                             <tr>
                                                 <th class="text-center">FOLIO</th>
+                                                <th class="text-center">Familia</th>
                                                 <th class="text-center">Institución Familia</th>
                                                 <th class="text-center">Institución solicito</th>
                                                 <th class="text-center">Dirección</th>
-                                                <th class="text-center">Fecha de registro</th>
+                                                <th class="text-center">Fecha</th>
                                                 <th class="text-center">Estatus</th>
                                                 <th class="text-center">Opciones</th>
                                             </tr>
@@ -45,9 +46,11 @@
                                         <tbody>
                                             <tr ng-repeat="estudio in estudios.listaEstudios | startFrom:estudios.currentPage * estudios.pageSize | limitTo:estudios.pageSize">
                                                 <td class="text-center">{{estudio.folio_estudio}}</td>
+                                                <td class="text-center">{{estudio.familia}}</td>
                                                 <td class="text-center">{{estudio.institucion_familia}}</td>
                                                 <td class="text-center">{{estudio.institucion_solicito}} </td>
                                                 <td class="text-center">
+                                                    <span class="small">
                                                     {{estudio.calle}}, 
                                                     {{estudio.num_ext}}, 
                                                     {{estudio.num_int}},
@@ -56,8 +59,9 @@
                                                     {{estudio.localidad}},
                                                     {{estudio.municipio}},
                                                     {{estudio.estado}}
+                                                    </span>
                                                 </td>
-                                                <td class="text-center">{{estudio.fecha_estudio }}</td>
+                                                <td class="text-center">{{estudio.fecha_estudio | toJSDate }}</td>
                                                 <td class="text-center">
                                                     <div ng-switch="estudio.id_estatus_estudio">
                                                         <div ng-switch-when="1"><span class="label label-info">Recibido</span></div>

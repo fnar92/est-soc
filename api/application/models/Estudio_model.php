@@ -16,9 +16,26 @@ class Estudio_model extends CI_Model {
         //$this->db->join('familia', 'familia.id_institucion = institucion.id_institucion');
         $this->db->join('institucion', 'institucion.id_institucion = familia.id_institucion');
         $this->db->order_by('familia.id_familia', 'ASC');
-        return $this->db->get('familia')->result();
+        $familias=$this->db->get('familia')->result();
+        $array_familias=array();
+        $i=0;
+        foreach ($familias as $familia) {
+            /*if ($i == 2) {
+                break;
+            }*/
+            $familia->estudio=  $this->getEstudiosFamiliaInstitucion($familia->id_familia, $familia->id_institucion);
+            //$array_familias[]=  array_merge($familia);
+            array_push($array_familias, $familia);
+            $i++;
+        }
+        return $array_familias;
     }
+    
     //Familia
+    public function saveEstudioInstitucion($data) {
+        return  $this->db->insert('estudios_instituciones', $data);
+    }
+    
     public function saveFamilia($data) {
         $data['fecha_registro']=date("Y-m-d");
         $data['fecha_modificacion']=date("Y-m-d H:i:s");
@@ -60,6 +77,7 @@ class Estudio_model extends CI_Model {
         $this->db->select(
                  'es.id_estudio, es.folio_estudio,'
                 .'es.institucion_familia, es.institucion_solicito,'
+                .'fam.familia,'
                 .'fam.calle, fam.num_ext, fam.num_int, fam.colonia, fam.localidad, fam.municipio, fam.estado,'
                 .'es.fecha_estudio, es.id_estatus_estudio');
         $this->db->from('estudio es');
@@ -77,6 +95,34 @@ class Estudio_model extends CI_Model {
         //$this->db->get();
         //return $this->db->last_query();
         return $this->db->get()->result();
+    }
+    
+    public function getEstudiosFamiliaInstitucion($idFamilia, $idInstitucion) {
+        $this->db->select('es_in.id_estudio, es.pago, es.num_recibo, es.id_estatus_estudio, es_in.id_institucion');
+        $this->db->from('estudios_instituciones es_in');
+        $this->db->join('estudio es', 'es.id_estudio = es_in.id_estudio');
+        //$this->db->join('institucion in', 'in.id_institucion = es_in.id_institucion');
+        //$this->db->join('familia fam', 'fam.id_familia = es.id_familia');        
+        $this->db->where('es.id_familia', $idFamilia);
+        //$this->db->where('es_in.id_institucion', $idInstitucion);
+        $this->db->where('es.id_estatus_estudio!=', 5);
+        $this->db->where('es.id_estatus_estudio!=', 6);
+        return $this->db->get()->result();
+        /*$this->db->select('*');
+        $this->db->from('estudio es');
+        $this->db->join('familia fam', 'es.id_familia = fam.id_familia');
+        $this->db->where('fam.id_familia', $idFamilia);
+        $this->db->where('es.id_estatus_estudio!=', 6);
+        return $this->db->get()->result();*/
+    }
+    
+    public function getEstudioActivoInstitucion($idInstitucion) {
+        $this->db->select('es_in.id_estudio, es.pago, es.num_recibo');
+        $this->db->from('estudios_instituciones es_in');
+        $this->db->join('estudio es', 'es.id_estudio = es_in.id_estudio');   
+        $this->db->where('es_in.id_institucion', $idInstitucion);
+        $this->db->where('es.id_estatus_estudio!=', 6);
+        return $this->db->get()->row();
     }
     
     
