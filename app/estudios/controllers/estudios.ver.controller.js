@@ -17,7 +17,7 @@
         scope.listaEstudios=[];
         scope.estudio={};
         scope.filtroFamilia="";
-        
+        scope.tipoUsuario=$localStorage.globals.type;
         scope.currentPage =0;
         scope.pageSize = 7;
         scope.numberOfPages = numberOfPages;
@@ -35,8 +35,14 @@
             mensaje('error', 'Session', 'Tu session ha expirado.');
             location.href='#/login';
         }
-        
+        if($rootScope.tipoUsuario===2){
+            if($rootScope.user.id_institucion===undefined){
+                error();
+                location.href='#/';
+            }
+        }
         scope.buscarEstudios();
+        
         
         function buscarEstudios(){
             scope.bandera_busco=false;

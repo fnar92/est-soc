@@ -36,6 +36,7 @@
                     console.log('se obtuvo el usuario');
                     $rootScope.user=response.data;
                     scope.user=response.data;
+                    $rootScope.user=response.data;
                     if(response.data.id_institucion!==undefined){
                         show();
                         UserService.getInstitucion(response.data.id_institucion).then(

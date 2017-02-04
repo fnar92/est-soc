@@ -16,6 +16,13 @@
             location.href='#/login';
         }
         
+        if($rootScope.tipoUsuario===2){
+            if($rootScope.user.id_institucion===undefined){
+                error();
+                location.href='#/';
+            }
+        }
+        
         var scope = this;  
         
         scope.estudios=[];
@@ -71,19 +78,25 @@
                         var temp=[];
                         for(var i=0; i<scope.listaFamiliasEncontradas.length; i++){
                             var estudio=scope.listaFamiliasEncontradas[i].estudio;
-                            //alert(json(scope.listaFamiliasEncontradas[i]));
+                            var es=false;
+                            var xx=0;
                             for(var j=0; j<estudio.length; j++){
                                 if(estudio[j].id_institucion===scope.id_institucion){
-                                    scope.tomoFamilia=true;
+                                    es=true;
+                                    estudio[j].tieneEstudio=true;
+                                    xx=j;
+                                    break;
+                                }else{
+                                    estudio[j].tieneEstudio=false;
+                                    xx=j;
                                 }
                             }
-                            var obj={};
                             var fam=scope.listaFamiliasEncontradas[i];
-                            fam.estudio=obj=estudio[0];
+                            fam.estudio=estudio[xx];
                             temp.push(fam);
                         }
                         scope.listaFamiliasEncontradas=temp;
-                        console.log(scope.listaFamiliasEncontradas[0]);
+                        console.log(scope.listaFamiliasEncontradas);
                     },
                     function(error){
                         scope.load=false;

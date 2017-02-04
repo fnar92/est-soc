@@ -8,9 +8,11 @@ class User_model extends CI_Model {
     
     public function getUser($id, $type) {
         if($type==1){
+            $this->db->select('id_usuario as id_usuario, username, email, nombre, apellido_paterno, apellido_materno, rol');
             $this->db->where('id_usuario', $id);
             return $this->db->get('usuario')->row();
         }else if($type==2){
+            $this->db->select('id_usuario_institucion as id_usuario, id_institucion, username, email, nombre, apellido_paterno, apellido_materno, rol');
             $this->db->where('id_usuario_institucion', $id);
             return $this->db->get('usuario_institucion')->row();
         }

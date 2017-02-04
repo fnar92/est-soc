@@ -1727,10 +1727,10 @@ output {
   border-radius: 2px;
 }
 .label, .label.label-default {
-  background-color: #FFFFFF;
+  background-color: teal;
 }
 .label.label-inverse {
-  background-color: #212121;
+  background-color: #a9afbb;
 }
 .label.label-primary {
   background-color: #9c27b0;

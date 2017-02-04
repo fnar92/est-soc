@@ -70,11 +70,10 @@
                                                 <td class="text-center">
                                                     <!--<button ng-show="familia.estudios.length>0">Ver estudio activo</button>-->
                                                     
-                                                    
-                                                    <span ng-show="familia.estudio!==null" class="label label-warning">Con estudio activo</span>
-                                                    <span ng-show="familia.estudio===null" class="label label-success">Sin observaciones</span>
+                                                    <span ng-show="familia.estudio.id_estudio!==undefined" class="label label-inverse">En proceso</span>
+                                                    <span ng-show="familia.estudio.id_estudio===undefined" class="label label-success">Sin observaciones</span>
                                                     <br>
-                                                     <div ng-switch="familia.estudio.id_estatus_estudio">
+                                                     <div ng-show="familia.estudio.id_estudio!==undefined" ng-switch="familia.estudio.id_estatus_estudio">
                                                         <div ng-switch-when="1"><span class="label label-info">Recibido</span></div>
                                                         <div ng-switch-when="2"><span class="label label-warning">Asignado</span></div>
                                                         <div ng-switch-when="3"><span class="label label-default">Capturado</span></div>
@@ -85,9 +84,9 @@
                                                 </td>
                                                 <td class="text-center">
                                                     <div class="switch">
-                                                            <button ng-show="familia.estudio!==null&&familia.estudio.id_institucion!==estudios.id_institucion" class="btn btn-xs btn-primary" name="seleccionar_familia" ng-click="estudios.solicitarEstudio(familia, familia.estudio)">Solicitar</button>
-                                                            <input ng-show="familia.estudio===null&&familia.estudio.id_institucion!==estudios.id_institucion" type="radio" name="seleccionar_familia" ng-click="estudios.seleccionarFamilia(familia)">
-                                                            <span ng-show="familia.tomoFamilia" class="label label-danger">Tomaste esta familia</span>
+                                                            <button ng-show="familia.estudio.id_estudio!==undefined&&familia.estudio.tieneEstudio===false||familia.estudio.tieneEstudio===false" class="btn btn-xs btn-primary" name="seleccionar_familia" ng-click="estudios.solicitarEstudio(familia, familia.estudio)">Solicitar</button>
+                                                            <input ng-show="familia.estudio.id_estudio===undefined" type="radio" name="seleccionar_familia" ng-click="estudios.seleccionarFamilia(familia)">
+                                                            <span ng-show="familia.estudio.id_estudio!==undefined&&familia.estudio.tieneEstudio===true" class="label label-danger">Familia en proceso</span>
                                                             <span class="lever"></span>
                                                         
                                                     </div>
