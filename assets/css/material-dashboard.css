@@ -636,13 +636,14 @@ h2.title {
 }
 
 .main-panel {
-  position: relative;
-  z-index: 2;
+  /*position: relative;
+  z-index: 1;*/
   float: right;
   overflow: auto;
-  width: calc(100% - 150px);
+  /*width: calc(100% - 150px);*/
+  width: 90%;
   min-height: 100%;
-  -webkit-transform: translate3d(0px, 0, 0);
+  /*-webkit-transform: translate3d(0px, 0, 0);
   -moz-transform: translate3d(0px, 0, 0);
   -o-transform: translate3d(0px, 0, 0);
   -ms-transform: translate3d(0px, 0, 0);
@@ -651,7 +652,7 @@ h2.title {
   -moz-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);
   -o-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);
   -ms-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);
-  transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);
+  transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);*/
 }
 .main-panel > .content {
   margin-top: 70px;
@@ -672,13 +673,13 @@ h2.title {
 
 .sidebar,
 .main-panel {
-  -webkit-transition-property: top,bottom;
+  /*-webkit-transition-property: top,bottom;
   transition-property: top,bottom;
   -webkit-transition-duration: .2s,.2s;
   transition-duration: .2s,.2s;
   -webkit-transition-timing-function: linear,linear;
   transition-timing-function: linear,linear;
-  -webkit-overflow-scrolling: touch;
+  -webkit-overflow-scrolling: touch;*/
 }
 
 .btn,
@@ -1457,8 +1458,8 @@ body.inverse {
 body.inverse, body.inverse .form-control {
   color: #ffffff;
 }
-body.inverse .modal,
-body.inverse .modal .form-control,
+body.inverse .modal_no,
+body.inverse .modal_no .form-control,
 body.inverse .panel-default,
 body.inverse .panel-default .form-control,
 body.inverse .card,
@@ -2265,7 +2266,7 @@ select.form-control[multiple], .form-group.is-focused select.form-control[multip
   color: #ffffff;
 }
 .alert.alert-info {
-  background-color: seagreen;
+  background-color: steelblue;
   color: #ffffff;
   border-radius: 3px;
   box-shadow: 0 12px 20px -10px rgba(0, 188, 212, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(0, 188, 212, 0.2);
@@ -2792,83 +2793,6 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   padding: 20px 0 50px 0px;
 }
 
-.modal-content {
-  box-shadow: 0 27px 24px 0 rgba(0, 0, 0, 0.2), 0 40px 77px 0 rgba(0, 0, 0, 0.22);
-  border-radius: 6px;
-  border: none;
-}
-.modal-content .modal-header {
-  border-bottom: none;
-  padding-top: 24px;
-  padding-right: 24px;
-  padding-bottom: 0;
-  padding-left: 24px;
-}
-.modal-content .modal-body {
-  padding-top: 24px;
-  padding-right: 24px;
-  padding-bottom: 16px;
-  padding-left: 24px;
-}
-.modal-content .modal-footer {
-  border-top: none;
-  padding: 7px;
-}
-.modal-content .modal-footer.text-center {
-  text-align: center;
-}
-.modal-content .modal-footer button {
-  margin: 0;
-  padding-left: 16px;
-  padding-right: 16px;
-  width: auto;
-}
-.modal-content .modal-footer button.pull-left {
-  padding-left: 5px;
-  padding-right: 5px;
-  position: relative;
-  left: -5px;
-}
-.modal-content .modal-footer button + button {
-  margin-bottom: 16px;
-}
-.modal-content .modal-body + .modal-footer {
-  padding-top: 0;
-}
-
-.modal-backdrop {
-  background: rgba(0, 0, 0, 0.3);
-}
-
-.modal .modal-dialog {
-  margin-top: 100px;
-}
-.modal .modal-header .close {
-  color: #999999;
-}
-.modal .modal-header .close:hover, .modal .modal-header .close:focus {
-  opacity: 1;
-}
-.modal .modal-header .close i {
-  font-size: 16px;
-}
-
-.modal-notice .instruction {
-  margin-bottom: 25px;
-}
-.modal-notice .picture {
-  max-width: 150px;
-}
-.modal-notice .modal-content .btn-raised {
-  margin-bottom: 15px;
-}
-
-.modal-small {
-  width: 300px;
-}
-.modal-small .modal-body {
-  margin-top: 20px;
-}
 
 .navbar {
   border: 0;
@@ -3361,7 +3285,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   position: absolute;
   width: 100%;
   padding-top: 10px;
-  z-index: 1029;
+  /*z-index: 1029;*/
 }
 
 .popover, .tooltip-inner {
@@ -4703,7 +4627,7 @@ footer .btn {
   }
 
   .main-panel {
-    -webkit-transform: translate3d(0px, 0, 0);
+    /*-webkit-transform: translate3d(0px, 0, 0);
     -moz-transform: translate3d(0px, 0, 0);
     -o-transform: translate3d(0px, 0, 0);
     -ms-transform: translate3d(0px, 0, 0);
@@ -4712,7 +4636,7 @@ footer .btn {
     -moz-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);
     -o-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);
     -ms-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);
-    transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);
+    transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);*/
     left: 0;
   }
 
@@ -4855,7 +4779,7 @@ footer .btn {
     top: 0;
     left: auto;
     content: "";
-    z-index: 9999;
+    /*z-index: 9999;*/
     overflow-x: hidden;
     -webkit-transition: all 370ms ease-in;
     -moz-transition: all 370ms ease-in;

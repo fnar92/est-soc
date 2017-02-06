@@ -67,8 +67,9 @@
             
         };
         
-        function verDetalle(estudio){
-            EstudiosService.estudioSeleccionado=estudio;
+        function verDetalle(idEstudio){
+            show();
+            EstudiosService.idEstudioSeleccionado=idEstudio;
             window.location.href='#/estudios/detalle';
         };
         

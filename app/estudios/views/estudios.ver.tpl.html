@@ -37,7 +37,7 @@
                                                 <th class="text-center">Familia</th>
                                                 <!--<th class="text-center">Institución Familia</th>
                                                 <th class="text-center">Institución solicito</th>-->
-                                                <th ng-show="tipoUsuario==='1'" class="text-center">Instituciones</th>
+                                                <th ng-show="tipoUsuario==='1'" class="text-center">Solicitud (es)</th>
                                                 <th class="text-center">Dirección</th>
                                                 <th class="text-center">Fecha</th>
                                                 <th class="text-center">Estatus</th>
@@ -49,7 +49,7 @@
                                                 <td class="text-center">{{estudio.folio_estudio}}</td>
                                                 <td class="text-center">{{estudio.familia}}</td>
                                                 <td class="text-center" ng-show="tipoUsuario==='1'">
-                                        <p class="small " ng-repeat="ins in estudio.instituciones">{{ins.clave_institucion}}</p>
+                                        <p class="small " ng-repeat="ins in estudio.instituciones">{{ins.clave_institucion}} ({{ins.count.total}})</p>
                                                 </td>
                                                 <!--<td class="text-center">{{estudio.institucion_familia}}</td>
                                                 <td class="text-center">{{estudio.institucion_solicito}} </td>-->
@@ -77,7 +77,7 @@
                                                     </div>
                                                 </td>
                                                 <td class="text-center">
-                                                    <button type="button" class="btn btn-primary btn-xs" ng-click="estudios.verDetalle(estudio)">Ver</button>
+                                                    <button type="button" class="btn btn-primary btn-xs" ng-click="estudios.verDetalle(estudio.id_estudio)">Ver</button>
                                                 </td>
                                             </tr>
                                         </tbody>

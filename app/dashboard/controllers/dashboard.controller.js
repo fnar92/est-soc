@@ -77,8 +77,8 @@
             
     function logout(ev) {
         console.log('salir');
-        var quest= 'Salir del sistema?';
-        var confirm = DialogService.dialogConfirm(ev,'Confirmacion', quest,'Si','No');
+        var quest= '¿Salir del sistema?';
+        var confirm = DialogService.dialogConfirm(ev,'Confirmación', quest,'Si','No');
         $mdDialog.show(confirm).then(function() {
             RestService.get(Constants.BaseURLBack + '/auth/logout','','');  
             AuthenticationService.ClearCredentials();

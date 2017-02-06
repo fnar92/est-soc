@@ -7,14 +7,27 @@
 
     function EstudiosService($http, RestService, $localStorage, $rootScope, Base64Service, Constants) {
         var service = {};
-        service.estudioSeleccionado={};
+        service.idEstudioSeleccionado=0;
+        service.obtenerEmpleados=obtenerEmpleados;
+        service.guardarAsignado=guardarAsignado;
         service.obtenerFamilias=obtenerFamilias;
         service.guardarFamilia=guardarFamilia;
         service.guardarEstudio=guardarEstudio;
         service.obtenerEstudios=obtenerEstudios;
         service.guardarEstudioInstitucion=guardarEstudioInstitucion;
+        service.obtenerDetalleEstudio=obtenerDetalleEstudio;
+        
         return service;
         
+        function obtenerEmpleados(){
+            var url=Constants.BaseURLBack+'/user/getEmpleados';
+            return RestService.get(url,'');
+        }
+        
+        function guardarAsignado(data){
+            var url=Constants.BaseURLBack+'/estudio/updateEstudio';
+            return RestService.post(url,'',data);
+        }
         function obtenerFamilias(idInstitucion, filterFamilia){
             if(filterFamilia===undefined|| filterFamilia===''){
                 filterFamilia='all';
@@ -43,6 +56,11 @@
                 filterFamilia='all';
             }
             var url=Constants.BaseURLBack+'/estudio/getEstudios/'+tipoUsuario+'/'+rolUsuario+'/'+idUsuario+'/'+idInstitucion+'/'+filterFamilia;
+            return RestService.get(url,'');
+        }
+        
+        function obtenerDetalleEstudio(idEstudio){
+            var url=Constants.BaseURLBack+'/estudio/getEstudioDetalle/'+idEstudio;
             return RestService.get(url,'');
         }
         

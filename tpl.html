@@ -1,9 +1,7 @@
 
-    <!-- Bootstrap core CSS     -->
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+    
 
-    <!--  Material Dashboard CSS    -->
-    <link href="assets/css/material-dashboard.css" rel="stylesheet"/>
+    
 
     <!--  CSS for Demo Purpose, don't include it in your project     -->
     <link href="assets/css/demo.css" rel="stylesheet" />
@@ -36,7 +34,7 @@
                         <li class="">
 	                    <a href="#/">
 	                        <i class="material-icons">dashboard</i>
-	                        <p>Dashboard</p>
+	                        <p>Inicio</p>
 	                    </a>
 	                </li>
                         <li class="">
@@ -45,6 +43,14 @@
 	                        <p>Estudios</p>
 	                    </a>
 	                </li>
+                        
+                        <li class="">
+                            <a href="javascript:void(0)" ng-click="dash.logout()">
+	                        <i class="material-icons">dashboard</i>
+	                        <p>Salir</p>
+	                    </a>
+	                </li>
+                        
 	            </ul>
 	    	</div>
 		</div>
@@ -62,7 +68,8 @@
 						<a class="navbar-brand" href="#">Inicio</a>
 					</div>
 					<div class="collapse navbar-collapse">
-						<ul class="nav navbar-nav navbar-right">
+						
+                                            <!--<ul class="nav navbar-nav navbar-right">
                                                     
 							<li class="dropdown">
 								<a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
@@ -77,14 +84,15 @@
 							   
 							</li>
 						</ul>
-
+                                            -->
+                                            <!--<a href="javascript:void(0)" ng-click="dash.logout()">Salir</a>-->
                                             
 					</div>
 				</div>
 			</nav>
 
 	        <div class="content">
-						<div ui-view="page"></div>
+                    <div ui-view="page"></div>
 	        </div>
 			<footer class="footer">
 	            <div class="container-fluid">
@@ -92,7 +100,7 @@
 	                    <ul>
 	                        <li>
 	                            <a href="#/">
-	                                Home
+	                                Inicio
 	                            </a>
 	                        </li>
 

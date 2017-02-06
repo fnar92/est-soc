@@ -84,9 +84,13 @@
                                                 </td>
                                                 <td class="text-center">
                                                     <div class="switch">
-                                                            <button ng-show="familia.estudio.id_estudio!==undefined&&familia.estudio.tieneEstudio===false||familia.estudio.tieneEstudio===false" class="btn btn-xs btn-primary" name="seleccionar_familia" ng-click="estudios.solicitarEstudio(familia, familia.estudio)">Solicitar</button>
+                                                            <button ng-show="familia.estudio.id_estudio!==undefined&&familia.estudio.tieneEstudio===false" class="btn btn-xs btn-primary" name="seleccionar_familia" ng-click="estudios.solicitarEstudio(familia, familia.estudio)">Solicitar</button>
                                                             <input ng-show="familia.estudio.id_estudio===undefined" type="radio" name="seleccionar_familia" ng-click="estudios.seleccionarFamilia(familia)">
-                                                            <span ng-show="familia.estudio.id_estudio!==undefined&&familia.estudio.tieneEstudio===true" class="label label-danger">Familia en proceso</span>
+                                                            
+                                                            <div ng-show="familia.estudio.id_estudio!==undefined&&familia.estudio.tieneEstudio===true">
+                                                                <span  class="label label-danger">Familia en proceso</span>
+                                                                <button  class="btn btn-xs btn-primary" name="seleccionar_familia" ng-click="estudios.solicitarEstudio(familia, familia.estudio)">Solicitar de nuevo</button>
+                                                            </div>
                                                             <span class="lever"></span>
                                                         
                                                     </div>
@@ -141,7 +145,7 @@
                     </div>
                     
                     <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-md-3">
                             <div class="form-group label-floating">
                                     <label class="control-label">Pago:</label>
                                     <br>
@@ -149,6 +153,20 @@
 
                                         <md-radio-button value="TRIANA" class="md-primary">Triana</md-radio-button>
                                         <md-radio-button value="ENCINO">Encino</md-radio-button>
+
+                                    </md-radio-group>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Compartida:</label>
+                                    <br>
+                                    <md-radio-group  ng-model="estudios.familia.compartida">
+
+                                        <md-radio-button value="SI" class="md-primary">Si</md-radio-button>
+                                        <md-radio-button value="NO">No</md-radio-button>
 
                                     </md-radio-group>
                             </div>
@@ -164,21 +182,19 @@
                     <div class="row">
                         <div class="col-md-5">
                             <div class="form-group label-floating">
-                                    <label class="control-label">No. de hijos CET</label>
+                                    <label class="control-label">No. de hijos CET:</label>
                                     <input type="text" class="form-control" ng-model="estudios.familia.num_hijos_cet" >
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group label-floating">
-                                    <label class="control-label">No. de hijos CEE</label>
+                                    <label class="control-label">No. de hijos CEE:</label>
                                     <input type="text" class="form-control" ng-model="estudios.familia.num_hijos_cee">
                             </div>
                         </div>
                     </div>
                     
-                    <div class="row text-left">
-                        <p>Domicilio:</p>
-                    </div>
+                    <h4>Domicilio:</h4>
                     
                     <div class="row">
                         <div class="col-md-5">
@@ -226,7 +242,7 @@
                         </div>
                         <div class="col-md-5">
                             <div class="form-group label-floating">
-                                    <label class="control-label">Estado</label>
+                                    <label class="control-label">Estado:</label>
                                     <input type="text" class="form-control" ng-model="estudios.familia.estado" ng-change="estudios.familia.localidad=estudios.familia.localidad.toUpperCase();">
                             </div>
                         </div>
@@ -239,7 +255,7 @@
                         </div>
                     </div>
                     
-                    <h3>Datos padres</h3>
+                    <h4>Datos padres:</h4>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group label-floating">

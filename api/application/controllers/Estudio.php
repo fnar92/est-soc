@@ -63,12 +63,64 @@ class Estudio extends CI_Controller {
         echo json_encode(array('id_estudio'=>$id_estudio));
     }
     
-    public function updateEstudio($data) {
+    public function updateEstudio() {
+        $data = json_decode(file_get_contents('php://input'),true);
         echo json_encode($this->estudio_model->updateEstudio($data));
     }
     
     public function getEstudios($tipoUsuario, $rolUsuario, $idUsuario, $idInstitucion, $familia) {
         echo json_encode($this->estudio_model->getEstudios($tipoUsuario, $rolUsuario, $idUsuario, $idInstitucion, $familia));
+    }
+    
+    public function getEstudioDetalle($idEstudio) {
+        echo json_encode($this->estudio_model->getEstudioDetalle($idEstudio));
+    }
+    /*hijos*/
+    public function saveHijo() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->estudio_model->saveHijo($data));
+    }
+    
+    public function deleteHijo() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->estudio_model->deleteHijo($data));
+    }
+    
+    public function updateHijo() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->estudio_model->updateHijo($data));
+    }
+    
+    /*dependientes*/
+    public function saveDependiente() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->estudio_model->saveDependiente($data));
+    }
+    
+    public function deleteDependiente() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->estudio_model->deleteDependiente($data));
+    }
+    
+    public function updateDependiente() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->estudio_model->updateDependiente($data));
+    }
+    
+    /*dependientes*/
+    public function saveMotivo() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->estudio_model->saveMotivo($data));
+    }
+    
+    public function deleteMotivo() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->estudio_model->deleteMotivo($data));
+    }
+    
+    public function updateMotivo() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->estudio_model->updateMotivo($data));
     }
     
     

@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header" data-background-color="orange">
+                <div class="card-header" data-background-color="green">
                     <h1 class="title">
                         <strong ng-show="tipoUsuario==='1'">Estudios socioeconomicos (HRWise)</strong>
                         <strong ng-show="tipoUsuario==='2'">Estudios socioeconomicos ({{dash.institucion.nombre_institucion}})</strong>
@@ -16,12 +16,23 @@
                     
                         <div class="card-content">
                             <h2 class="title">Folio: <strong>{{control.estudio.folio_estudio}}</strong></h2>
-                            <h2 class="title">Institución: <strong>{{control.estudio.clave}}</strong></h2>
+                            <h2 class="title">Solicitud (es): 
+                                <div ng-repeat="ins in control.estudio.instituciones">
+                                    <strong ng-show="tipoUsuario=='2'&&dash.institucion.clave_institucion==ins.clave_institucion">{{ins.clave_institucion}} ({{ins.count.total}})</strong>
+                                    <strong ng-show="tipoUsuario=='1'">{{ins.clave_institucion}} ({{ins.count.total}})</strong>
+                                </div>
+                            </h2>
                             <!--<h2 class="title">Asigado: <strong>{{control.estudio.id_asignado}}</strong></h2>-->
-                            <h2 ng-show="control.estudio.id_usuario_asignado!=='0'" class="title">Asignado: <strong>{{control.estudio.id_usuario_asignado}}</strong></h2>
+                            <h2  class="title">
+                                Asignado:
+                                <span class="label label-info" ng-show="control.estudio.id_usuario_asignado==='0'">Por asignar</span>
+                                <span class="label label-success" ng-show="control.estudio.id_usuario_asignado!=='0'">
+                                    Asignado
+                                </span>
+                            </h2>
                             
-                        
-                            <button ng-show="control.estudio.id_usuario_asignado==='0'" type="button" class="btn btn-warning btn-xs" ng-click="">Asignar</button>
+                            <button ng-show="tipoUsuario=='1'&&control.estudio.id_usuario_asignado==='0'" type="button" class="btn btn-warning btn-xs" ng-click="control.asignarShow()">Asignar</button>
+                            <button ng-show="tipoUsuario=='1'&&control.estudio.id_usuario_asignado!=='0'" type="button" class="btn btn-warning btn-xs" ng-click="control.asignarShow()">Reasignar</button>
                         </div>
                         <div class="card-footer">
                                 <div class="stats">
@@ -36,14 +47,16 @@
                 <div class="card">
                         <div class="card-content">
                             <h2 class="title">Familia: <strong>{{control.estudio.familia}}</strong></h2>
-                            <h2 class="title">Estatus: <strong ng-switch="control.estudio.id_estatus_estudio">
-                                                        <span  ng-switch-when="1"class="label label-info">Recibido</span>
-                                                        <span  ng-switch-when="2" class="label label-warning">Asignado</span>
-                                                        <span  ng-switch-when="3" class="label label-default">Capturado</span>
-                                                        <span  ng-switch-when="4" class="label label-primary">En revisón</span>
-                                                        <span  ng-switch-when="5" class="label label-success">Terminado</span>
-                                                        <span  ng-switch-when="6" class="label label-danger">Cancelado</span>
-                                                    </strong></h2>
+                            <h2 class="title">Estatus: 
+                                <strong ng-switch="control.estudio.id_estatus_estudio">
+                                <span  ng-switch-when="1"class="label label-info">Recibido</span>
+                                <span  ng-switch-when="2" class="label label-warning">Asignado</span>
+                                <span  ng-switch-when="3" class="label label-default">Capturado</span>
+                                <span  ng-switch-when="4" class="label label-primary">En revisón</span>
+                                <span  ng-switch-when="5" class="label label-success">Terminado</span>
+                                <span  ng-switch-when="6" class="label label-danger">Cancelado</span>
+                                </strong>
+                            </h2>
                         </div>
                         <div class="card-footer">
                                 <div class="stats">
@@ -54,12 +67,12 @@
                 </div>
              </div>
              
-            <div class="col-lg-12 col-md-14 col-sm-12">
+            <div class="col-lg-14 col-md-14 col-sm-12">
                 <div class="card card-stats">
                     <div class="card-content">
                         <div class="row">
-        <div class="col-lg-12 col-md-14 col-sm-14 col-xs-14 bhoechie-tab-container">
-            <div class="col-lg-1 col-md-1 col-sm-2 col-xs-2 bhoechie-tab-menu">
+        <div class="col-lg-14 col-md-12 col-sm-14 col-xs-14 bhoechie-tab-container">
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 bhoechie-tab-menu">
               <div class="list-group">
                 <a href="#" class="list-group-item active text-center">
                     <h4 class="title">Datos generales</h4>
@@ -105,30 +118,52 @@
                 </a>
               </div>
             </div>
-            <div class="col-lg-11 col-md-10 col-sm-9 col-xs-9 bhoechie-tab">
+            <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9 bhoechie-tab">
                 <!-- flight section -->
                 <div class="bhoechie-tab-content active">
-                    <form >
-                    <div class="row">
+                    <h3 class="text-left">Datos generales</h3>
+                    <hr>
+                    <form>
+                        <div class="row">
                         <div class="col-md-5">
                             <div class="form-group label-floating">
                                     <label class="control-label">Familia:</label>
-                                    <input type="text" class="form-control" ng-model="control.estudio.familia" >
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-5">
-                            <div class="form-group label-floating">
-                                    <label class="control-label">Pago encino:</label>
-                                    <input type="text" class="form-control" ng-model="control.estudio.pago_encino">
+                                    <input type="text" class="form-control" ng-model="control.estudio.familia" ng-change="control.estudio.familia=control.estudio.familia.toUpperCase();">
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group label-floating">
-                                    <label class="control-label">Pago triana:</label>
-                                    <input type="text" class="form-control" ng-model="control.estudio.pago_triana">
+                                    <label class="control-label">Institución familia:</label>
+                                    <input ng-if="!control.bandera_selecciono" type="text" class="form-control" value="" ng-model="control.estudio.clave_institucion" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row border border-blue">
+                        <div class="col-md-2">
+                            <div class="form-group label-floating text-left">
+                                    <label class="control-label">Pago:</label>
+                                    <br>
+                                    <md-radio-group  ng-model="control.estudio.pago">
+
+                                        <md-radio-button value="TRIANA" class="md-primary">Triana</md-radio-button>
+                                        <md-radio-button value="ENCINO">Encino</md-radio-button>
+
+                                    </md-radio-group>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-2">
+                            
+                            <div class="form-group label-floating text-left">
+                                    <label class="control-label">Compartida:</label>
+                                    <br>
+                                    <md-radio-group  ng-model="control.estudio.compartida">
+
+                                        <md-radio-button value="SI" class="md-primary">Si</md-radio-button>
+                                        <md-radio-button value="NO">No</md-radio-button>
+
+                                    </md-radio-group>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -142,25 +177,25 @@
                     <div class="row">
                         <div class="col-md-5">
                             <div class="form-group label-floating">
-                                    <label class="control-label">No. de hijos CET</label>
+                                    <label class="control-label">No. de hijos CET:</label>
                                     <input type="text" class="form-control" ng-model="control.estudio.num_hijos_cet" >
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group label-floating">
-                                    <label class="control-label">No. de hijos CEE</label>
+                                    <label class="control-label">No. de hijos CEE:</label>
                                     <input type="text" class="form-control" ng-model="control.estudio.num_hijos_cee">
                             </div>
                         </div>
                     </div>
-                    <div class="row text-left">
-                        <p>Domicilio:</p>
-                    </div>
+                    
+                        <h4 class="text-left">Domicilio:</h4>
+                    
                     <div class="row">
                         <div class="col-md-5">
                             <div class="form-group label-floating">
                                     <label class="control-label">Calle:</label>
-                                    <input type="text" class="form-control" ng-model="control.estudio.calle" >
+                                    <input type="text" class="form-control" ng-model="control.estudio.calle" ng-change="control.estudio.calle=control.estudio.calle.toUpperCase();">
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -181,13 +216,13 @@
                         <div class="col-md-5">
                             <div class="form-group label-floating">
                                         <label class="control-label">Colonia:</label>
-                                    <input type="text" class="form-control" ng-model="control.estudio.colonia" >
+                                    <input type="text" class="form-control" ng-model="control.estudio.colonia" ng-change="control.estudio.colonia=control.estudio.colonia.toUpperCase();">
                             </div>
                         </div>
                         <div class="col-md-5">
                             <div class="form-group label-floating">
                                     <label class="control-label">Localidad:</label>
-                                    <input type="text" class="form-control" ng-model="control.estudio.localidad" ng-change="">
+                                    <input type="text" class="form-control" ng-model="control.estudio.localidad" ng-change="control.estudio.localidad=control.estudio.localidad.toUpperCase();">
                             </div>
                         </div>
                         
@@ -197,43 +232,224 @@
                         <div class="col-md-5">
                             <div class="form-group label-floating">
                                         <label class="control-label">Municipio:</label>
-                                    <input type="text" class="form-control" ng-model="control.estudio.municipio" ng-change="">
+                                    <input type="text" class="form-control" ng-model="control.estudio.municipio" ng-change="control.estudio.colonia=control.estudio.colonia.toUpperCase();">
                             </div>
                         </div>
                         <div class="col-md-5">
                             <div class="form-group label-floating">
-                                    <label class="control-label">Estado</label>
-                                    <input type="text" class="form-control" ng-model="control.estudio.estado" ng-change="">
+                                    <label class="control-label">Estado:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.estado" ng-change="control.estudio.localidad=control.estudio.localidad.toUpperCase();">
                             </div>
                         </div>
                         
                         <div class="col-md-3">
                             <div class="form-group label-floating">
                                     <label class="control-label">Telefono casa:</label>
-                                    <input type="text" class="form-control" ng-model="control.estudio.telefono_casa" ng-change="">
+                                    <input type="text" class="form-control" ng-model="control.estudio.telefono_casa" ng-change="control.estudio.localidad=control.estudio.localidad.toUpperCase();">
                             </div>
                         </div>
                     </div>
+                        
+                    </form>
                     <div class="clearfix"></div>
-                </form>
                 </div>
                 <!-- train section -->
                 <div class="bhoechie-tab-content">
-                    1
+                    <h3 class="text-left">Datos del papa</h3>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Nombre papa:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.nombre_papa" ng-change="control.estudio.nombre_papa=control.estudio.nombre_papa.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Apellido paterno:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.apellido_paterno_papa" ng-change="control.estudio.apellido_paterno_papa=control.estudio.apellido_paterno_papa.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Apellido materno:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.apellido_materno_papa" ng-change="control.estudio.apellido_materno_papa=control.estudio.apellido_materno_papa.toUpperCase();">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">RFC:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.rfc_papa" ng-change="control.estudio.rfc_papa=control.estudio.rfc_papa.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Celular:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.celular_papa" ng-change="control.estudio.celular_papa=control.estudio.celular_papa.toUpperCase();">
+                            </div>
+                        </div>
+                    </div>
                 </div>
     
                 <!-- hotel search -->
                 <div class="bhoechie-tab-content">
-                    2
+                    <h3 class="text-left">Datos de la mama</h3>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Nombre mama:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.nombre_mama" ng-change="control.estudio.nombre_mama=control.estudio.nombre_mama.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Apellido paterno:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.apellido_paterno_mama" ng-change="control.estudio.apellido_paterno_mama=control.estudio.apellido_paterno_mama.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Apellido materno:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.apellido_materno_mama" ng-change="control.estudio.apellido_materno_mama=control.estudio.apellido_materno_mama.toUpperCase();">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">RFC:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.rfc_mama" ng-change="control.estudio.rfc_mama=control.estudio.rfc_mama.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Celular:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.celular_mama" ng-change="control.estudio.celular_mama=control.estudio.celular_mama.toUpperCase();">
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="bhoechie-tab-content">
-                    3
+                    <h3 class="text-left">Datos hijos</h3>
+                    <div class="text-right"><button type="button" class="btn btn-success" ng-click="control.agregarHijo(control.estudio.id_familia)">Agregar hijo</button></div>
+                    <hr>
+                    <div class="table-responsive">          
+                        <table class="table">
+                            <thead>
+                              <tr>
+                                <th class="text-center">ID</th>
+                                <th class="text-center">Nombre</th>
+                                <th class="text-center">Apellido paterno</th>
+                                <th class="text-center">Apellido materno</th>
+                                <th class="text-center">Edad</th>
+                                <th class="text-center">Opciones</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="hijo in control.estudio.hijos">
+                                <td class="text-center">{{hijo.id_hijo_familia}}</td>
+                                <td class="text-center">{{hijo.nombre}}</td>
+                                <td class="text-center">{{hijo.apellido_paterno}}</td>
+                                <td class="text-center">{{hijo.apellido_materno}}</td>
+                                <td class="text-center">{{hijo.edad}}</td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-primary btn-xs" ng-click="control.verActualizarHijo(hijo)">Ver/Actualizar</button>
+                                    <button type="button" class="btn btn-danger btn-xs" ng-click="control.eliminarHijo(hijo)">Eliminar</button>
+                                </td>
+                              </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="bhoechie-tab-content">
-                    4
+                   <h3 class="text-left">Datos dependientes</h3>
+                    <div class="text-right"><button type="button" class="btn btn-success" ng-click="control.agregarDependiente(control.estudio.id_familia)">Agregar dependiente</button></div>
+                    <hr>
+                    <div class="table-responsive">          
+                        <table class="table">
+                            <thead>
+                              <tr>
+                                <th class="text-center">ID</th>
+                                <th class="text-center">Nombre</th>
+                                <th class="text-center">Apellido paterno</th>
+                                <th class="text-center">Apellido materno</th>
+                                <th class="text-center">Edad</th>
+                                <th class="text-center">Parentesco</th>
+                                <th class="text-center">Opciones</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="dependiente in control.estudio.dependientes">
+                                <td class="text-center">{{dependiente.id_dependiente_economico}}</td>
+                                <td class="text-center">{{dependiente.nombre}}</td>
+                                <td class="text-center">{{dependiente.apellido_paterno}}</td>
+                                <td class="text-center">{{dependiente.apellido_materno}}</td>
+                                <td class="text-center">{{dependiente.edad}}</td>
+                                <td class="text-center">{{dependiente.parentesco}}</td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-primary btn-xs" ng-click="control.verActualizarDependiente(dependiente)">Ver/Actualizar</button>
+                                    <button type="button" class="btn btn-danger btn-xs" ng-click="control.eliminarDependiente(dependiente)">Eliminar</button>
+                                </td>
+                              </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="bhoechie-tab-content">
-                    5
+                   <h3 class="text-left">Motivos</h3>
+                    <div class="text-right"><button type="button" class="btn btn-success" ng-click="control.agregarMotivo(control.estudio.id_familia)">Agregar motivo</button></div>
+                    <hr>
+                    <div class="table-responsive">          
+                        <table class="table">
+                            <thead>
+                              <tr>
+                                <th class="text-center">ID</th>
+                                <th class="text-center">Tipo</th>
+                                <th class="text-center">Comentario</th>
+                                <th class="text-center">Opciones</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="motivo in control.estudio.motivos">
+                                <td class="text-center">{{motivo.id_motivo}}</td>
+                                <td class="text-center col-md-3">
+                                    <select class="form-control" ng-model="motivo.tipo_motivo">
+                                        <option value="">-</option>
+                                        <option value="AE">Apoyo Económico</option>
+                                        <option value="BI">Bajos Ingresos</option>
+                                        <option value="BIIT">Bajos ingresos e insolvencia temporal</option>
+                                        <option value="DES">Desempleo</option>
+                                        <option value="DIS">Disminución de Ingresos</option>
+                                        <option value="DIV">Divorcio o Separación</option>
+                                        <option value="EMP">Empleado</option>
+                                        <option value="END">Endeudamiento Excesivo</option>
+                                        <option value="EDM">Enfermedad de mamá</option>
+                                        <option value="EGMF">Enfermedad Grave de un miembro de la familia</option>
+                                        <option value="FLT">Falta de Liquidez Temporal</option>
+                                        <option value="FRE">Falta de Recursos Economicos</option>
+                                        <option value="IGI">Incremento en gastos por inclusión de hijos al sistema escolar</option>
+                                        <option value="II">Ingresos Insuficienes</option>
+                                        <option value="IT">Insolvencia Temporal</option>
+                                        <option value="OPPI">Ofrecimiento por parte de la Institución</option>
+                                        <option value="OTRA">Otra</option>
+                                    </select>
+                                </td>
+                                <td class="text-center col-md-6">
+                                    <p class="small">{{motivo.motivo}}</p>
+                                </td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-primary btn-xs" ng-click="control.verActualizarMotivo(motivo)">Ver/Actualizar</button>
+                                    <button type="button" class="btn btn-danger btn-xs" ng-click="control.eliminarMotivo(motivo)">Eliminar</button>
+                                </td>
+                              </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="bhoechie-tab-content">
                     6
@@ -274,13 +490,354 @@
 <script>
     
     $(function() {
-    $("div.bhoechie-tab-menu>div.list-group>a").click(function(e) {
-        e.preventDefault();
-        $(this).siblings('a.active').removeClass("active");
-        $(this).addClass("active");
-        var index = $(this).index();
-        $("div.bhoechie-tab>div.bhoechie-tab-content").removeClass("active");
-        $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
+        $("div.bhoechie-tab-menu>div.list-group>a").click(function(e) {
+            e.preventDefault();
+            $(this).siblings('a.active').removeClass("active");
+            $(this).addClass("active");
+            var index = $(this).index();
+            $("div.bhoechie-tab>div.bhoechie-tab-content").removeClass("active");
+            $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
+        });
     });
-});
 </script>
+
+<!-- modal_hijo -->
+<div class="modal fade ativa-scroll" id="modal_agregar_hijo" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content pagination-centered text-center">
+            <div class="modal-header">
+            <button type="button" class="close cros_close_modal" data-dismiss="modal">&times;</button>
+            <h5 ng-show="!control.banderaActualizar">Agregar hijo</h5>
+            <h5 ng-show="control.banderaActualizar">Hijo: <strong>{{control.hijo.nombre}} {{control.hijo.apellido_paterno}} {{control.hijo.apellido_materno}}</strong></h5>
+            </div>
+            <div class="modal-body">
+
+                    <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group label-floating">
+                                <label class="control-label">Nombre (s):</label>
+                                <input type="text" class="form-control" ng-model="control.hijo.nombre" ng-change="control.hijo.nombre=control.hijo.nombre.toUpperCase();">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group label-floating">
+                                <label class="control-label">Apellido paterno:</label>
+                                <input type="text" class="form-control" ng-model="control.hijo.apellido_paterno" ng-change="control.hijo.apellido_paterno=control.hijo.apellido_paterno.toUpperCase();">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group label-floating">
+                                <label class="control-label">Apellido materno:</label>
+                                <input type="text" class="form-control" ng-model="control.hijo.apellido_materno" ng-change="control.hijo.apellido_materno=control.hijo.apellido_materno.toUpperCase();">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-1">
+                        <div class="form-group label-floating">
+                                <label class="control-label">Edad:</label>
+                                <input type="text" class="form-control" ng-model="control.hijo.edad">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group label-floating">
+                                <label class="control-label">Fecha de nacimiento:</label>
+                                <input type="date" ng-show="control.banderaActualizar" ng-disabled="control.hijo.fecha_nacimiento!==null||control.hijo.fecha_nacimiento!==''||control.hijo.fecha_nacimiento!==undefined" value="{{control.hijo.fecha_nacimiento}}" class="form-control" ng-model="control.hijo.fecha_nacimiento">
+                                <input type="date" ng-show="!control.banderaActualizar" class="form-control" ng-model="control.hijo.fecha_nacimiento">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group label-floating">
+                                <label class="control-label">Correo electrónico:</label>
+                                <input type="email" class="form-control" ng-model="control.hijo.correo_electronico">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group label-floating">
+                                <label class="control-label">Nivel y grado a cursar:</label>
+
+                                    <select class="form-control" ng-model="control.hijo.nivel_grado_cursar">
+                                      <option value="">-</option>
+                                      <option value="PREMATERNAL">PREMATERNAL</option>
+                                      <option value="MATERNAL">MATERNAL</option>
+                                      <option value="KINDER I">KINDER I</option>
+                                      <option value="KINDER II">KINDER II</option>
+                                      <option value="KINDER III">KINDER III</option>
+                                      <option value="1° PRIMARIA">1° PRIMARIA</option>
+                                      <option value="2° PRIMARIA">2° PRIMARIA</option>
+                                      <option value="3° PRIMARIA">3° PRIMARIA</option>
+                                      <option value="4° PRIMARIA">4° PRIMARIA</option>
+                                      <option value="5° PRIMARIA">5° PRIMARIA</option>
+                                      <option value="6° PRIMARIA">6° PRIMARIA</option>
+                                      <option value="1° SECUNDARIA">1° SECUNDARIA</option>
+                                      <option value="2° SECUNDARIA">2° SECUNDARIA</option>
+                                      <option value="3° SECUNDARIA">3° SECUNDARIA</option>
+                                      <option value="1° PREPA">1° PREPA</option>
+                                      <option value="2° PREPA">2° PREPA</option>
+                                      <option value="3° PREPA">3° PREPA</option>
+                                    </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group label-floating">
+                                <label class="control-label">Institución a la que solicita beca:</label>
+                                <select class="form-control" ng-model="control.hijo.institucion">
+                                      <option value="">-</option>
+                                      <option value="CET">CET</option>
+                                      <option value="KH">KH</option>
+                                      <option value="KP">KP</option>
+                                      <option value="VKN">VKN</option>
+                                      <option value="VKS">VKS</option>
+                                      <option value="CEE">CEE</option>
+                                      <option value="NICET">NICET</option>
+                                    </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group label-floating">
+                                <label class="control-label">Colegiatura sin descuentos (Ciclo anterior):</label>
+                                <input type="text" class="form-control" ng-model="control.hijo.colegiatura_pasado">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group label-floating">
+                                <label class="control-label">Pago de colegiatura actual:</label>
+                                <input type="text" class="form-control" ng-model="control.hijo.colegiatura_actual">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group label-floating">
+                                <label class="control-label">Beca actual:</label>
+                                <input type="text" class="form-control" ng-model="control.hijo.beca_actual" >
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group label-floating">
+                                <label class="control-label">De donde provino el apoyo:</label>
+                                <input type="text" class="form-control" ng-model="control.hijo.fuente_apoyo" >
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group label-floating">
+                                <label class="control-label">Apoyo solicitado:</label>
+                                <input type="text" class="form-control" ng-model="control.hijo.apoyo_solicitado" >
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group label-floating">
+                                <label class="control-label">Status:</label>
+                                <input type="text" class="form-control" ng-model="control.hijo.status" >
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group label-floating">
+                                <label class="control-label">Otras colegiaturas:</label>
+                                <input type="text" class="form-control" ng-model="control.hijo.otras_colegiaturas" >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group label-floating">
+                                <label class="control-label">Comentarios:</label>
+                                <textarea rows="2" class="form-control" ng-model="control.hijo.comentarios"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn btn-primary " ng-click="control.guardarHijo()">Guardar hijo</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- modal_dependiente -->
+<div class="modal fade ativa-scroll" id="modal_agregar_dependiente" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content pagination-centered text-center">
+            <div class="modal-header">
+                <button type="button" class="close cros_close_modal" data-dismiss="modal">&times;</button>
+                <h5 ng-show="!control.banderaActualizar">Agregar dependiente</h5>
+                <h5 ng-show="control.banderaActualizar">Dependiente: <strong>{{control.dependiente.nombre}} {{control.dependiente.apellido_paterno}} {{control.dependiente.apellido_materno}}</strong></h5>
+            </div>
+            <div class="modal-body">
+
+                    <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group label-floating">
+                                <label class="control-label">Nombre (s):</label>
+                                <input type="text" class="form-control" ng-model="control.dependiente.nombre" ng-change="control.dependiente.nombre=control.dependiente.nombre.toUpperCase();">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group label-floating">
+                                <label class="control-label">Apellido paterno:</label>
+                                <input type="text" class="form-control" ng-model="control.dependiente.apellido_paterno" ng-change="control.dependiente.apellido_paterno=control.dependiente.apellido_paterno.toUpperCase();">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group label-floating">
+                                <label class="control-label">Apellido materno:</label>
+                                <input type="text" class="form-control" ng-model="control.dependiente.apellido_materno" ng-change="control.dependiente.apellido_materno=control.dependiente.apellido_materno.toUpperCase();">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-1">
+                        <div class="form-group label-floating">
+                                <label class="control-label">Edad:</label>
+                                <input type="text" class="form-control" ng-model="control.dependiente.edad">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group label-floating">
+                                <label class="control-label">Fecha de nacimiento:</label>
+                                <input type="date" ng-show="control.banderaActualizar" ng-disabled="control.dependiente.fecha_nacimiento!==null||control.dependiente.fecha_nacimiento!==''||control.dependiente.fecha_nacimiento!==undefined" value="{{control.dependiente.fecha_nacimiento}}" class="form-control" ng-model="control.dependiente.fecha_nacimiento">
+                                <input type="date" ng-show="!control.banderaActualizar" class="form-control" ng-model="control.dependiente.fecha_nacimiento">
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <div class="form-group label-floating">
+                            <label class="control-label">Parentesco:</label>
+
+                            <select class="form-control" ng-model="control.dependiente.parentesco">
+                                <option value="">-</option>
+                                <option value="ABUELA">ABUELA</option>
+                                <option value="ABUELO">ABUELO</option>
+                                <option value="DIRECTOR">DIRECTOR</option>
+                                <option value="DUENO">DUENO</option>
+                                <option value="HERMANA">HERMANA</option>
+                                <option value="HERMANO">HERMANO</option>
+                                <option value="HIJO">HIJO</option>
+                                <option value="HIJA">HIJA</option>
+                                <option value="MADRE">MADRE</option>
+                                <option value="PADRE">PADRE</option>
+                                <option value="PRIMO">PRIMO</option>
+                                <option value="PRIMA">PRIMA</option>
+                                <option value="SOBRINA">SOBRINA</option>
+                                <option value="SOBRINO">SOBRINO</option>
+                                <option value="TIO">TIO</option>
+                                <option value="TIA">TIA</option>
+                                <option value="TUTOR">TUTOR</option>
+                                <option value="USUARIO">USUARIO</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary " ng-click="control.guardarDependiente()">Guardar dependiente</button>
+            </div>
+        </div>
+    </div>
+</div>
+    
+<!-- modal_dependiente -->
+<div class="modal fade ativa-scroll" id="modal_agregar_motivo" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content pagination-centered text-center">
+            <div class="modal-header">
+                <button type="button" class="close cros_close_modal" data-dismiss="modal">&times;</button>
+                <h5 ng-show="!control.banderaActualizar">Agregar motivo</h5>
+                <h5 ng-show="control.banderaActualizar">Motivo</h5>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group label-floating">
+                            <label class="control-label">Tipo:</label>
+
+                            <select class="form-control" ng-model="control.motivo.tipo_motivo">
+                                <option value="">-</option>
+                                <option value="AE">Apoyo Económico</option>
+                                <option value="BI">Bajos Ingresos</option>
+                                <option value="BIIT">Bajos ingresos e insolvencia temporal</option>
+                                <option value="DES">Desempleo</option>
+                                <option value="DIS">Disminución de Ingresos</option>
+                                <option value="DIV">Divorcio o Separación</option>
+                                <option value="EMP">Empleado</option>
+                                <option value="END">Endeudamiento Excesivo</option>
+                                <option value="EDM">Enfermedad de mamá</option>
+                                <option value="EGMF">Enfermedad Grave de un miembro de la familia</option>
+                                <option value="FLT">Falta de Liquidez Temporal</option>
+                                <option value="FRE">Falta de Recursos Economicos</option>
+                                <option value="IGI">Incremento en gastos por inclusión de hijos al sistema escolar</option>
+                                <option value="II">Ingresos Insuficienes</option>
+                                <option value="IT">Insolvencia Temporal</option>
+                                <option value="OPPI">Ofrecimiento por parte de la Institución</option>
+                                <option value="OTRA">Otra</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group label-floating">
+                                <label class="control-label">Comentarios:</label>
+                                <textarea rows="3" class="form-control" ng-model="control.motivo.motivo"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary " ng-click="control.guardarMotivo()">Guardar motivo</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal_dependiente -->
+<div class="modal fade ativa-scroll" id="modal_asignar" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content pagination-centered text-center">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group label-floating">
+                            <label class="control-label">Asignado a:</label>
+
+                            <select class="form-control" ng-model="control.empleadoAsignado.id_usuario_asignado">
+                                <option value="">-</option>
+                                <option ng-repeat="empleado in control.listaEmpleado" value="{{empleado.id_usuario}}">{{empleado.nombre}} {{empleado.apellido_paterno}} {{empleado.apellido_materno}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="row">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary " ng-click="control.asignarEmpleado()">Asignar</button>
+            </div>
+        </div>
+    </div>
+</div>
+    
+    
+    

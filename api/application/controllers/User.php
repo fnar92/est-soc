@@ -22,5 +22,8 @@ class User extends CI_Controller {
         echo json_encode($this->user_model->getInstitucion($id));
     }
     
+    public function getEmpleados() {
+        echo json_encode($this->user_model->getEmpleados());
+    }
     
 }

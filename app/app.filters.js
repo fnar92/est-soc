@@ -21,15 +21,18 @@ angular.module('app').filter('nospace', function () {
     };
 }).filter('toJSDate', function(){
     return function (dateString) {
-        console.log(dateString);
+        if(dateString===undefined)return;
         var y=dateString.split(' ');
         if(y[1]!==undefined){
             var x=y[0].split('-');
             var xx=y[1].split(':');
-            //return x[2]+'/'+x[1]+'/'+x[0]+' '+xx[0]+':'+xx[1];
+            //return x[2]+'/'+x[1]+'/'+x[0]+' '+xx[0]+':'+xx[1]
+            console.log("fecha: "+x[2]+'/'+x[1]+'/'+x[0]);;
             return x[2]+'/'+x[1]+'/'+x[0];
         }else{
             var x=dateString.split('-');
+            
+            console.log("fecha: "+x[2]+'/'+x[1]+'/'+x[0]);
             return x[2]+'/'+x[1]+'/'+x[0];
         }
     };

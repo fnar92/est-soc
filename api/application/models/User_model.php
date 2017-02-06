@@ -24,4 +24,7 @@ class User_model extends CI_Model {
         return $this->db->get('institucion')->row();
     }
     
+    public function getEmpleados() {
+        return $this->db->get('usuario')->result();
+    }
 }
