@@ -5,7 +5,7 @@
             <div class="card">
                 <div class="card-header" data-background-color="green">
                     <h1 class="title">
-                        <strong ng-show="tipoUsuario==='1'">Estudios socioeconomicos (HRWise)</strong>
+                        <strong ng-show="tipoUsuario==='1'">Estudios socioeconomicos (HRWise)(Captura)</strong>
                         <strong ng-show="tipoUsuario==='2'">Estudios socioeconomicos ({{dash.institucion.nombre_institucion}})</strong>
                     </h1>
                 </div>
@@ -16,12 +16,20 @@
                     
                         <div class="card-content">
                             <h2 class="title">Folio: <strong>{{control.estudio.folio_estudio}}</strong></h2>
-                            <h2 class="title">Solicitud (es): 
-                                <div ng-repeat="ins in control.estudio.instituciones">
-                                    <strong ng-show="tipoUsuario=='2'&&dash.institucion.clave_institucion==ins.clave_institucion">{{ins.clave_institucion}} ({{ins.count.total}})</strong>
-                                    <strong ng-show="tipoUsuario=='1'">{{ins.clave_institucion}} ({{ins.count.total}})</strong>
-                                </div>
+                            <h2 class="title">Familia: <strong>{{control.estudio.familia}}</strong></h2>
+                            <h2 class="title">Estatus: 
+                                <strong ng-switch="control.estudio.id_estatus_estudio">
+                                <span  ng-switch-when="1"class="label label-info">Recibido</span>
+                                <span  ng-switch-when="2" class="label label-warning">Asignado</span>
+                                <span  ng-switch-when="3" class="label label-default">Angendado</span>
+                                <span  ng-switch-when="4" class="label label-primary">Reagendado</span>
+                                <span  ng-switch-when="5" class="label label-success">Capturado</span>
+                                <span  ng-switch-when="6" class="label label-danger">En revisión</span>
+                                <span  ng-switch-when="7" class="label label-danger">Terminado</span>
+                                <span  ng-switch-when="8" class="label label-danger">Cancelado</span>
+                                </strong>
                             </h2>
+                            
                             <!--<h2 class="title">Asigado: <strong>{{control.estudio.id_asignado}}</strong></h2>-->
                             <h2  class="title">
                                 Asignado:
@@ -31,36 +39,41 @@
                                 </span>
                             </h2>
                             
-                            <button ng-show="tipoUsuario=='1'&&control.estudio.id_usuario_asignado==='0'" type="button" class="btn btn-warning btn-xs" ng-click="control.asignarShow()">Asignar</button>
-                            <button ng-show="tipoUsuario=='1'&&control.estudio.id_usuario_asignado!=='0'" type="button" class="btn btn-warning btn-xs" ng-click="control.asignarShow()">Reasignar</button>
+                            <button ng-show="tipoUsuario==='1'&&rolUsuario==='1'&&control.estudio.id_usuario_asignado==='0'" type="button" class="btn btn-warning btn-xs" ng-click="control.asignarShow()">Asignar</button>
+                            <button ng-show="tipoUsuario==='1'&&rolUsuario==='1'&&control.estudio.id_usuario_asignado!=='0'" type="button" class="btn btn-warning btn-xs" ng-click="control.asignarShow()">Reasignar</button>
                         </div>
-                        <div class="card-footer">
-                                <div class="stats">
-                                    <p>Comentario institución</p>
-                                </div>
+                    
+                    <div class="card-footer">
+                        <div class="stats">
+                            <button 
+                                ng-show="tipoUsuario==='1'&&rolUsuario==='2'&&control.estudio.id_usuario_asignado!=='0'" 
+                                type="button" class="btn btn-primary btn-xs" 
+                                ng-click="control.enviarARevision()">Enviar a revisión</button>
+                            
+                            <button 
+                                ng-show="tipoUsuario==='1'&&rolUsuario==='1'&&control.estudio.id_usuario_asignado!=='0'" 
+                                type="button" class="btn btn-primary btn-xs" 
+                                ng-click="control.enviarATerminado()">Enviar estudio terminado</button>
                         </div>
-
+                    </div>
+                    
                 </div>
              </div>
             
             <div class="col-md-4">
                 <div class="card">
                         <div class="card-content">
-                            <h2 class="title">Familia: <strong>{{control.estudio.familia}}</strong></h2>
-                            <h2 class="title">Estatus: 
-                                <strong ng-switch="control.estudio.id_estatus_estudio">
-                                <span  ng-switch-when="1"class="label label-info">Recibido</span>
-                                <span  ng-switch-when="2" class="label label-warning">Asignado</span>
-                                <span  ng-switch-when="3" class="label label-default">Capturado</span>
-                                <span  ng-switch-when="4" class="label label-primary">En revisón</span>
-                                <span  ng-switch-when="5" class="label label-success">Terminado</span>
-                                <span  ng-switch-when="6" class="label label-danger">Cancelado</span>
-                                </strong>
+                            <h2 class="title">Solicitud (es): 
+                                <div ng-repeat="ins in control.estudio.instituciones">
+                                    <strong ng-show="tipoUsuario=='2'&&dash.institucion.clave_institucion==ins.clave_institucion">{{ins.clave_institucion}} ({{ins.count.total}})</strong>
+                                    <strong ng-show="tipoUsuario=='1'">{{ins.clave_institucion}} ({{ins.count.total}})</strong>
+                                </div>
                             </h2>
+                            
                         </div>
                         <div class="card-footer">
                                 <div class="stats">
-                                        
+                                    <p>Comm:</p>
                                 </div>
                         </div>
 
@@ -83,37 +96,37 @@
                 <a href="#" class="list-group-item text-center">
                     <h4 class="title">Datos mama</h4>
                 </a>
-                <a href="#" class="list-group-item text-center">
+                  <a href="#" ng-show="tipoUsuario==='1'" class="list-group-item text-center">
                     <h4 class="title">Datos hijos</h4>
                 </a>
-                <a href="#" class="list-group-item text-center">
+                <a href="#" ng-show="tipoUsuario==='1'" class="list-group-item text-center">
                     <h4 class="title">Dependientes</h4>
                 </a>
-                  <a href="#" class="list-group-item text-center">
+                  <a href="#" ng-show="tipoUsuario==='1'" class="list-group-item text-center">
                     <h4 class="title">Motivos</h4>
                 </a>
-                  <a href="#" class="list-group-item text-center">
+                  <a href="#"  ng-show="tipoUsuario==='1'" class="list-group-item text-center">
                     <h4 class="title">Vehiculos</h4>
                 </a>
-                  <a href="#" class="list-group-item text-center">
+                  <a href="#" ng-show="tipoUsuario==='1'" class="list-group-item text-center">
                     <h4 class="title">Propiedades</h4>
                 </a>
-                  <a href="#" class="list-group-item text-center">
+                  <a href="#" ng-show="tipoUsuario==='1'" class="list-group-item text-center">
                     <h4 class="title">Ingresos</h4>
                 </a>
-                  <a href="#" class="list-group-item text-center">
+                  <a href="#" ng-show="tipoUsuario==='1'" class="list-group-item text-center">
                     <h4 class="title">Egresos</h4>
                 </a>
-                  <a href="#" class="list-group-item text-center">
+                  <a href="#" ng-show="tipoUsuario==='1'" class="list-group-item text-center">
                     <h4 class="title">Documentos</h4>
                 </a>
-                  <a href="#" class="list-group-item text-center">
+                  <a href="#" ng-show="tipoUsuario==='1'" class="list-group-item text-center">
                     <h4 class="title">Evaluacion</h4>
                 </a>
-                  <a href="#" class="list-group-item text-center">
+                  <a href="#" ng-show="tipoUsuario==='1'" class="list-group-item text-center">
                     <h4 class="title">Comentarios generales</h4>
                 </a>
-                  <a href="#" class="list-group-item text-center">
+                  <a href="#" ng-show="tipoUsuario==='1'" class="list-group-item text-center">
                     <h4 class="title">Totales</h4>
                 </a>
               </div>
@@ -291,7 +304,95 @@
                                     <input type="text" class="form-control" ng-model="control.estudio.celular_papa" ng-change="control.estudio.celular_papa=control.estudio.celular_papa.toUpperCase();">
                             </div>
                         </div>
+                        
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-group label-floating">
+                                        <label class="control-label">Edad: </label>
+                                        <input type="text" class="form-control" ng-model="control.estudio.edad_papa" ng-change="control.estudio.edad_papa=control.estudio.edad_papa.toUpperCase();">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group label-floating">
+                                        <label class="control-label">Correo electrónico:</label>
+                                        <input type="text" class="form-control" ng-model="control.estudio.correo_papa" ng-change="control.estudio.correo_papa=control.estudio.correo_papa.toUpperCase();">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div ng-show="tipoUsuario==='1'" class="col-md-4">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Profesión:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.profesion_papa" ng-change="control.estudio.profesion_papa=control.estudio.profesion_papa.toUpperCase();">
+                            </div>
+                        </div>
+                        
+                        <div ng-show="tipoUsuario==='1'" class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Ocupación:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.ocupacion_papa" ng-change="control.estudio.ocupacion_papa=control.estudio.ocupacion_papa.toUpperCase();">
+                            </div>
+                        </div>
+                        
                     </div>
+                    
+                    <div ng-show="tipoUsuario==='1'" class="row">
+                        <div class="col-md-4">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Empresa:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.empresa_papa" ng-change="control.estudio.empresa_papa=control.estudio.empresa_papa.toUpperCase();">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Puesto:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.puesto_papa" ng-change="control.estudio.puesto_papa=control.estudio.puesto_papa.toUpperCase();">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Giro: </label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.giro_papa" ng-change="control.estudio.giro_papa=control.estudio.giro_papa.toUpperCase();">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-2">
+                            <div class="form-group label-floating text-left">
+                                    <label class="control-label">¿Es dueño?</label>
+                                    <br>
+                                    <md-radio-group  ng-model="control.estudio.dueno_papa">
+                                        <md-radio-button value="SI" class="md-primary">Si</md-radio-button>
+                                        <md-radio-button value="NO">No</md-radio-button>
+                                    </md-radio-group>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div  ng-show="tipoUsuario==='1'" class="row">
+                        <div class="col-md-4">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Antiguedad:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.antiguedad_papa" ng-change="control.estudio.antiguedad_papa=control.estudio.antiguedad_papa.toUpperCase();">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Sueldo neto:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.sueldo_papa" ng-change="control.estudio.sueldo_papa=control.estudio.sueldo_papa.toUpperCase();">
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                    <div ng-show="tipoUsuario==='1'" class="row text-left">
+                        <button 
+                            type="button" class="btn btn-primary btn-xs" 
+                            ng-click="control.guardarPapa()">Guardar datos</button>
+                    </div>
+                    
                 </div>
     
                 <!-- hotel search -->
@@ -332,8 +433,96 @@
                                     <input type="text" class="form-control" ng-model="control.estudio.celular_mama" ng-change="control.estudio.celular_mama=control.estudio.celular_mama.toUpperCase();">
                             </div>
                         </div>
+                        
+                        <div ng-show="tipoUsuario==='1'" class="col-md-4">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Profesión:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.profesion_mama" ng-change="control.estudio.profesion_mama=control.estudio.profesion_mama.toUpperCase();">
+                            </div>
+                        </div>
+                        
+                        <div ng-show="tipoUsuario==='1'" class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Ocupación:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.ocupacion_mama" ng-change="control.estudio.ocupacion_mama=control.estudio.ocupacion_mama.toUpperCase();">
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                     <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Edad: </label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.edad_mama" ng-change="control.estudio.edad_mama=control.estudio.edad_mama.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Correo electrónico:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.correo_mama" ng-change="control.estudio.correo_mama=control.estudio.correo_mama.toUpperCase();">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div ng-show="tipoUsuario==='1'" class="row">
+                        <div class="col-md-4">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Empresa:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.empresa_mama" ng-change="control.estudio.empresa_mama=control.estudio.empresa_mama.toUpperCase();">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Puesto:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.puesto_mama" ng-change="control.estudio.puesto_mama=control.estudio.puesto_mama.toUpperCase();">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Giro: </label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.giro_mama" ng-change="control.estudio.giro_mama=control.estudio.giro_mama.toUpperCase();">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-2">
+                            <div class="form-group label-floating text-left">
+                                    <label class="control-label">¿Es dueño?</label>
+                                    <br>
+                                    <md-radio-group  ng-model="control.estudio.dueno_mama">
+                                        <md-radio-button value="SI" class="md-primary">Si</md-radio-button>
+                                        <md-radio-button value="NO">No</md-radio-button>
+                                    </md-radio-group>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div  ng-show="tipoUsuario==='1'" class="row">
+                        <div class="col-md-4">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Antiguedad:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.antiguedad_mama" ng-change="control.estudio.antiguedad_mama=control.estudio.antiguedad_mama.toUpperCase();">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Sueldo neto:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.sueldo_mama" ng-change="control.estudio.sueldo_mama=control.estudio.sueldo_mama.toUpperCase();">
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                    <div ng-show="tipoUsuario==='1'" class="row text-left">
+                        <button 
+                            type="button" class="btn btn-primary btn-xs" 
+                            ng-click="control.guardarMama()">Guardar datos</button>
                     </div>
                 </div>
+                
                 <div class="bhoechie-tab-content">
                     <h3 class="text-left">Datos hijos</h3>
                     <div class="text-right"><button type="button" class="btn btn-success" ng-click="control.agregarHijo(control.estudio.id_familia)">Agregar hijo</button></div>
@@ -452,13 +641,170 @@
                     </div>
                 </div>
                 <div class="bhoechie-tab-content">
-                    6
+                    <h3 class="text-left">Vehiculos</h3>
+                    <div class="text-right"><button type="button" class="btn btn-success" ng-click="control.agregarVehiculo(control.estudio.id_familia)">Agregar vehiculo</button></div>
+                    <hr>
+                    <div class="table-responsive">          
+                        <table class="table">
+                            <thead>
+                              <tr>
+                                <th class="text-center">ID</th>
+                                <th class="text-center">Propietario</th>
+                                <th class="text-center">Marca</th>
+                                <th class="text-center">Año</th>
+                                <th class="text-center">Opciones</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="vehiculo in control.estudio.vehiculos">
+                                <td class="text-center">{{vehiculo.id_vehiculo_familia}}</td>
+                                <td class="text-center col-md-3">
+                                    {{vehiculo.propietario}}
+                                </td>
+                                <td class="text-center col-md-6">
+                                    <p class="small">{{vehiculo.marca}}</p>
+                                </td>
+                                <td class="text-center col-md-6">
+                                    <p class="small">{{vehiculo.anio}}</p>
+                                </td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-primary btn-xs" ng-click="control.verActualizarVehiculo(vehiculo)">Ver/Actualizar</button>
+                                    <button type="button" class="btn btn-danger btn-xs" ng-click="control.eliminarVehiculo(vehiculo)">Eliminar</button>
+                                </td>
+                              </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="bhoechie-tab-content">
-                    7
+                    <h3 class="text-left">Propiedades</h3>
+                    <div class="text-right"><button type="button" class="btn btn-success" ng-click="control.agregarPropiedad(control.estudio.id_familia)">Agregar propiedad</button></div>
+                    <hr>
+                    <div class="table-responsive">          
+                        <table class="table">
+                            <thead>
+                              <tr>
+                                <th class="text-center">ID</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center">Opciones</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="propiedad in control.estudio.propiedades">
+                                <td class="text-center">{{propiedad.id_propiedad_familia}}</td>
+                                <td class="text-center col-md-3">
+                                    {{propiedad.status}}
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-primary btn-xs" ng-click="control.verActualizarPropiedad(propiedad)">Ver/Actualizar</button>
+                                    <button type="button" class="btn btn-danger btn-xs" ng-click="control.eliminarPropiedad(propiedad)">Eliminar</button>
+                                </td>
+                              </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="bhoechie-tab-content">
-                    8
+                    <h3 class="text-left">Ingresos</h3>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Personas que aportan al ingreso familiar:</label>
+                                    <input type="text" class="form-control" ng-model="control.ingresos.num_personas_aportan">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Ingresos aportados por otros miembros de la familia:</label>
+                                    <input type="text" class="form-control" ng-model="control.ingresos.ingreso_otros_miembros" ng-change="control.calcula()">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Ingreso por rentas:</label>
+                                    <input type="text" class="form-control" ng-model="control.ingresos.ingreso_renta" ng-change="control.calcula()">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Ingreso por honorarios y/o actividades empresariales:</label>
+                                    <input type="text" class="form-control" ng-model="control.ingresos.ingreso_honorarios" ng-change="control.calcula()">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Ingreso por intereses o inversiones:</label>
+                                    <input type="text" class="form-control" ng-model="control.ingresos.ingreso_inversiones" ng-change="control.calcula()">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Pensiones:</label>
+                                    <input type="text" class="form-control" ng-model="control.ingresos.ingreso_pensiones" ng-change="control.calcula()">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Ventas/Comisiones:</label>
+                                    <input type="text" class="form-control" ng-model="control.ingresos.ingreso_ventas" ng-change="control.calcula()">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Otros ingresos</label>
+                                    <input type="text" class="form-control" ng-model="control.ingresos.otros_ingresos" ng-change="control.calcula()">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Total otros ingresos:</label>
+                                    <input type="text" class="form-control" ng-model="control.ingresos.total" >
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Ingreso del papa:</label>
+                                    <input disabled="" type="text" class="form-control" ng-model="control.estudio.sueldo_papa">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Sueldo mama:</label>
+                                    <input disabled="" type="text" class="form-control" ng-model="control.estudio.sueldo_mama">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Ingreso percapita:</label>
+                                    <input type="number" class="form-control" ng-model="">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Clasificación:</label>
+                                    <input type="text" class="form-control" ng-model="">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    
+                    <div class="row text-left">
+                        <button 
+                            type="button" class="btn btn-primary btn-xs" 
+                            ng-click="control.guardarIngresos()">Guardar datos</button>
+                    </div>
                 </div>
                 <div class="bhoechie-tab-content">
                     9
@@ -752,7 +1098,7 @@
     </div>
 </div>
     
-<!-- modal_dependiente -->
+<!-- modal_motivo-->
 <div class="modal fade ativa-scroll" id="modal_agregar_motivo" role="dialog">
     <div class="modal-dialog modal-lg">
         <!-- Modal content-->
@@ -839,5 +1185,209 @@
     </div>
 </div>
     
+<!-- modal_vehiculo-->
+<div class="modal fade ativa-scroll" id="modal_agregar_vehiculo" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content pagination-centered text-center">
+            <div class="modal-header">
+                <button type="button" class="close cros_close_modal" data-dismiss="modal">&times;</button>
+                <h5 ng-show="!control.banderaActualizar">Agregar vehiculo</h5>
+                <h5 ng-show="control.banderaActualizar">Vehiculo</h5>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group label-floating">
+                            <label class="control-label">Propietario:</label>
+                            <select class="form-control" ng-model="control.vehiculo.propietario">
+                                <option value="">-</option>
+                                <option value="ABUELA">ABUELA</option>
+                                <option value="ABUELO">ABUELO</option>
+                                <option value="DIRECTOR">DIRECTOR</option>
+                                <option value="DUENO">DUENO</option>
+                                <option value="HERMANA">HERMANA</option>
+                                <option value="HERMANO">HERMANO</option>
+                                <option value="HIJO">HIJO</option>
+                                <option value="HIJA">HIJA</option>
+                                <option value="MADRE">MADRE</option>
+                                <option value="PADRE">PADRE</option>
+                                <option value="PRIMO">PRIMO</option>
+                                <option value="PRIMA">PRIMA</option>
+                                <option value="SOBRINA">SOBRINA</option>
+                                <option value="SOBRINO">SOBRINO</option>
+                                <option value="TIO">TIO</option>
+                                <option value="TIA">TIA</option>
+                                <option value="TUTOR">TUTOR</option>
+                                <option value="USUARIO">USUARIO</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group label-floating">
+                            <label class="control-label">Marca: </label>
+                            <select class="form-control" ng-model="control.vehiculo.marca">
+                                <option value="">-</option>
+                                <option value="Audi">Audi</option>
+                                <option value="BMX">BMX</option>
+                                <option value="Chevrolet">Chevrolet</option>
+                                <option value="Daimler/Chrysler">Daimler/Chrysler</option>
+                                <option value="Ford">Ford</option>
+                                <option value="Hyundai">Hyundai</option>
+                                <option value="KIA">KIA</option>
+                                <option value="Land Rover">Land Rover</option>
+                                <option value="Mazda">Mazda</option>
+                                <option value="Mercedez Benz">Mercedez Benz</option>
+                                <option value="Mini">Mini</option>
+                                <option value="Mitsubishi">Mitsubishi</option>
+                                <option value="Nissan">Nissan</option>
+                                <option value="Peugeot">Peugeot</option>
+                                <option value="Renault">Renault</option>
+                                <option value="Toyota">Toyota</option>
+                                <option value="Volkswagen">Volkswagen</option>
+                                <option value="Yamaha">Yamaha</option>
+                                <option value="Hino">Hino</option>
+                                <option value="Dina">Dina</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group label-floating">
+                            <label class="control-label">Modelo:</label>
+                            <input type="text" class="form-control" ng-model="control.vehiculo.modelo">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group label-floating">
+                            <label class="control-label">Año: </label>
+                            <input type="text" class="form-control" ng-model="control.vehiculo.anio">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group label-floating">
+                            <label class="control-label">Valor comercial actual </label>
+                            <input type="text" class="form-control" ng-model="control.vehiculo.valor_comercial_actual">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group label-floating">
+                            <label class="control-label">Cantidad que adeuda:</label>
+                            <input type="text" class="form-control" ng-model="control.vehiculo.cantidad_adeuda">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group label-floating">
+                            <label class="control-label">Pago mensual:</label>
+                            <input type="text" class="form-control" ng-model="control.vehiculo.pago_mensual">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group label-floating">
+                            <label class="control-label">Pago mensual credito:</label>
+                            <input type="text" class="form-control" ng-model="control.vehiculo.pago_mensual_credito">
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="row">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary " ng-click="control.guardarVehiculo()">Guardar vehiculo</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal_propiedad-->
+<div class="modal fade ativa-scroll" id="modal_agregar_propiedad" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content pagination-centered text-center">
+            <div class="modal-header">
+                <button type="button" class="close cros_close_modal" data-dismiss="modal">&times;</button>
+                <h5 ng-show="!control.banderaActualizar">Agregar propiedad</h5>
+                <h5 ng-show="control.banderaActualizar">Propiedad</h5>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group label-floating">
+                            <label class="control-label">Estatus</label>
+                            <select class="form-control" ng-model="control.propiedad.status">
+                                <option value="">-</option>
+                                <option value="Heredada">Heredada</option>
+                                <option value="Hipotecada">Hipotecada</option>
+                                <option value="Prestada">Prestada</option>
+                                <option value="Propia">Propia</option>
+                                <option value="Rentada">Rentada</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group label-floating">
+                            <label class="control-label">Tiempo de habitar: </label>
+                            <input type="text" class="form-control" ng-model="control.propiedad.tiempo_habitar">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group label-floating">
+                            <label class="control-label">Superficie terreno:</label>
+                            <input type="text" class="form-control" ng-model="control.propiedad.superficie_terreno">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group label-floating">
+                            <label class="control-label">Superficie construcción: </label>
+                            <input type="text" class="form-control" ng-model="control.propiedad.superficie_construccion">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group label-floating">
+                            <label class="control-label">Monto renta o pago mensual</label>
+                            <input type="text" class="form-control" ng-model="control.propiedad.monto_renta">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group label-floating">
+                            <label class="control-label">Valor comercial actual:</label>
+                            <input type="text" class="form-control" ng-model="control.propiedad.valor_comercial_actual">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group label-floating">
+                            <label class="control-label">Cantidad que adeuda:</label>
+                            <input type="text" class="form-control" ng-model="control.propiedad.cantidad_adeuda">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group label-floating">
+                            <label class="control-label">Tiempo que resta por pagar:</label>
+                            <input type="text" class="form-control" ng-model="control.propiedad.tiempo_resta_deuda">
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="row">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary " ng-click="control.guardarPropiedad()">Guardar propiedad</button>
+            </div>
+        </div>
+    </div>
+</div>
     
     

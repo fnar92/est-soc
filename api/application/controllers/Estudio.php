@@ -39,7 +39,8 @@ class Estudio extends CI_Controller {
         echo json_encode(array('status'=>'200'));
     }
     
-    public function updateFamilia($data) {
+    public function updateFamilia() {
+        $data = json_decode(file_get_contents('php://input'),true);
         echo json_encode($this->estudio_model->updateFamilia($data));
     }
     
@@ -107,7 +108,7 @@ class Estudio extends CI_Controller {
         echo json_encode($this->estudio_model->updateDependiente($data));
     }
     
-    /*dependientes*/
+    /*motivos*/
     public function saveMotivo() {
         $data = json_decode(file_get_contents('php://input'),true);
         echo json_encode($this->estudio_model->saveMotivo($data));
@@ -121,6 +122,38 @@ class Estudio extends CI_Controller {
     public function updateMotivo() {
         $data = json_decode(file_get_contents('php://input'),true);
         echo json_encode($this->estudio_model->updateMotivo($data));
+    }
+    
+    /*vehiculos*/
+    public function saveVehiculo() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->estudio_model->saveVehiculo($data));
+    }
+    
+    public function deleteVehiculo() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->estudio_model->deleteVehiculo($data));
+    }
+    
+    public function updateVehiculo() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->estudio_model->updateVehiculo($data));
+    }
+    
+    /*propiedades*/
+    public function savePropiedad() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->estudio_model->savePropiedad($data));
+    }
+    
+    public function deletePropiedad() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->estudio_model->deletePropiedad($data));
+    }
+    
+    public function updatePropiedad() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->estudio_model->updatePropiedad($data));
     }
     
     

@@ -5,7 +5,20 @@
 	.module('app.estudios')
 	.controller('EstudiosDetalleController', EstudiosDetalleController);
     
-    function EstudiosDetalleController (EstudiosService, HijoService, DependienteService, MotivoService, $localStorage, $rootScope, $state, $mdDialog, $mdToast, DialogService, RestService, AuthenticationService, Constants, UserService) {
+    function EstudiosDetalleController (
+        VehiculoService, 
+        FamiliaService, 
+        EstudiosService, 
+        HijoService, 
+        PropiedadService,
+        DependienteService, 
+        MotivoService, 
+        $localStorage, 
+        $rootScope, 
+        $state, 
+        $mdDialog, 
+        $mdToast, 
+        DialogService, RestService, AuthenticationService, Constants, UserService) {
         /* jshint validthis: true */
         console.log('init estudios ver detalle');
         
@@ -21,6 +34,8 @@
         scope.hijo={};
         scope.dependiente={};
         scope.motivo={};
+        scope.vehiculo={};
+        scope.propiedad={};
         scope.listaEmpleado=[];
         scope.empleadoAsignado={};
         
@@ -28,6 +43,10 @@
         scope.load=false;
         scope.verAccion=false;
         scope.banderaActualizar=false;
+        
+        /*papa-mama*/
+        scope.guardarPapa=guardarPapa;
+        scope.guardarMama=guardarMama;
         
         /*hijo*/
         scope.verActualizarHijo=verActualizarHijo;
@@ -45,9 +64,47 @@
         scope.agregarMotivo=agregarMotivo;
         scope.guardarMotivo=guardarMotivo;
         
+        /*vehiculo*/
+        scope.verActualizarVehiculo=verActualizarVehiculo;
+        scope.eliminarVehiculo=eliminarVehiculo;
+        scope.agregarVehiculo=agregarVehiculo;
+        scope.guardarVehiculo=guardarVehiculo;
+        
+        /*propiedad*/
+        scope.verActualizarPropiedad=verActualizarPropiedad;
+        scope.eliminarPropiedad=eliminarPropiedad;
+        scope.agregarPropiedad=agregarPropiedad;
+        scope.guardarPropiedad=guardarPropiedad;
+        
         /*asignacion*/
         scope.asignarShow=asignarShow;
         scope.asignarEmpleado=asignarEmpleado;
+        
+        scope.ingresos={};
+        scope.ingresos.ingreso_otros_miembros=0;
+        scope.ingresos.ingreso_renta=0;
+        scope.ingresos.ingreso_honorarios=0;
+        scope.ingresos.ingreso_inversiones=0;
+        scope.ingresos.ingreso_pensiones=0;
+        scope.ingresos.ingreso_ventas=0;
+        scope.ingresos.otros_igresos=0;
+        scope.ingresos.total=0;
+        scope.calcula=calcula;
+        
+        function calcula(){
+            var suma=0;
+            
+            suma+=scope.ingresos.ingreso_otros_miembros;
+            suma+=scope.ingresos.ingreso_renta;
+            suma+=scope.ingresos.ingreso_honorarios;
+            suma+=scope.ingresos.ingreso_inversiones;
+            suma+=scope.ingresos.ingreso_pensiones;
+            suma+=scope.ingresos.ingreso_ventas;
+            suma+=scope.ingresos.otros_igresos;
+            
+            
+            scope.ingresos.total=suma;
+        }
         
         if (!$localStorage.globals||!$rootScope.isAuth) {
             mensaje('error', 'Session', 'Tu session ha expirado.');
@@ -364,7 +421,255 @@
             );
         };
        
+       function guardarPapa (){
+            var obj={};
+            obj.id_familia=scope.estudio.id_familia;
+            obj.nombre_papa=scope.estudio.nombre_papa;
+            obj.apellido_paterno_papa=scope.estudio.apellido_paterno_papa;
+            obj.apellido_materno_papa=scope.estudio.apellido_materno_papa;
+            obj.edad_papa=scope.estudio.edad_papa;
+            obj.correo_papa=scope.estudio.correo_papa;
+            obj.rfc_papa=scope.estudio.rfc_papa;
+            obj.celular_papa=scope.estudio.celular_papa;
+            obj.profesion_papa=scope.estudio.profesion_papa;
+            obj.ocupacion_papa=scope.estudio.ocupacion_papa;
+            obj.empresa_papa=scope.estudio.empresa_papa;
+            obj.puesto_papa=scope.estudio.puesto_papa;
+            obj.giro_papa=scope.estudio.giro_papa;
+            obj.dueno_papa=scope.estudio.dueno_papa;
+            obj.antiguedad_papa=scope.estudio.antiguedad_papa;
+            obj.sueldo_papa=scope.estudio.sueldo_papa;
+            
+            console.log(obj);
+            confirmaMsj(
+                "Confirmación de solicitud",
+                "¿Guardar datos del papa?",
+                "Si",
+                    function(){
+                        FamiliaService.actualizarFamilia(obj).then(
+                            function(response){
+                                mensaje('success', 'Aviso.', 'Se guardaron los datos del papa correctamente.');
+                            },
+                            function(error){
+                                console.log('Error al guardar papa: '+error);
+                            }
+                        );
+                    },
+                "No",
+                    function(){}
+            );
+        };
+        
+        function guardarMama (){
+            var obj={};
+            obj.id_familia=scope.estudio.id_familia;
+            obj.nombre_mama=scope.estudio.nombre_mama;
+            obj.apellido_paterno_mama=scope.estudio.apellido_paterno_mama;
+            obj.apellido_materno_mama=scope.estudio.apellido_materno_mama;
+            obj.edad_mama=scope.estudio.edad_mama;
+            obj.correo_mama=scope.estudio.correo_mama;
+            obj.rfc_mama=scope.estudio.rfc_mama;
+            obj.celular_mama=scope.estudio.celular_mama;
+            obj.profesion_mama=scope.estudio.profesion_mama;
+            obj.ocupacion_mama=scope.estudio.ocupacion_mama;
+            obj.empresa_mama=scope.estudio.empresa_mama;
+            obj.puesto_mama=scope.estudio.puesto_mama;
+            obj.giro_mama=scope.estudio.giro_mama;
+            obj.dueno_mama=scope.estudio.dueno_mama;
+            obj.antiguedad_mama=scope.estudio.antiguedad_mama;
+            obj.sueldo_mama=scope.estudio.sueldo_mama;
+            console.log(obj);
+            confirmaMsj(
+                "Confirmación de solicitud",
+                "¿Guardar datos de la mama?",
+                "Si",
+                    function(){
+                        FamiliaService.actualizarFamilia(obj).then(
+                            function(response){
+                                mensaje('success', 'Aviso.', 'Se guardaron los datos de la mama correctamente.');
+                            },
+                            function(error){
+                                console.log('Error al guardar papa: '+error);
+                            }
+                        );
+                    },
+                "No",
+                    function(){}
+            );
+        };
    
+   
+        /*vehiculos*/
+        function verActualizarVehiculo(vehiculo){
+            scope.banderaActualizar=true;
+            scope.vehiculo=vehiculo;
+            $("#modal_agregar_vehiculo").modal('show');
+        }
+        
+        function agregarVehiculo(idFamilia){
+            scope.vehiculo={};
+            scope.banderaActualizar=false;
+            scope.vehiculo.id_familia=idFamilia;
+            $("#modal_agregar_vehiculo").modal('show');
+        }
+        
+        function eliminarVehiculo(vehiculo){
+            confirmaMsj("Confirmación de solicitud",
+                "¿Eliminar vehiculo?",
+                "Si",
+                function(){
+                    VehiculoService.eliminarVehiculo(vehiculo).then(
+                        function(response){
+                            scope.estudio.vehiculos=response.data;
+                            mensaje('success', 'Aviso.', 'Se eliminó el vehiculo seleccionado correctamente.');
+                            scope.vehiculo={};
+                            scope.banderaActualizar=false;
+                        },
+                        function(error){
+                            console.log('Error al guardar hijo: '+error);
+                        }
+                    );
+                },
+                "No",
+                function(){}
+            );
+        }
+        
+        function guardarVehiculo(){
+            console.log(scope.vehiculo);
+            if(scope.banderaActualizar){
+                confirmaMsj(
+                    "Confirmación de solicitud",
+                    "¿Actualizar datos?",
+                    "Si",
+                        function(){
+                            VehiculoService.actualizarVehiculo(scope.vehiculo).then(
+                                function(response){
+                                    scope.estudio.vehiculos=response.data;
+                                    mensaje('success', 'Aviso.', 'Se actualizaron los datos del vehiculo correctamente.');
+                                    $("#modal_agregar_vehiculo").modal('hide');
+                                    scope.vehiculo={};
+                                    scope.banderaActualizar=false;
+                                },
+                                function(error){
+                                    console.log('Error al guardar hijo: '+error);
+                                }
+                            );
+                        },
+                    "No",
+                        function(){}
+                );
+                return;
+            }
+            confirmaMsj(
+                "Confirmación de solicitud",
+                "¿Agregar vehiculo?",
+                "Si",
+                    function(){
+                        VehiculoService.guardarVehiculo(scope.vehiculo).then(
+                            function(response){
+                                scope.estudio.vehiculos=response.data;
+                                mensaje('success', 'Aviso.', 'Se guardo el vehiculo correctamente.');
+                                $("#modal_agregar_vehiculo").modal('hide');
+                                scope.vehiculo={};
+                                scope.banderaActualizar=false;
+                            },
+                            function(error){
+                                console.log('Error al guardar hijo: '+error);
+                            }
+                        );
+                    },
+                "No",
+                    function(){}
+            );
+            
+        }
+        
+        /*propiedad*/
+        function verActualizarPropiedad(propiedad){
+            scope.banderaActualizar=true;
+            scope.propiedad=propiedad;
+            $("#modal_agregar_propiedad").modal('show');
+        }
+        
+        function agregarPropiedad(idFamilia){
+            scope.propiedad={};
+            scope.banderaActualizar=false;
+            scope.propiedad.id_familia=idFamilia;
+            $("#modal_agregar_propiedad").modal('show');
+        }
+        
+        function eliminarPropiedad(propiedad){
+            confirmaMsj("Confirmación de solicitud",
+                "¿Eliminar propiedad?",
+                "Si",
+                function(){
+                    PropiedadService.eliminarPropiedad(propiedad).then(
+                        function(response){
+                            scope.estudio.propiedades=response.data;
+                            mensaje('success', 'Aviso.', 'Se eliminó el propiedad seleccionado correctamente.');
+                            scope.propiedad={};
+                            scope.banderaActualizar=false;
+                        },
+                        function(error){
+                            console.log('Error al guardar hijo: '+error);
+                        }
+                    );
+                },
+                "No",
+                function(){}
+            );
+        }
+        
+        function guardarPropiedad(){
+            console.log(scope.propiedad);
+            if(scope.banderaActualizar){
+                confirmaMsj(
+                    "Confirmación de solicitud",
+                    "¿Actualizar datos?",
+                    "Si",
+                        function(){
+                            PropiedadService.actualizarPropiedad(scope.propiedad).then(
+                                function(response){
+                                    scope.estudio.propiedades=response.data;
+                                    mensaje('success', 'Aviso.', 'Se actualizaron los datos del propiedad correctamente.');
+                                    $("#modal_agregar_propiedad").modal('hide');
+                                    scope.propiedad={};
+                                    scope.banderaActualizar=false;
+                                },
+                                function(error){
+                                    console.log('Error al guardar hijo: '+error);
+                                }
+                            );
+                        },
+                    "No",
+                        function(){}
+                );
+                return;
+            }
+            confirmaMsj(
+                "Confirmación de solicitud",
+                "¿Agregar propiedad?",
+                "Si",
+                    function(){
+                        PropiedadService.guardarPropiedad(scope.propiedad).then(
+                            function(response){
+                                scope.estudio.propiedades=response.data;
+                                mensaje('success', 'Aviso.', 'Se guardo el propiedad correctamente.');
+                                $("#modal_agregar_propiedad").modal('hide');
+                                scope.propiedad={};
+                                scope.banderaActualizar=false;
+                            },
+                            function(error){
+                                console.log('Error al guardar hijo: '+error);
+                            }
+                        );
+                    },
+                "No",
+                    function(){}
+            );
+            
+        }
         
     };//end controller
 

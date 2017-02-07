@@ -16,6 +16,7 @@
         service.obtenerEstudios=obtenerEstudios;
         service.guardarEstudioInstitucion=guardarEstudioInstitucion;
         service.obtenerDetalleEstudio=obtenerDetalleEstudio;
+        service.actualizarEstudio=actualizarEstudio;
         
         return service;
         
@@ -24,10 +25,16 @@
             return RestService.get(url,'');
         }
         
+        function actualizarEstudio(data){
+            var url=Constants.BaseURLBack+'/estudio/updateEstudio';
+            return RestService.post(url,'',data);
+        }
+        
         function guardarAsignado(data){
             var url=Constants.BaseURLBack+'/estudio/updateEstudio';
             return RestService.post(url,'',data);
         }
+        
         function obtenerFamilias(idInstitucion, filterFamilia){
             if(filterFamilia===undefined|| filterFamilia===''){
                 filterFamilia='all';

@@ -163,9 +163,9 @@ class Estudio_model extends CI_Model {
         $estudio->instituciones=  $this->getEstudiosFamiliaInstitucion($estudio->id_familia, 0,$estudio->id_estudio);
         $estudio->hijos=$this->getHijosFamilia($estudio->id_familia);
         $estudio->dependientes=$this->getDependientesFamilia($estudio->id_familia);
-        $estudio->motivos=  $this->getMotivosFamilia($estudio->id_familia);
-        $estudio->vehiculos=array();
-        $estudio->propiedades=array();
+        $estudio->motivos=$this->getMotivosFamilia($estudio->id_familia);
+        $estudio->vehiculos=$this->getVehiculosFamilia($estudio->id_familia);
+        $estudio->propiedades=  $this->getPropiedadesFamilia($estudio->id_familia);
         $estudio->ingresos=array();
         $estudio->egresos=array();
         $estudio->documentos=array();
@@ -246,4 +246,53 @@ class Estudio_model extends CI_Model {
         return $this->getMotivosFamilia($data['id_familia']);
     }
     
+    /*vehiculos*/
+    public function getVehiculosFamilia($idFamilia){
+        $this->db->where('id_familia', $idFamilia);
+        return $this->db->get('vehiculo_familia')->result();
+    }
+    
+    public function saveVehiculo($data){
+        $this->db->insert('vehiculo_familia', $data);
+        return $this->getVehiculosFamilia($data['id_familia']);
+        
+    }
+    
+    public function deleteVehiculo($data){
+        $this->db->where('id_vehiculo_familia', $data['id_vehiculo_familia']);
+        $this->db->delete('vehiculo_familia'); 
+        return $this->getVehiculosFamilia($data['id_familia']);
+    }
+    
+    public function updateVehiculo($data){
+        $this->db->where('id_vehiculo_familia', $data['id_vehiculo_familia']);
+        unset($data['id_vehiculo_familia']);
+        $this->db->update('vehiculo_familia', $data); 
+        return $this->getVehiculosFamilia($data['id_familia']);
+    }
+    
+    /*propiedades*/
+    public function getPropiedadesFamilia($idFamilia){
+        $this->db->where('id_familia', $idFamilia);
+        return $this->db->get('propiedad_familia')->result();
+    }
+    
+    public function savePropiedad($data){
+        $this->db->insert('propiedad_familia', $data);
+        return $this->getPropiedadesFamilia($data['id_familia']);
+        
+    }
+    
+    public function deletePropiedad($data){
+        $this->db->where('id_propiedad_familia', $data['id_propiedad_familia']);
+        $this->db->delete('propiedad_familia'); 
+        return $this->getPropiedadesFamilia($data['id_familia']);
+    }
+    
+    public function updatePropiedad($data){
+        $this->db->where('id_propiedad_familia', $data['id_propiedad_familia']);
+        unset($data['id_propiedad_familia']);
+        $this->db->update('propiedad_familia', $data); 
+        return $this->getPropiedadesFamilia($data['id_familia']);
+    }
 }
