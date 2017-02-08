@@ -381,7 +381,7 @@
                         <div class="col-md-2">
                             <div class="form-group label-floating">
                                     <label class="control-label">Sueldo neto:</label>
-                                    <input type="text" class="form-control" ng-model="control.estudio.sueldo_papa" ng-change="control.estudio.sueldo_papa=control.estudio.sueldo_papa.toUpperCase();">
+                                    <input type="number" min="0" pattern="^[0-9]" class="form-control" ng-model="control.estudio.sueldo_papa" >
                             </div>
                         </div>
                         
@@ -510,7 +510,7 @@
                         <div class="col-md-2">
                             <div class="form-group label-floating">
                                     <label class="control-label">Sueldo neto:</label>
-                                    <input type="text" class="form-control" ng-model="control.estudio.sueldo_mama" ng-change="control.estudio.sueldo_mama=control.estudio.sueldo_mama.toUpperCase();">
+                                    <input type="number" min="0" pattern="^[0-9]" class="form-control" ng-model="control.estudio.sueldo_mama">
                             </div>
                         </div>
                         
@@ -710,13 +710,13 @@
                         <div class="col-md-4">
                             <div class="form-group label-floating">
                                     <label class="control-label">Personas que aportan al ingreso familiar:</label>
-                                    <input type="text" class="form-control" ng-model="control.ingresos.num_personas_aportan">
+                                    <input type="number" min="0" class="form-control" ng-model="control.ingresos.num_personas_aportan">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group label-floating">
                                     <label class="control-label">Ingresos aportados por otros miembros de la familia:</label>
-                                    <input type="text" class="form-control" ng-model="control.ingresos.ingreso_otros_miembros" ng-change="control.calcula()">
+                                    <input type="number" min="0" class="form-control" ng-model="control.ingresos.ingreso_otros_miembros" ng-change="control.calcula()">
                             </div>
                         </div>
                     </div>
@@ -725,13 +725,13 @@
                         <div class="col-md-4">
                             <div class="form-group label-floating">
                                     <label class="control-label">Ingreso por rentas:</label>
-                                    <input type="text" class="form-control" ng-model="control.ingresos.ingreso_renta" ng-change="control.calcula()">
+                                    <input type="number" min="0" class="form-control" ng-model="control.ingresos.ingreso_renta" ng-change="control.calcula()">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group label-floating">
                                     <label class="control-label">Ingreso por honorarios y/o actividades empresariales:</label>
-                                    <input type="text" class="form-control" ng-model="control.ingresos.ingreso_honorarios" ng-change="control.calcula()">
+                                    <input type="number" min="0" class="form-control" ng-model="control.ingresos.ingreso_honorarios" ng-change="control.calcula()">
                             </div>
                         </div>
                     </div>
@@ -740,60 +740,60 @@
                         <div class="col-md-4">
                             <div class="form-group label-floating">
                                     <label class="control-label">Ingreso por intereses o inversiones:</label>
-                                    <input type="text" class="form-control" ng-model="control.ingresos.ingreso_inversiones" ng-change="control.calcula()">
+                                    <input type="number" min="0" class="form-control" ng-model="control.ingresos.ingreso_inversiones" ng-change="control.calcula()">
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group label-floating">
                                     <label class="control-label">Pensiones:</label>
-                                    <input type="text" class="form-control" ng-model="control.ingresos.ingreso_pensiones" ng-change="control.calcula()">
+                                    <input type="number" min="0" class="form-control" ng-model="control.ingresos.ingreso_pensiones" ng-change="control.calcula()">
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group label-floating">
                                     <label class="control-label">Ventas/Comisiones:</label>
-                                    <input type="text" class="form-control" ng-model="control.ingresos.ingreso_ventas" ng-change="control.calcula()">
+                                    <input type="number" min="0" class="form-control" ng-model="control.ingresos.ingreso_ventas" ng-change="control.calcula()">
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group label-floating">
                                     <label class="control-label">Otros ingresos</label>
-                                    <input type="text" class="form-control" ng-model="control.ingresos.otros_ingresos" ng-change="control.calcula()">
+                                    <input type="number" min="0" class="form-control" ng-model="control.ingresos.otros_ingresos" ng-change="control.calcula()">
                             </div>
                         </div>
                         
                         <div class="col-md-3">
                             <div class="form-group label-floating">
                                     <label class="control-label">Total otros ingresos:</label>
-                                    <input type="text" class="form-control" ng-model="control.ingresos.total" >
+                                    <input type="number" min="0" class="form-control" ng-model="control.ingresos.total" >
                             </div>
                         </div>
                     </div>
-                    
+                   
                     
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group label-floating">
                                     <label class="control-label">Ingreso del papa:</label>
-                                    <input disabled="" type="text" class="form-control" ng-model="control.estudio.sueldo_papa">
+                                    <input disabled="" type="number" class="form-control" ng-model="control.estudio.sueldo_papa">
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group label-floating">
                                     <label class="control-label">Sueldo mama:</label>
-                                    <input disabled="" type="text" class="form-control" ng-model="control.estudio.sueldo_mama">
+                                    <input disabled="" type="number" class="form-control" ng-model="control.estudio.sueldo_mama">
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group label-floating">
                                     <label class="control-label">Ingreso percapita:</label>
-                                    <input type="number" class="form-control" ng-model="">
+                                    <input type="number" min="0" class="form-control" >
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group label-floating">
                                     <label class="control-label">Clasificación:</label>
-                                    <input type="text" class="form-control" ng-model="">
+                                    <input type="text" class="form-control" >
                             </div>
                         </div>
                     </div>
@@ -804,7 +804,7 @@
                         <button 
                             type="button" class="btn btn-primary btn-xs" 
                             ng-click="control.guardarIngresos()">Guardar datos</button>
-                    </div>
+                    </div>-->
                 </div>
                 <div class="bhoechie-tab-content">
                     9

@@ -17,8 +17,14 @@
         service.guardarEstudioInstitucion=guardarEstudioInstitucion;
         service.obtenerDetalleEstudio=obtenerDetalleEstudio;
         service.actualizarEstudio=actualizarEstudio;
+        service.cancelarEstudioInstitucion=cancelarEstudioInstitucion;
         
         return service;
+        
+        function cancelarEstudioInstitucion(idCancelacion){
+            var url=Constants.BaseURLBack+'/estudio/cancelEstudioInstitucion/'+idCancelacion;
+            return RestService.get(url,'');
+        }
         
         function obtenerEmpleados(){
             var url=Constants.BaseURLBack+'/user/getEmpleados';

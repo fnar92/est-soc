@@ -156,5 +156,15 @@ class Estudio extends CI_Controller {
         echo json_encode($this->estudio_model->updatePropiedad($data));
     }
     
+    public function cancelEstudioInstitucion($idEstudioInstitucion) {
+        $data['id_estudio_institucion']=$idEstudioInstitucion;
+        $data['estatus']=2;
+        echo json_encode(
+                array(
+                    "status"=>$this->estudio_model->updateEstudioInstitucion($data)
+                )
+            );
+    }
+    
     
 }

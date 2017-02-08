@@ -34,6 +34,7 @@
         scope.agendarView=agendarView;
         scope.agendarEstudio=agendarEstudio;
         scope.reagendarEstudio=reagendarEstudio;
+        scope.cancelarEstudio=cancelarEstudio;
        
        
         if (!$localStorage.globals||!$rootScope.isAuth) {
@@ -161,6 +162,26 @@
             );
         }
         
+        function cancelarEstudio(estudio){
+            confirmaMsj("Confirmación de solicitud",
+                "¿Está seguro que desea cancelar el estudio?",
+                "Si",
+                function(){
+                    EstudiosService.cancelarEstudioInstitucion(estudio.id_estudio_institucion).then(
+                        function(response){
+                            mensaje('success', 'Cancelar estudio', 'Se cancelo el estudio correctamente.');
+                           scope.buscarEstudios();
+                            window.location='#/estudios/ver';
+                        },
+                        function(error){
+                            console.log('Error al cancelar el estudio: '+error);
+                        }
+                    );
+                },
+                "No",
+                function(){}
+            );
+        }
         
        
    

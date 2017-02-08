@@ -89,6 +89,7 @@
         scope.ingresos.ingreso_ventas=0;
         scope.ingresos.otros_igresos=0;
         scope.ingresos.total=0;
+        
         scope.calcula=calcula;
         
         function calcula(){
@@ -114,6 +115,9 @@
        EstudiosService.obtenerDetalleEstudio(EstudiosService.idEstudioSeleccionado).then(
             function(response){
                 scope.estudio=response.data;
+                    scope.estudio.sueldo_papa=parseInt(scope.estudio.sueldo_papa);
+                    scope.estudio.sueldo_mama=parseInt(scope.estudio.sueldo_mama);
+                        
                 EstudiosService.obtenerEmpleados().then(
                     function(response){
                         scope.listaEmpleado=response.data;

@@ -41,7 +41,7 @@
                                                 <th class="text-center">Dirección</th>
                                                 <th class="text-center">Fecha</th>
                                                 <th class="text-center">Estatus</th>
-                                                <th class="text-center">Compartido</th>
+                                                <th ng-show="tipoUsuario==='1'" class="text-center">Compartido</th>
                                                 <th class="text-center">Opciones</th>
                                             </tr>
                                         </thead>
@@ -78,7 +78,7 @@
                                                         <span  ng-switch-when="7" class="label label-danger">Terminado</span>
                                                         <span  ng-switch-when="8" class="label label-danger">Cancelado</span></div>
                                                 </td>
-                                                <td class="text-center">
+                                                <td ng-show="tipoUsuario==='1'" class="text-center">
                                                     <span ng-show="estudio.instituciones.length>1" class="label label-success">Compartido</span>
                                                     <span ng-show="estudio.instituciones.length===1" class="label label-primary">No compartido</span>
                                                 </td>
@@ -96,7 +96,9 @@
                                                     <button ng-show="tipoUsuario==='2'||(tipoUsuario==='1'&&rolUsuario==='1')" type="button" class="btn btn-primary btn-xs" ng-click="estudios.verDetalle(estudio.id_estudio)">
                                                         <div ng-show="tipoUsuario==='2'">Ver estudio</div>
                                                         <div ng-show="tipoUsuario==='1'">Estudio captura</div>
-                                                    </button>
+                                                    </button >
+                                                    
+                                                    <button ng-show="tipoUsuario==='2'"  class="btn btn-xs btn-danger" name="seleccionar_familia" ng-click="estudios.cancelarEstudio(estudio)">Cancelar</button>
                                                 </td>
                                             </tr>
                                         </tbody>

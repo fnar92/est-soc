@@ -55,6 +55,7 @@
         scope.continuarFamilia=continuarFamilia;
         scope.guardarEstudio=guardarEstudio;
         scope.solicitarEstudio=solicitarEstudio;
+        scope.cancelarEstudio=cancelarEstudio;
         
        
         function accionInicial(){
@@ -171,6 +172,8 @@
                                         return;
                                     }else{
                                         scope.estudioInstitucion.id_estudio=response.data.id_estudio;
+                                        scope.estudioInstitucion.pago=scope.estudio.pago;
+                                        scope.estudioInstitucion.num_recibo=scope.estudio.num_recibo;
                                         scope.estudioInstitucion.id_institucion=parseInt($rootScope.user.id_institucion);
                                         EstudiosService.guardarEstudioInstitucion(scope.estudioInstitucion);
                                     }
@@ -210,6 +213,8 @@
                             }else{
                                 scope.estudioInstitucion.id_estudio=response.data.id_estudio;
                                 scope.estudioInstitucion.id_institucion=parseInt($rootScope.user.id_institucion);
+                                scope.estudioInstitucion.pago=scope.estudio.pago;
+                                scope.estudioInstitucion.num_recibo=scope.estudio.num_recibo;
                                 EstudiosService.guardarEstudioInstitucion(scope.estudioInstitucion);
                             }
                         },
@@ -224,6 +229,8 @@
                     if(scope.estudio.id_estudio!==undefined){
                         scope.estudioInstitucion.id_estudio=scope.estudio.id_estudio;
                         scope.estudioInstitucion.id_institucion=parseInt($rootScope.user.id_institucion);
+                        scope.estudioInstitucion.pago=scope.estudio.pago;
+                        scope.estudioInstitucion.num_recibo=scope.estudio.num_recibo;
                         EstudiosService.guardarEstudioInstitucion(scope.estudioInstitucion).then(
                             function(response){
                                 mensaje('success', 'Solicitud de estudio', 'Estudio enviado correctamente',6000);
@@ -256,6 +263,26 @@
         function numberOfPages(){
             return Math.ceil(scope.listaFamiliasEncontradas.length/scope.pageSize);  
         };
+        
+        function cancelarEstudio(estudio){
+            confirmaMsj("Confirmación de solicitud",
+                "¿Está seguro que desea cancelar el estudio?",
+                "Si",
+                function(){
+                    EstudiosService.cancelarEstudioInstitucion(estudio.id_estudio_institucion).then(
+                        function(response){
+                            mensaje('success', 'Cancelar estudio', 'Se cancelo el estudio correctamente.');
+                            window.location='#/estudios/ver';
+                        },
+                        function(error){
+                            console.log('Error al cancelar el estudio: '+error);
+                        }
+                    );
+                },
+                "No",
+                function(){}
+            );
+        }
           
     };//end controller
 

@@ -90,8 +90,8 @@
                                                             <input ng-show="familia.estudio.id_estudio===undefined" type="radio" name="seleccionar_familia" ng-click="estudios.seleccionarFamilia(familia)">
                                                             
                                                             <div ng-show="familia.estudio.id_estudio!==undefined&&familia.estudio.tieneEstudio===true">
-                                                                <span  class="label label-danger">Familia en proceso</span>
-                                                                <button  class="btn btn-xs btn-primary" name="seleccionar_familia" ng-click="estudios.solicitarEstudio(familia, familia.estudio)">Solicitar de nuevo</button>
+                                                                <span  class="label label-default">Familia en proceso</span>
+                                                                <button  class="btn btn-xs btn-danger" name="seleccionar_familia" ng-click="estudios.cancelarEstudio(familia.estudio)">Cancelar</button>
                                                             </div>
                                                             <span class="lever"></span>
                                                         
@@ -130,23 +130,9 @@
                 </form>
                 
                 <form ng-show="estudios.opcion==='2'">
-                    <div class="row">
-                        <div class="col-md-5">
-                            <div class="form-group label-floating">
-                                    <label class="control-label">Familia:</label>
-                                    <input type="text" class="form-control" ng-model="estudios.familia.familia" ng-change="estudios.familia.familia=estudios.familia.familia.toUpperCase();">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group label-floating">
-                                    <label class="control-label">Institución:</label>
-                                    <input ng-if="estudios.bandera_selecciono" type="text" class="form-control" value="{{estudios.familia.clave_institucion}}" ng-model="estudios.estudio.clave_institucion" disabled>
-                                    <input ng-if="!estudios.bandera_selecciono" type="text" class="form-control" value="{{dash.institucion.clave_institucion}}" ng-model="estudios.familia.clave_institucion" disabled>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="row">
+                    <h2 class="text-center">Solicitud de estudio</h2>
+                    <h4 class="text-left">Estudio: </h4>
+                    <div class="row border border-blue">
                         <div class="col-md-3">
                             <div class="form-group label-floating">
                                     <label class="control-label">Pago:</label>
@@ -159,24 +145,27 @@
                                     </md-radio-group>
                             </div>
                         </div>
-                        
-                        <div class="col-md-3">
-                            
-                            <div class="form-group label-floating">
-                                    <label class="control-label">Compartida:</label>
-                                    <br>
-                                    <md-radio-group  ng-model="estudios.familia.compartida">
-
-                                        <md-radio-button value="SI" class="md-primary">Si</md-radio-button>
-                                        <md-radio-button value="NO">No</md-radio-button>
-
-                                    </md-radio-group>
-                            </div>
-                        </div>
                         <div class="col-md-4">
                             <div class="form-group label-floating">
                                     <label class="control-label">No. de recibo:</label>
                                     <input type="text" class="form-control" ng-model="estudios.estudio.num_recibo">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h4 class="text-left">Familia:</h4>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Familia:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.familia" ng-change="estudios.familia.familia=estudios.familia.familia.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Institución:</label>
+                                    <input ng-if="estudios.bandera_selecciono" type="text" class="form-control" value="{{estudios.familia.clave_institucion}}" ng-model="estudios.estudio.clave_institucion" disabled>
+                                    <input ng-if="!estudios.bandera_selecciono" type="text" class="form-control" value="{{dash.institucion.clave_institucion}}" ng-model="estudios.familia.clave_institucion" disabled>
                             </div>
                         </div>
                     </div>
@@ -196,7 +185,7 @@
                         </div>
                     </div>
                     
-                    <h4>Domicilio:</h4>
+                    <h4 class="text-left">Domicilio:</h4>
                     
                     <div class="row">
                         <div class="col-md-5">
@@ -257,7 +246,7 @@
                         </div>
                     </div>
                     
-                    <h4>Datos padres:</h4>
+                    <h4 class="text-left">Datos padres:</h4>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group label-floating">
