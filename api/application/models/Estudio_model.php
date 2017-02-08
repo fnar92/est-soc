@@ -73,7 +73,8 @@ class Estudio_model extends CI_Model {
                 .'es.institucion_familia, es.institucion_solicito,'
                 .'fam.familia,'
                 .'fam.calle, fam.num_ext, fam.num_int, fam.colonia, fam.localidad, fam.municipio, fam.estado,'
-                .'es.fecha_estudio, es.id_estatus_estudio, es_in.id_institucion, es.id_familia, es_in.id_estudio_institucion');
+                .'es.fecha_estudio, es.id_estatus_estudio, es_in.id_institucion, es.id_familia,'
+                . 'es_in.id_estudio_institucion, es_in.estatus');
         $this->db->from('estudio es');
         $this->db->join('estudios_instituciones es_in', 'es.id_estudio = es_in.id_estudio');
         $this->db->join('familia fam', 'es.id_familia = fam.id_familia');
@@ -84,13 +85,16 @@ class Estudio_model extends CI_Model {
         }
         if($tipoUsuario=='2'&&$idInstitucion!='0'){
             $this->db->where('es_in.id_institucion', $idInstitucion);
-            $this->db->where('es_in.estatus', 1);
         }
+        
+        //$this->db->where('es_in.estatus', 1);
         
         if($filterFamilia!='all'){
             $this->db->like('fam.familia', $filterFamilia);
         }
-        $this->db->group_by('es.id_estudio'); 
+        $this->db->group_by('fam.id_familia'); 
+        //$this->db->group_by('es.id_estudio'); 
+        $this->db->order_by('es.id_estudio');
         $estudios=$this->db->get()->result();
         $array=array();
         foreach ($estudios as $estudio) {
@@ -125,8 +129,8 @@ class Estudio_model extends CI_Model {
             $this->db->where('es_in.id_estudio', $idEstudio);
         }
         
-        $this->db->where('es.id_estatus_estudio!=', 5);
-        $this->db->where('es.id_estatus_estudio!=', 6);
+        //$this->db->where('es.id_estatus_estudio!=', 5);
+        //$this->db->where('es.id_estatus_estudio!=', 6);
         $this->db->where('es_in.estatus', 1);
         $this->db->group_by('es_in.id_institucion');
         $ins=$this->db->get()->result();
@@ -144,7 +148,7 @@ class Estudio_model extends CI_Model {
         $this->db->join('estudio es', 'es.id_estudio = es_in.id_estudio');
         $this->db->join('institucion in', 'in.id_institucion = es_in.id_institucion');
         $this->db->where('es.id_estudio', $idEstudio);
-        $this->db->where('es_in.estatus', 1);
+        //$this->db->where('es_in.estatus', 1);
         $this->db->where('in.id_institucion', $idInstitucion);
         return $this->db->get()->row();
     }

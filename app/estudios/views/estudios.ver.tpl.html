@@ -68,7 +68,7 @@
                                                 </td>
                                                 <td class="text-center">{{estudio.fecha_estudio | toJSDate }}</td>
                                                 <td class="text-center">
-                                                    <div ng-switch="estudio.id_estatus_estudio">
+                                                    <div ng-show="estudio.estatus==='1'" ng-switch="estudio.id_estatus_estudio">
                                                         <span  ng-switch-when="1"class="label label-info">Recibido</span>
                                                         <span  ng-switch-when="2" class="label label-warning">Asignado</span>
                                                         <span  ng-switch-when="3" class="label label-default">Angendado</span>
@@ -76,29 +76,37 @@
                                                         <span  ng-switch-when="5" class="label label-success">Capturado</span>
                                                         <span  ng-switch-when="6" class="label label-danger">En revisión</span>
                                                         <span  ng-switch-when="7" class="label label-danger">Terminado</span>
-                                                        <span  ng-switch-when="8" class="label label-danger">Cancelado</span></div>
+                                                        <span  ng-switch-when="8" class="label label-danger">Cancelado</span>
+                                                    </div>
                                                 </td>
                                                 <td ng-show="tipoUsuario==='1'" class="text-center">
-                                                    <span ng-show="estudio.instituciones.length>1" class="label label-success">Compartido</span>
-                                                    <span ng-show="estudio.instituciones.length===1" class="label label-primary">No compartido</span>
+                                                    <span ng-show="estudio.instituciones.length>1&&estudio.estatus==='1'" class="label label-success">Compartido</span>
+                                                    <span ng-show="estudio.instituciones.length===1&&estudio.estatus==='1'" class="label label-primary">No compartido</span>
                                                 </td>
                                                 <td class="text-center">
-                                                    <button 
+                                                    
+                                                    <button
+                                                        ng-disabled="estudio.estatus==='2'"
                                                         ng-show="tipoUsuario==='1'&&(estudio.id_estatus_estudio==='2'||estudio.id_estatus_estudio==='4')" 
                                                         type="button" class="btn btn-info btn-xs" 
                                                         ng-click="estudios.agendarView(estudio)">Agendar</button>
                                                     
-                                                    <button ng-show="tipoUsuario==='1'&&(rolUsuario==='2'&&estudio.id_estatus_estudio==='3')" 
+                                                    <button 
+                                                        ng-disabled="estudio.estatus==='2'"
+                                                        ng-show="tipoUsuario==='1'&&(rolUsuario==='2'&&estudio.id_estatus_estudio==='3')" 
                                                             type="button" class="btn btn-primary btn-xs"
                                                             ng-click="estudios.verDetalle(estudio.id_estudio)">Estudio captura</button>
                                                     
                                                     
-                                                    <button ng-show="tipoUsuario==='2'||(tipoUsuario==='1'&&rolUsuario==='1')" type="button" class="btn btn-primary btn-xs" ng-click="estudios.verDetalle(estudio.id_estudio)">
+                                                    <button 
+                                                        ng-disabled="estudio.estatus==='2'"
+                                                        ng-show="tipoUsuario==='2'||(tipoUsuario==='1'&&rolUsuario==='1')" type="button" class="btn btn-primary btn-xs" ng-click="estudios.verDetalle(estudio.id_estudio)">
                                                         <div ng-show="tipoUsuario==='2'">Ver estudio</div>
                                                         <div ng-show="tipoUsuario==='1'">Estudio captura</div>
                                                     </button >
                                                     
-                                                    <button ng-show="tipoUsuario==='2'"  class="btn btn-xs btn-danger" name="seleccionar_familia" ng-click="estudios.cancelarEstudio(estudio)">Cancelar</button>
+                                                    <button ng-show="tipoUsuario==='2'&&estudio.estatus==='1'"  class="btn btn-xs btn-danger" name="seleccionar_familia" ng-click="estudios.cancelarEstudio(estudio)">Cancelar</button>
+                                                    <div ng-show="estudio.estatus==='2'" class="label label-danger">Cancelado</div>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -108,8 +116,8 @@
                                     <div>
                                         <ul class="pager">
                                             <li>
-                                                <button type="button" class="btn btn-default btn-flat-border pull-left" ng-disabled="estudios.currentPage === 0" ng-click="estudios.currentPage=estudios.currentPage-1">Anterior</button>
-                                                <button type="button" class="btn btn-default btn-flat-border pull-right" ng-disabled="estudios.currentPage >= estudios.listaEstudios.length / estudios.pageSize - 1" ng-click="estudios.currentPage=estudios.currentPage+1">Siguiente</button>
+                                                <button type="button" class="btn btn-xs btn-default btn-flat-border pull-left" ng-disabled="estudios.currentPage === 0" ng-click="estudios.currentPage=estudios.currentPage-1">Anterior</button>
+                                                <button type="button" class="btn btn-xs btn-default btn-flat-border pull-right" ng-disabled="estudios.currentPage >= estudios.listaEstudios.length / estudios.pageSize - 1" ng-click="estudios.currentPage=estudios.currentPage+1">Siguiente</button>
                                             </li>
                                             <li>
                                                 <div class="col-md-3 col-md-push-2 col-xs-3 col-xs-push-2 col-lg-push-3 text-center">
