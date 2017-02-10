@@ -57,6 +57,7 @@ class Estudio extends CI_Controller {
         $clave=$clave_institucion."-".$id_estudio;
         
         $data_update['id_estudio']=$id_estudio;
+        $clave=date('Y').'-'.$clave;
         $data_update['folio_estudio']=$clave;
         
         $this->estudio_model->updateEstudio($data_update);
@@ -164,6 +165,16 @@ class Estudio extends CI_Controller {
                     "status"=>$this->estudio_model->updateEstudioInstitucion($data)
                 )
             );
+    }
+    
+    public function saveIngresos() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->estudio_model->saveIngresos($data));
+    }
+    
+    public function updateIngresos() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->estudio_model->updateIngresos($data));
     }
     
     

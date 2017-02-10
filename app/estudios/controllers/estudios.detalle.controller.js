@@ -80,6 +80,9 @@
         scope.asignarShow=asignarShow;
         scope.asignarEmpleado=asignarEmpleado;
         
+        /*ingresos*/
+        scope.guardarIngresos=guardarIngresos;
+        
         scope.ingresos={};
         scope.ingresos.ingreso_otros_miembros=0;
         scope.ingresos.ingreso_renta=0;
@@ -87,10 +90,19 @@
         scope.ingresos.ingreso_inversiones=0;
         scope.ingresos.ingreso_pensiones=0;
         scope.ingresos.ingreso_ventas=0;
-        scope.ingresos.otros_igresos=0;
-        scope.ingresos.total=0;
-        
+        scope.ingresos.otros_ingresos=0;
+        scope.ingresos.total_otros_ingresos=0;
+        scope.ingresos.sueldo_papa=0;
+        scope.ingresos.sueldo_mama=0;
+        scope.ingresos.ingreso_percapita=0;
+        scope.ingresos.clasificacion='';
         scope.calcula=calcula;
+        scope.setSueldo=setSueldo;
+        
+        function setSueldo(){
+            scope.ingresos.sueldo_papa=scope.estudio.sueldo_papa;
+            scope.ingresos.sueldo_mama=scope.estudio.sueldo_mama;
+        }
         
         function calcula(){
             var suma=0;
@@ -102,9 +114,26 @@
             suma+=scope.ingresos.ingreso_pensiones;
             suma+=scope.ingresos.ingreso_ventas;
             suma+=scope.ingresos.otros_ingresos;
+            scope.ingresos.total_otros_ingresos=suma;
+            
+            scope.ingresos.total_ingresos=scope.ingresos.sueldo_papa+scope.ingresos.sueldo_mama+scope.ingresos.total_otros_ingresos;
+            var n=scope.estudio.dependientes.length+scope.estudio.hijos.length;
+            scope.ingresos.ingreso_percapita=scope.ingresos.total_ingresos/n;
             
             
-            scope.ingresos.total=suma;
+            if(scope.ingresos.ingreso_percapita>15000){
+                scope.ingresos.clasificacion='A';
+            }
+            if(scope.ingresos.ingreso_percapita>8000&&scope.ingresos.ingreso_percapita<14999){
+                scope.ingresos.clasificacion='B';
+            }
+            if(scope.ingresos.ingreso_percapita<8000){
+                scope.ingresos.clasificacion='C';
+            }
+            if(scope.ingresos.ingreso_percapita<8000){
+                scope.ingresos.clasificacion='C-';
+            }
+            
         }
         
         if (!$localStorage.globals||!$rootScope.isAuth) {
@@ -119,9 +148,27 @@
        EstudiosService.obtenerDetalleEstudio(EstudiosService.idEstudioSeleccionado, id).then(
             function(response){
                 scope.estudio=response.data;
-                    scope.estudio.sueldo_papa=parseInt(scope.estudio.sueldo_papa);
-                    scope.estudio.sueldo_mama=parseInt(scope.estudio.sueldo_mama);
-                        
+                
+                scope.estudio.sueldo_papa=parseFloat(scope.estudio.sueldo_papa);
+                scope.estudio.sueldo_mama=parseFloat(scope.estudio.sueldo_mama);
+                scope.ingresos.sueldo_papa=scope.estudio.sueldo_papa;
+                scope.ingresos.sueldo_mama=scope.estudio.sueldo_mama;
+                
+                scope.ingresos=response.data.ingresos[0];
+                
+                scope.ingresos.ingreso_otros_miembros=parseFloat(scope.ingresos.ingreso_otros_miembros);
+                scope.ingresos.ingreso_renta=parseFloat(scope.ingresos.ingreso_renta);
+                scope.ingresos.ingreso_honorarios=parseFloat(scope.ingresos.ingreso_inversiones);
+                scope.ingresos.ingreso_inversiones=parseFloat(scope.ingresos.ingreso_inversiones);
+                scope.ingresos.ingreso_pensiones=parseFloat(scope.ingresos.ingreso_pensiones);
+                scope.ingresos.ingreso_ventas=parseFloat(scope.ingresos.ingreso_ventas);
+                scope.ingresos.otros_ingresos=parseFloat(scope.ingresos.otros_ingresos);
+                scope.ingresos.total_otros_ingresos=parseFloat(scope.ingresos.total_otros_ingresos);
+                scope.ingresos.sueldo_papa=parseFloat(scope.ingresos.sueldo_papa);
+                scope.ingresos.sueldo_mama=parseFloat(scope.ingresos.sueldo_mama);
+                scope.ingresos.ingreso_percapita=parseFloat(scope.ingresos.ingreso_percapita);
+                scope.ingresos.total_ingresos=parseFloat(scope.ingresos.total_ingresos);
+                
                 EstudiosService.obtenerEmpleados().then(
                     function(response){
                         scope.listaEmpleado=response.data;
@@ -175,6 +222,8 @@
         
         function guardarHijo(){
             console.log(scope.hijo);
+            scope.hijo.id_estudio=scope.estudio.id_estudio;
+            scope.hijo.folio_estudio=scope.estudio.folio_estudio;
             if(scope.banderaActualizar){
                 confirmaMsj(
                     "Confirmación de solicitud",
@@ -262,6 +311,8 @@
         
         function guardarDependiente(){
             console.log(scope.dependiente);
+            scope.dependiente.id_estudio=scope.estudio.id_estudio;
+            scope.dependiente.folio_estudio=scope.estudio.folio_estudio;
             if(scope.banderaActualizar){
                 confirmaMsj(
                     "Confirmación de solicitud",
@@ -348,6 +399,8 @@
         
         function guardarMotivo(){
             console.log(scope.motivo);
+            scope.motivo.id_estudio=scope.estudio.id_estudio;
+            scope.motivo.folio_estudio=scope.estudio.folio_estudio;
             if(scope.banderaActualizar){
                 confirmaMsj(
                     "Confirmación de solicitud",
@@ -545,6 +598,8 @@
         
         function guardarVehiculo(){
             console.log(scope.vehiculo);
+            scope.vehiculo.id_estudio=scope.estudio.id_estudio;
+            scope.vehiculo.folio_estudio=scope.estudio.folio_estudio;
             if(scope.banderaActualizar){
                 confirmaMsj(
                     "Confirmación de solicitud",
@@ -631,6 +686,8 @@
         
         function guardarPropiedad(){
             console.log(scope.propiedad);
+            scope.propiedad.id_estudio=scope.estudio.id_estudio;
+            scope.propiedad.folio_estudio=scope.estudio.folio_estudio;
             if(scope.banderaActualizar){
                 confirmaMsj(
                     "Confirmación de solicitud",
@@ -672,6 +729,73 @@
                                 console.log('Error al guardar hijo: '+error);
                             }
                         );
+                    },
+                "No",
+                    function(){}
+            );
+            
+        }
+        
+        function guardarIngresos(){
+            console.log(scope.ingresos);
+            scope.ingresos.id_estudio=scope.estudio.id_estudio;
+            scope.ingresos.folio_estudio=scope.estudio.folio_estudio;
+            scope.ingresos.id_familia=scope.estudio.id_familia;
+            confirmaMsj(
+                "Confirmación de solicitud",
+                "¿Actualizar datos?",
+                "Si",
+                    function(){
+                        if(scope.ingresos.id_ingreso_familia!==undefined){
+                            FamiliaService.actualizarIngresos(scope.ingresos).then(
+                                function(response){
+                                    scope.ingresos=response.data[0];
+                                    scope.ingresos.ingreso_otros_miembros=parseFloat(scope.ingresos.ingreso_otros_miembros);
+                                    scope.ingresos.ingreso_renta=parseFloat(scope.ingresos.ingreso_renta);
+                                    scope.ingresos.ingreso_honorarios=parseFloat(scope.ingresos.ingreso_inversiones);
+                                    scope.ingresos.ingreso_inversiones=parseFloat(scope.ingresos.ingreso_inversiones);
+                                    scope.ingresos.ingreso_pensiones=parseFloat(scope.ingresos.ingreso_pensiones);
+                                    scope.ingresos.ingreso_ventas=parseFloat(scope.ingresos.ingreso_ventas);
+                                    scope.ingresos.otros_ingresos=parseFloat(scope.ingresos.otros_ingresos);
+                                    scope.ingresos.total_otros_ingresos=parseFloat(scope.ingresos.total_otros_ingresos);
+                                    scope.ingresos.sueldo_papa=parseFloat(scope.ingresos.sueldo_papa);
+                                    scope.ingresos.sueldo_mama=parseFloat(scope.ingresos.sueldo_mama);
+                                    scope.ingresos.ingreso_percapita=parseFloat(scope.ingresos.ingreso_percapita);
+                                    scope.ingresos.total_ingresos=parseFloat(scope.ingresos.total_ingresos);
+
+                                    mensaje('success', 'Aviso.', 'Se actualizaron los datos de los ingresos correctamente.');
+
+                                },
+                                function(error){
+                                    console.log('Error al guardar hijo: '+error);
+                                }
+                            );
+                        }else{
+                            FamiliaService.guardarIngresos(scope.ingresos).then(
+                                function(response){
+                                    scope.ingresos=response.data[0];
+                                    scope.ingresos.ingreso_otros_miembros=parseFloat(scope.ingresos.ingreso_otros_miembros);
+                                    scope.ingresos.ingreso_renta=parseFloat(scope.ingresos.ingreso_renta);
+                                    scope.ingresos.ingreso_honorarios=parseFloat(scope.ingresos.ingreso_inversiones);
+                                    scope.ingresos.ingreso_inversiones=parseFloat(scope.ingresos.ingreso_inversiones);
+                                    scope.ingresos.ingreso_pensiones=parseFloat(scope.ingresos.ingreso_pensiones);
+                                    scope.ingresos.ingreso_ventas=parseFloat(scope.ingresos.ingreso_ventas);
+                                    scope.ingresos.otros_ingresos=parseFloat(scope.ingresos.otros_ingresos);
+                                    scope.ingresos.total_otros_ingresos=parseFloat(scope.ingresos.total_otros_ingresos);
+                                    scope.ingresos.sueldo_papa=parseFloat(scope.ingresos.sueldo_papa);
+                                    scope.ingresos.sueldo_mama=parseFloat(scope.ingresos.sueldo_mama);
+                                    scope.ingresos.ingreso_percapita=parseFloat(scope.ingresos.ingreso_percapita);
+                                    scope.ingresos.total_ingresos=parseFloat(scope.ingresos.total_ingresos);
+
+                                    mensaje('success', 'Aviso.', 'Se guardaron los datos de los ingresos correctamente.');
+
+                                },
+                                function(error){
+                                    console.log('Error al guardar hijo: '+error);
+                                }
+                            );
+                        }
+                        
                     },
                 "No",
                     function(){}

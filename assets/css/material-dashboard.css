@@ -1785,7 +1785,7 @@ output {
 .form-group .form-control[readonly],
 .form-group .form-control[disabled], fieldset[disabled]
 .form-group .form-control {
-    background-color: gainsboro;
+    /*background-color: gainsboro;*/
     opacity: 0.8;
 }
 .form-control[disabled], fieldset[disabled] .form-control,

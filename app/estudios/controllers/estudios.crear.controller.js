@@ -149,6 +149,7 @@
         
         function guardarSolicitudAccion(){
             //Insertar familia nueva
+            show();
             if(scope.familia.id_familia===undefined){
                 scope.familia.id_institucion= parseInt($rootScope.user.id_institucion);
                 EstudiosService.guardarFamilia(scope.familia).then(
@@ -177,19 +178,22 @@
                                         scope.estudioInstitucion.num_recibo=scope.estudio.num_recibo;
                                         scope.estudioInstitucion.id_institucion=parseInt($rootScope.user.id_institucion);
                                         EstudiosService.guardarEstudioInstitucion(scope.estudioInstitucion);
+                                        setTimeout(function(){
+                                            hide();
+                                            mensaje('success', 'Solicitud de estudio', 'Estudio enviado correctamente');
+                                            location.href= "#/estudios/ver";
+                                            window.scrollTo(0, 0); 
+                                        }, 3000);
                                     }
                                 },
                                 function(error){
                                     console.log('Error al guardar el estudio: '+error);
                                 }
                             );
-                            
-                            mensaje('success', 'Solicitud de estudio', 'Estudio enviado correctamente');
-                            location.href= "#/estudios/ver";
-                            window.scrollTo(0, 0); 
                         }
                     },
                     function(error){
+                        hide();
                         mensaje('error','Solicitud de estudio','Ocurrio un error al guardar la información. Intente mas tarde.');
                         console.log('Error al guardar familia: '+error);
                     }
@@ -217,15 +221,20 @@
                                 scope.estudioInstitucion.pago=scope.estudio.pago;
                                 scope.estudioInstitucion.num_recibo=scope.estudio.num_recibo;
                                 EstudiosService.guardarEstudioInstitucion(scope.estudioInstitucion);
+                                setTimeout(function(){
+                                    hide();
+                                    mensaje('success', 'Solicitud de estudio', 'Estudio enviado correctamente');
+                                    location.href= "#/estudios/ver";
+                                    window.scrollTo(0, 0); 
+                                }, 3000);
                             }
                         },
                         function(error){
+                            hide();
+                            mensaje('error','Solicitud de estudio','Ocurrio un error al guardar la información. Intente mas tarde.');
                             console.log('Error al guardar el estudio: '+error);
                         }
                     );
-                    mensaje('success', 'Solicitud de estudio', 'Estudio enviado correctamente',6000);
-                    location.href= "#/estudios/ver";
-                    window.scrollTo(0, 0); 
                 }else{
                     if(scope.estudio.id_estudio!==undefined){
                         scope.estudioInstitucion.id_estudio=scope.estudio.id_estudio;
@@ -234,11 +243,16 @@
                         scope.estudioInstitucion.num_recibo=scope.estudio.num_recibo;
                         EstudiosService.guardarEstudioInstitucion(scope.estudioInstitucion).then(
                             function(response){
-                                mensaje('success', 'Solicitud de estudio', 'Estudio enviado correctamente',6000);
-                                location.href= "#/estudios/ver";
-                                window.scrollTo(0, 0);
+                                setTimeout(function(){
+                                    hide();
+                                    mensaje('success', 'Solicitud de estudio', 'Estudio enviado correctamente');
+                                    location.href= "#/estudios/ver";
+                                    window.scrollTo(0, 0); 
+                                }, 3000);
                             },
                             function(error){
+                                hide();
+                                mensaje('error','Solicitud de estudio','Ocurrio un error al guardar la información. Intente mas tarde.');
                                 console.log('Error al guardar el estudio institucion: '+error);
                             }
                         );

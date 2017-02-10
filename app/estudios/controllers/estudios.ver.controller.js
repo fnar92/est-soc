@@ -90,7 +90,7 @@
             show();
             scope.estudio={};
             scope.estudio=estudio;
-            EstudiosService.obtenerDetalleEstudio(scope.estudio.id_estudio).then(
+            EstudiosService.obtenerDetalleEstudio(scope.estudio.id_estudio, 0).then(
                 function(response){
                     scope.familia=response.data;
                     hide();
