@@ -12,12 +12,13 @@ class Estudio_model extends CI_Model {
         }
         
         $this->db->join('institucion', 'institucion.id_institucion = familia.id_institucion');
+        //$this->db->join('estudios_instituciones', 'institucion.id_institucion = estudios_instituciones.id_institucion');
         $this->db->order_by('familia.id_familia', 'ASC');
         $familias=$this->db->get('familia')->result();
         $array_familias=array();
         $i=0;
         foreach ($familias as $familia) {
-            $familia->estudio=  $this->getEstudiosFamiliaInstitucion($familia->id_familia, 0, 0);
+            $familia->estudio=  $this->getEstudiosFamiliaInstitucion($familia->id_familia, 0, 0, $idInstitucion);
             array_push($array_familias, $familia);
             $i++;
         }
@@ -68,13 +69,14 @@ class Estudio_model extends CI_Model {
     }
     
     public function getEstudios($tipoUsuario, $rolUsuario, $idUsuario, $idInstitucion, $filterFamilia) {
+        
         $this->db->select(
                  'es.id_estudio, es.folio_estudio,'
                 .'es.institucion_familia, es.institucion_solicito,'
                 .'fam.familia,'
                 .'fam.calle, fam.num_ext, fam.num_int, fam.colonia, fam.localidad, fam.municipio, fam.estado,'
                 .'es.fecha_estudio, es.id_estatus_estudio, es_in.id_institucion, es.id_familia,'
-                . 'es_in.id_estudio_institucion, es_in.estatus');
+                .'es_in.id_estudio_institucion, es_in.estatus');
         $this->db->from('estudio es');
         $this->db->join('estudios_instituciones es_in', 'es.id_estudio = es_in.id_estudio');
         $this->db->join('familia fam', 'es.id_familia = fam.id_familia');
@@ -87,24 +89,28 @@ class Estudio_model extends CI_Model {
             $this->db->where('es_in.id_institucion', $idInstitucion);
         }
         
-        //$this->db->where('es_in.estatus', 1);
+        
         
         if($filterFamilia!='all'){
             $this->db->like('fam.familia', $filterFamilia);
         }
-        $this->db->group_by('fam.id_familia'); 
-        //$this->db->group_by('es.id_estudio'); 
+        if($tipoUsuario=='1'){
+            $this->db->group_by('es.id_estudio');
+            //$this->db->where('es_in.estatus', 1);
+        }
+        
+        $this->db->where('es_in.estatus', 1);
         $this->db->order_by('es.id_estudio');
         $estudios=$this->db->get()->result();
         $array=array();
         foreach ($estudios as $estudio) {
-            $estudio->instituciones= $this->getEstudiosFamiliaInstitucion($estudio->id_familia, $estudio->id_institucion,0);
+            $estudio->instituciones= $this->getEstudiosFamiliaInstitucion($estudio->id_familia, $estudio->id_institucion,0, $tipoUsuario);
             array_push($array, $estudio);
         }
         return $array;
     }
     
-    public function getEstudiosFamiliaInstitucion($idFamilia, $idInstitucion, $idEstudio) {
+    public function getEstudiosFamiliaInstitucion($idFamilia, $idInstitucion, $idEstudio, $tipoUsuario) {
         $add="";
         if($idEstudio!=0){
             $add=",in.clave_institucion";
@@ -129,8 +135,15 @@ class Estudio_model extends CI_Model {
             $this->db->where('es_in.id_estudio', $idEstudio);
         }
         
-        //$this->db->where('es.id_estatus_estudio!=', 5);
-        //$this->db->where('es.id_estatus_estudio!=', 6);
+        /*if($tipoUsuario==='2'){
+            $this->db->where('es_in.estatus', 1);
+        }
+        
+        if($tipoUsuario==='1'){
+            $this->db->where('es_in.estatus', 1);
+            $this->db->or_where('es_in.estatus', 2);
+        }*/
+        
         $this->db->where('es_in.estatus', 1);
         $this->db->group_by('es_in.id_institucion');
         $ins=$this->db->get()->result();
@@ -148,7 +161,7 @@ class Estudio_model extends CI_Model {
         $this->db->join('estudio es', 'es.id_estudio = es_in.id_estudio');
         $this->db->join('institucion in', 'in.id_institucion = es_in.id_institucion');
         $this->db->where('es.id_estudio', $idEstudio);
-        //$this->db->where('es_in.estatus', 1);
+        $this->db->where('es_in.estatus', 1);
         $this->db->where('in.id_institucion', $idInstitucion);
         return $this->db->get()->row();
     }
@@ -162,14 +175,19 @@ class Estudio_model extends CI_Model {
         return $this->db->get()->row();
     }
     
-    public function getEstudioDetalle($idEstudio) {
-        $this->db->select('');
+    public function getEstudioDetalle($idEstudio, $idInstitucion) {
+        $this->db->select('*');
         $this->db->from('estudio es');
         $this->db->join('familia fam', 'es.id_familia = fam.id_familia'); 
         $this->db->join('institucion in', 'fam.id_institucion = in.id_institucion'); 
+        $this->db->join('estudios_instituciones ei', 'ei.id_estudio = es.id_estudio'); 
         $this->db->where('es.id_estudio', $idEstudio);
+        if($idInstitucion!=='0'){
+            $this->db->where('ei.id_institucion', $idInstitucion);
+            $this->db->where('ei.estatus', 1);
+        }
         $estudio=$this->db->get()->row();
-        $estudio->instituciones=  $this->getEstudiosFamiliaInstitucion($estudio->id_familia, 0,$estudio->id_estudio);
+        $estudio->instituciones=  $this->getEstudiosFamiliaInstitucion($estudio->id_familia, 0,$estudio->id_estudio, 1);
         $estudio->hijos=$this->getHijosFamilia($estudio->id_familia);
         $estudio->dependientes=$this->getDependientesFamilia($estudio->id_familia);
         $estudio->motivos=$this->getMotivosFamilia($estudio->id_familia);

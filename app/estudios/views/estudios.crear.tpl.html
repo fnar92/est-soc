@@ -38,8 +38,8 @@
                                     <table class="table table-hover" cellspacing="0" width="100%">
                                         <thead >
                                             <tr>
-                                                <th class="text-center">ID</th>
-                                                <th class="text-center">Clave</th>
+                                                <th ng-show="tipoUsuario==='1'" class="text-center">ID</th>
+                                                <th ng-show="tipoUsuario==='1'" class="text-center">Clave</th>
                                                 <th class="text-center">Familia</th>
                                                 <th class="text-center">Institución</th>
                                                 <th class="text-center">Dirección</th>
@@ -50,8 +50,8 @@
                                         </thead>
                                         <tbody>
                                             <tr ng-repeat="familia in estudios.listaFamiliasEncontradas | startFrom:estudios.currentPage * estudios.pageSize | limitTo:estudios.pageSize">
-                                                <td class="text-center">{{familia.id_familia}}</td>
-                                                <td class="text-center">{{familia.clave_familia}}</td>
+                                                <td ng-show="tipoUsuario==='1'" class="text-center">{{familia.id_familia}}</td>
+                                                <td ng-show="tipoUsuario==='1'" class="text-center">{{familia.clave_familia}}</td>
                                                 <td class="text-center">{{familia.familia}} </td>
                                                 <td class="text-center">{{familia.clave_institucion}} </td>
                                                 <td class="text-center">
@@ -86,8 +86,16 @@
                                                 </td>
                                                 <td class="text-center">
                                                     <div class="switch">
-                                                            <button ng-show="familia.estudio.id_estudio!==undefined&&familia.estudio.tieneEstudio===false" class="btn btn-xs btn-primary" name="seleccionar_familia" ng-click="estudios.solicitarEstudio(familia, familia.estudio)">Solicitar</button>
-                                                            <input ng-show="familia.estudio.id_estudio===undefined" type="radio" name="seleccionar_familia" ng-click="estudios.seleccionarFamilia(familia)">
+                                                            <button 
+                                                                ng-show="familia.estudio.id_estudio!==undefined&&familia.estudio.tieneEstudio===false" 
+                                                                class="btn btn-xs btn-primary" 
+                                                                name="seleccionar_familia" 
+                                                                ng-click="estudios.solicitarEstudio(familia, familia.estudio)">
+                                                                Solicitar</button>
+                                                            <input 
+                                                                ng-show="familia.estudio.id_estudio===undefined"
+                                                                   type="radio" name="seleccionar_familia"
+                                                                   ng-click="estudios.seleccionarFamilia(familia)">
                                                             
                                                             <div ng-show="familia.estudio.id_estudio!==undefined&&familia.estudio.tieneEstudio===true">
                                                                 <span  class="label label-default">Familia en proceso</span>
@@ -105,8 +113,8 @@
                                     <div>
                                         <ul class="pager">
                                             <li>
-                                                <button type="button" class="btn btn-default btn-flat-border pull-left" ng-disabled="estudios.currentPage == 0" ng-click="estudios.currentPage=estudios.currentPage-1">Anterior</button>
-                                                <button type="button" class="btn btn-default btn-flat-border pull-right" ng-disabled="estudios.currentPage >= estudios.listaFamiliasEncontradas.length / estudios.pageSize - 1" ng-click="estudios.currentPage=estudios.currentPage+1">Siguiente</button>
+                                                <button type="button" class="btn btn-xs btn-default btn-flat-border pull-left" ng-disabled="estudios.currentPage == 0" ng-click="estudios.currentPage=estudios.currentPage-1">Anterior</button>
+                                                <button type="button" class="btn btn-xs btn-default btn-flat-border pull-right" ng-disabled="estudios.currentPage >= estudios.listaFamiliasEncontradas.length / estudios.pageSize - 1" ng-click="estudios.currentPage=estudios.currentPage+1">Siguiente</button>
                                             </li>
                                             <li>
                                                 <div class="col-md-3 col-md-push-2 col-xs-3 col-xs-push-2 col-lg-push-3 text-center">

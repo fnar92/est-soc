@@ -93,6 +93,7 @@
                                 }
                             }
                             var fam=scope.listaFamiliasEncontradas[i];
+                            //alert(json());
                             fam.estudio=estudio[xx];
                             temp.push(fam);
                         }

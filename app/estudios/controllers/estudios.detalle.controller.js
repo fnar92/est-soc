@@ -101,7 +101,7 @@
             suma+=scope.ingresos.ingreso_inversiones;
             suma+=scope.ingresos.ingreso_pensiones;
             suma+=scope.ingresos.ingreso_ventas;
-            suma+=scope.ingresos.otros_igresos;
+            suma+=scope.ingresos.otros_ingresos;
             
             
             scope.ingresos.total=suma;
@@ -111,8 +111,12 @@
             mensaje('error', 'Session', 'Tu session ha expirado.');
             location.href='#/login';
         }
+        var id=0;
+        if($rootScope.tipoUsuario==='2'){
+            id=$rootScope.institucion.id_institucion;
+        }
  
-       EstudiosService.obtenerDetalleEstudio(EstudiosService.idEstudioSeleccionado).then(
+       EstudiosService.obtenerDetalleEstudio(EstudiosService.idEstudioSeleccionado, id).then(
             function(response){
                 scope.estudio=response.data;
                     scope.estudio.sueldo_papa=parseInt(scope.estudio.sueldo_papa);

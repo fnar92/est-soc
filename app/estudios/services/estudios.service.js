@@ -72,8 +72,8 @@
             return RestService.get(url,'');
         }
         
-        function obtenerDetalleEstudio(idEstudio){
-            var url=Constants.BaseURLBack+'/estudio/getEstudioDetalle/'+idEstudio;
+        function obtenerDetalleEstudio(idEstudio, idInstitucion){
+            var url=Constants.BaseURLBack+'/estudio/getEstudioDetalle/'+idEstudio+'/'+idInstitucion;
             return RestService.get(url,'');
         }
         

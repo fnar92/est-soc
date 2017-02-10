@@ -134,24 +134,7 @@
             <div class="col-lg-10 col-md-10 col-sm-9 col-xs-9 bhoechie-tab">
                 <!-- flight section -->
                 <div class="bhoechie-tab-content active">
-                    <h3 class="text-left">Datos generales</h3>
-                    <hr>
-                    <form>
-                        <div class="row">
-                        <div class="col-md-5">
-                            <div class="form-group label-floating">
-                                    <label class="control-label">Familia:</label>
-                                    <input type="text" class="form-control" ng-model="control.estudio.familia" ng-change="control.estudio.familia=control.estudio.familia.toUpperCase();">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group label-floating">
-                                    <label class="control-label">Institución familia:</label>
-                                    <input ng-if="!control.bandera_selecciono" type="text" class="form-control" value="" ng-model="control.estudio.clave_institucion" disabled>
-                            </div>
-                        </div>
-                    </div>
-                    
+                    <h4 class="text-left">Datos del estudio</h4>
                     <div class="row border border-blue">
                         <div class="col-md-2">
                             <div class="form-group label-floating text-left">
@@ -167,7 +150,7 @@
                         </div>
                         
                         <div class="col-md-2">
-                            
+                            <!--
                             <div class="form-group label-floating text-left">
                                     <label class="control-label">Compartida:</label>
                                     <br>
@@ -178,6 +161,7 @@
 
                                     </md-radio-group>
                             </div>
+                            -->
                         </div>
                         <div class="col-md-4">
                             <div class="form-group label-floating">
@@ -187,6 +171,23 @@
                         </div>
                     </div>
                     
+                    <h4 class="text-left">Datos generales</h4>
+                    <form>
+                        <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Familia:</label>
+                                    <input type="text" class="form-control" ng-model="control.estudio.familia" ng-change="control.estudio.familia=control.estudio.familia.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Institución familia:</label>
+                                    <input ng-if="!control.bandera_selecciono" type="text" class="form-control" value="" ng-model="control.estudio.clave_institucion" disabled>
+                            </div>
+                        </div>
+                    </div>
+                        
                     <div class="row">
                         <div class="col-md-5">
                             <div class="form-group label-floating">
@@ -268,7 +269,7 @@
                 </div>
                 <!-- train section -->
                 <div class="bhoechie-tab-content">
-                    <h3 class="text-left">Datos del papa</h3>
+                    <h4 class="text-left">Datos del papa</h4>
                     <hr>
                     <div class="row">
                         <div class="col-md-4">
@@ -397,7 +398,7 @@
     
                 <!-- hotel search -->
                 <div class="bhoechie-tab-content">
-                    <h3 class="text-left">Datos de la mama</h3>
+                    <h4 class="text-left">Datos de la mama</h4>
                     <hr>
                     <div class="row">
                         <div class="col-md-4">
@@ -524,8 +525,8 @@
                 </div>
                 
                 <div class="bhoechie-tab-content">
-                    <h3 class="text-left">Datos hijos</h3>
-                    <div class="text-right"><button type="button" class="btn btn-success" ng-click="control.agregarHijo(control.estudio.id_familia)">Agregar hijo</button></div>
+                    <h4 class="text-left">Datos hijos</h4>
+                    <div class="text-right"><button type="button" class="btn btn-xs btn-success" ng-click="control.agregarHijo(control.estudio.id_familia)">Agregar hijo</button></div>
                     <hr>
                     <div class="table-responsive">          
                         <table class="table">
@@ -556,8 +557,8 @@
                     </div>
                 </div>
                 <div class="bhoechie-tab-content">
-                   <h3 class="text-left">Datos dependientes</h3>
-                    <div class="text-right"><button type="button" class="btn btn-success" ng-click="control.agregarDependiente(control.estudio.id_familia)">Agregar dependiente</button></div>
+                   <h4 class="text-left">Dependientes económicos</h4>
+                    <div class="text-right"><button type="button" class="btn btn-xs btn-success" ng-click="control.agregarDependiente(control.estudio.id_familia)">Agregar dependiente</button></div>
                     <hr>
                     <div class="table-responsive">          
                         <table class="table">
@@ -590,8 +591,8 @@
                     </div>
                 </div>
                 <div class="bhoechie-tab-content">
-                   <h3 class="text-left">Motivos</h3>
-                    <div class="text-right"><button type="button" class="btn btn-success" ng-click="control.agregarMotivo(control.estudio.id_familia)">Agregar motivo</button></div>
+                   <h4 class="text-left">Motivos por los que solicita la beca</h4>
+                    <div class="text-right"><button type="button" class="btn  btn-xs btn-success" ng-click="control.agregarMotivo(control.estudio.id_familia)">Agregar motivo</button></div>
                     <hr>
                     <div class="table-responsive">          
                         <table class="table">
@@ -641,8 +642,8 @@
                     </div>
                 </div>
                 <div class="bhoechie-tab-content">
-                    <h3 class="text-left">Vehiculos</h3>
-                    <div class="text-right"><button type="button" class="btn btn-success" ng-click="control.agregarVehiculo(control.estudio.id_familia)">Agregar vehiculo</button></div>
+                    <h4 class="text-left">Vehiculos</h4>
+                    <div class="text-right"><button type="button" class="btn btn-xs btn-success" ng-click="control.agregarVehiculo(control.estudio.id_familia)">Agregar vehiculo</button></div>
                     <hr>
                     <div class="table-responsive">          
                         <table class="table">
@@ -677,7 +678,7 @@
                     </div>
                 </div>
                 <div class="bhoechie-tab-content">
-                    <h3 class="text-left">Propiedades</h3>
+                    <h4 class="text-left">Propiedades</h4>
                     <div class="text-right"><button type="button" class="btn btn-success" ng-click="control.agregarPropiedad(control.estudio.id_familia)">Agregar propiedad</button></div>
                     <hr>
                     <div class="table-responsive">          
@@ -704,7 +705,7 @@
                     </div>
                 </div>
                 <div class="bhoechie-tab-content">
-                    <h3 class="text-left">Ingresos</h3>
+                    <h4 class="text-left">Ingresos</h4>
                     <hr>
                     <div class="row">
                         <div class="col-md-4">
@@ -713,7 +714,7 @@
                                     <input type="number" min="0" class="form-control" ng-model="control.ingresos.num_personas_aportan">
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             <div class="form-group label-floating">
                                     <label class="control-label">Ingresos aportados por otros miembros de la familia:</label>
                                     <input type="number" min="0" class="form-control" ng-model="control.ingresos.ingreso_otros_miembros" ng-change="control.calcula()">
@@ -728,7 +729,7 @@
                                     <input type="number" min="0" class="form-control" ng-model="control.ingresos.ingreso_renta" ng-change="control.calcula()">
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             <div class="form-group label-floating">
                                     <label class="control-label">Ingreso por honorarios y/o actividades empresariales:</label>
                                     <input type="number" min="0" class="form-control" ng-model="control.ingresos.ingreso_honorarios" ng-change="control.calcula()">
@@ -761,17 +762,22 @@
                                     <input type="number" min="0" class="form-control" ng-model="control.ingresos.otros_ingresos" ng-change="control.calcula()">
                             </div>
                         </div>
-                        
-                        <div class="col-md-3">
+                        <div class="col-md-5">
                             <div class="form-group label-floating">
-                                    <label class="control-label">Total otros ingresos:</label>
-                                    <input type="number" min="0" class="form-control" ng-model="control.ingresos.total" >
+                                    <label class="control-label">Especifique otros ingresos:</label>
+                                    <textarea rows="5" class="form-control" ng-model="control.ingresos.otros_comentario"></textarea>
                             </div>
                         </div>
                     </div>
                    
                     
                     <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Total otros ingresos:</label>
+                                    <input type="number" min="0" class="form-control" ng-model="control.ingresos.total" >
+                            </div>
+                        </div>
                         <div class="col-md-4">
                             <div class="form-group label-floating">
                                     <label class="control-label">Ingreso del papa:</label>
@@ -804,7 +810,7 @@
                         <button 
                             type="button" class="btn btn-primary btn-xs" 
                             ng-click="control.guardarIngresos()">Guardar datos</button>
-                    </div>-->
+                    </div>
                 </div>
                 <div class="bhoechie-tab-content">
                     9
