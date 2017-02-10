@@ -38,6 +38,7 @@
         scope.propiedad={};
         scope.listaEmpleado=[];
         scope.empleadoAsignado={};
+        scope.ingresos={};
         
         //Banderas
         scope.load=false;
@@ -83,7 +84,7 @@
         /*ingresos*/
         scope.guardarIngresos=guardarIngresos;
         
-        scope.ingresos={};
+        
         scope.ingresos.ingreso_otros_miembros=0;
         scope.ingresos.ingreso_renta=0;
         scope.ingresos.ingreso_honorarios=0;
@@ -154,21 +155,23 @@
                 scope.ingresos.sueldo_papa=scope.estudio.sueldo_papa;
                 scope.ingresos.sueldo_mama=scope.estudio.sueldo_mama;
                 
-                scope.ingresos=response.data.ingresos[0];
                 
-                scope.ingresos.ingreso_otros_miembros=parseFloat(scope.ingresos.ingreso_otros_miembros);
-                scope.ingresos.ingreso_renta=parseFloat(scope.ingresos.ingreso_renta);
-                scope.ingresos.ingreso_honorarios=parseFloat(scope.ingresos.ingreso_inversiones);
-                scope.ingresos.ingreso_inversiones=parseFloat(scope.ingresos.ingreso_inversiones);
-                scope.ingresos.ingreso_pensiones=parseFloat(scope.ingresos.ingreso_pensiones);
-                scope.ingresos.ingreso_ventas=parseFloat(scope.ingresos.ingreso_ventas);
-                scope.ingresos.otros_ingresos=parseFloat(scope.ingresos.otros_ingresos);
-                scope.ingresos.total_otros_ingresos=parseFloat(scope.ingresos.total_otros_ingresos);
-                scope.ingresos.sueldo_papa=parseFloat(scope.ingresos.sueldo_papa);
-                scope.ingresos.sueldo_mama=parseFloat(scope.ingresos.sueldo_mama);
-                scope.ingresos.ingreso_percapita=parseFloat(scope.ingresos.ingreso_percapita);
-                scope.ingresos.total_ingresos=parseFloat(scope.ingresos.total_ingresos);
-                
+                if(response.data.ingresos.length>0){
+                    scope.ingresos=response.data.ingresos[0];
+                    scope.ingresos.ingreso_otros_miembros=parseFloat(scope.ingresos.ingreso_otros_miembros);
+                    scope.ingresos.ingreso_renta=parseFloat(scope.ingresos.ingreso_renta);
+                    scope.ingresos.ingreso_honorarios=parseFloat(scope.ingresos.ingreso_inversiones);
+                    scope.ingresos.ingreso_inversiones=parseFloat(scope.ingresos.ingreso_inversiones);
+                    scope.ingresos.ingreso_pensiones=parseFloat(scope.ingresos.ingreso_pensiones);
+                    scope.ingresos.ingreso_ventas=parseFloat(scope.ingresos.ingreso_ventas);
+                    scope.ingresos.otros_ingresos=parseFloat(scope.ingresos.otros_ingresos);
+                    scope.ingresos.total_otros_ingresos=parseFloat(scope.ingresos.total_otros_ingresos);
+                    scope.ingresos.sueldo_papa=parseFloat(scope.ingresos.sueldo_papa);
+                    scope.ingresos.sueldo_mama=parseFloat(scope.ingresos.sueldo_mama);
+                    scope.ingresos.ingreso_percapita=parseFloat(scope.ingresos.ingreso_percapita);
+                    scope.ingresos.total_ingresos=parseFloat(scope.ingresos.total_ingresos);
+                }
+				
                 EstudiosService.obtenerEmpleados().then(
                     function(response){
                         scope.listaEmpleado=response.data;
