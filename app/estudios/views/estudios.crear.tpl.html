@@ -166,7 +166,7 @@
                         <div class="col-md-5">
                             <div class="form-group label-floating">
                                     <label class="control-label">Familia:</label>
-                                    <input type="text" class="form-control" ng-model="estudios.familia.familia" ng-change="estudios.familia.familia=estudios.familia.familia.toUpperCase();">
+                                    <input type="text" class="form-control" ng-disabled="estudios.familia.id_familia!==undefined" ng-model="estudios.familia.familia" ng-change="estudios.familia.familia=estudios.familia.familia.toUpperCase();">
                             </div>
                         </div>
                         <div class="col-md-3">

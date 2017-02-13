@@ -15,11 +15,10 @@ class Estudio extends CI_Controller {
     
     public function saveFamilia() {
         $data = json_decode(file_get_contents('php://input'),true);
-        $id_familia=0;
         $familia=$this->estudio_model->saveFamilia($data);
         $id_familia=$familia['id_familia'];
         
-        $nombre=  explode(" ", $data['familia']);
+        /*$nombre=  explode(" ", $data['familia']);
         $result1 = substr($nombre[0], 0, 2);
         $result2 = substr($nombre[1], 0, 2);
         
@@ -27,8 +26,8 @@ class Estudio extends CI_Controller {
         
         $data_update['id_familia']=$id_familia;
         $data_update['clave_familia']=$clave;
-        
-        $this->estudio_model->updateFamilia($data_update);
+        */
+        //$this->estudio_model->updateFamilia($data_update);
         
         echo json_encode(array('id_familia'=>$id_familia));
     }
@@ -177,5 +176,24 @@ class Estudio extends CI_Controller {
         echo json_encode($this->estudio_model->updateIngresos($data));
     }
     
+    public function savePapa() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->estudio_model->savePapa($data));
+    }
+    
+    public function updatePapa() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->estudio_model->updatePapa($data));
+    }
+    
+    public function saveEgresos() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->estudio_model->saveEgresos($data));
+    }
+    
+    public function updateEgresos() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->estudio_model->updateEgresos($data));
+    }
     
 }

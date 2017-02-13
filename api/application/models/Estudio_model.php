@@ -194,10 +194,11 @@ class Estudio_model extends CI_Model {
         $estudio->vehiculos=$this->getVehiculosFamilia($estudio->id_familia, $estudio->id_estudio);
         $estudio->propiedades=  $this->getPropiedadesFamilia($estudio->id_familia, $estudio->id_estudio);
         $estudio->ingresos=$this->getIngresosFamilia($estudio->id_familia, $estudio->id_estudio);
-        $estudio->egresos=array();
+        $estudio->egresos=$this->getEgresosFamilia($estudio->id_familia, $estudio->id_estudio);
         $estudio->documentos=array();
         $estudio->evaluacion=array();
         $estudio->comentarios=array();
+        $estudio->padres=$this->getPadreFamilia($estudio->id_familia, $estudio->id_estudio);
         return $estudio;
     }
     /*hijos*/
@@ -351,5 +352,43 @@ class Estudio_model extends CI_Model {
         unset($data['id_ingreso_familia']);
         $this->db->update('ingresos_familia', $data); 
         return $this->getIngresosFamilia($data['id_familia'], $data['id_estudio']); 
+    }
+    
+    public function getPadreFamilia($idFamilia, $idEstudio) {
+        $this->db->where('id_familia', $idFamilia);
+        $this->db->where('id_estudio', $idEstudio);
+        $this->db->order_by('id_padre_familia', 'ASC');
+        return $this->db->get('padre_familia')->result();
+    }
+    
+    public function savePapa($data) {
+        $this->db->insert('padre_familia', $data);
+        return $this->getPadreFamilia($data['id_familia'], $data['id_estudio']);
+    }
+    
+    public function updatePapa($data) {
+        $this->db->where('id_padre_familia', $data['id_padre_familia']);
+        unset($data['id_padre_familia']);
+        $this->db->update('padre_familia', $data); 
+        return $this->getPadreFamilia($data['id_familia'], $data['id_estudio']); 
+    }
+    
+    public function getEgresosFamilia($idFamilia, $idEstudio) {
+        $this->db->where('id_familia', $idFamilia);
+        $this->db->where('id_estudio', $idEstudio);
+        $this->db->order_by('id_egreso_familia', 'desc');
+        return $this->db->get('egresos_familia')->result();
+    }
+    
+    public function saveEgresos($data) {
+        $this->db->insert('egresos_familia', $data);
+        return $this->getEgresosFamilia($data['id_familia'], $data['id_estudio']);
+    }
+    
+    public function updateEgresos($data) {
+        $this->db->where('id_egreso_familia', $data['id_egreso_familia']);
+        unset($data['id_egreso_familia']);
+        $this->db->update('egresos_familia', $data); 
+        return $this->getEgresosFamilia($data['id_familia'], $data['id_estudio']); 
     }
 }

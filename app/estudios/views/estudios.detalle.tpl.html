@@ -333,7 +333,7 @@
                             <div class="col-md-4">
                                 <div class="form-group label-floating">
                                         <label class="control-label">Correo electrónico:</label>
-                                        <input type="text" class="form-control" ng-model="control.estudio.correo_papa" ng-change="control.estudio.correo_papa=control.estudio.correo_papa.toUpperCase();">
+                                        <input type="text" class="form-control" ng-model="control.estudio.correo_papa">
                                 </div>
                             </div>
                         </div>
@@ -478,7 +478,7 @@
                         <div class="col-md-4">
                             <div class="form-group label-floating">
                                     <label class="control-label">Correo electrónico:</label>
-                                    <input type="text" class="form-control" ng-model="control.estudio.correo_mama" ng-change="control.estudio.correo_mama=control.estudio.correo_mama.toUpperCase();">
+                                    <input type="text" class="form-control" ng-model="control.estudio.correo_mama">
                             </div>
                         </div>
                     </div>
@@ -836,7 +836,182 @@
                     </div>
                 </div>
                 <div class="bhoechie-tab-content">
-                    9
+                    <h4 class="text-left">Egresos</h4>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Alimentación/Despensa: </label>
+                                    <input type="text" min="0" class="form-control" ng-model="control.egresos.alimentacion_despensa">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Renta:</label>
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.renta">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Credito hipotecario:</label>
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.credito_hipotecario">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Colegiaturas: </label>
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.colegiaturas">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Otras colegiaturas:</label>
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.otras_colegiaturas">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Clases particulares:</label>
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.clases_particulares">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Agua:</label>
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.agua">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Luz:</label>
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.luz">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Teléfono:</label>
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.telefono">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Servicio domestico:</label>
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.servicio_domestico">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Gas:</label>
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.gas">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Total servicios:</label>
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.total_servicios">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Gasolina:</label>
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.gasolina">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Credito automovil:</label>
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.credito_auto">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Pago mensual TDC:</label>
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.pago_tdc_mensual">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Saldo TDC:</label>
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.saldo_tdc">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Creditos comerciales:</label>
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.creditos_comerciales">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Vestido/Calzado:</label>
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.vestido_calzado">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Médico y medicinas:</label>
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.medico_medicinas">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Diversión/Entretenimiento:</label>
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.diversion_entretenimiento">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Clubes deportivos:</label>
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.clubes_deportivos">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Seguros (Vida, Automovil):</label>
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.seguros">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Vacaciones:</label>
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.vacaciones">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Otros egresos:</label>
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.otros2">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Comentarios:</label>
+                                    <textarea rows="4" class="form-control" ng-model="control.egresos.comentarios"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="row text-left">
+                        <button 
+                            type="button" class="btn btn-primary btn-xs" 
+                            ng-click="control.guardarEgresos()">Guardar datos</button>
+                    </div>
                 </div>
                 <div class="bhoechie-tab-content">
                     10
