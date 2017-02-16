@@ -14,8 +14,32 @@
         service.actualizarIngresos=actualizarIngresos;
         service.guardarEgresos=guardarEgresos;
         service.actualizarEgresos=actualizarEgresos;
+        service.guardarDocumentos=guardarDocumentos;
+        service.actualizarDocumentos=actualizarDocumentos;
+        service.guardarEvaluacion=guardarEvaluacion;
+        service.actualizarEvaluacion=actualizarEvaluacion;
         return service;
         
+        function guardarEvaluacion(data){
+            var url=Constants.BaseURLBack+'/estudio/saveEvaluacion';
+            return RestService.post(url,'',data);
+        }
+        
+        function actualizarEvaluacion(data){
+            var url=Constants.BaseURLBack+'/estudio/updateEvaluacion';
+            return RestService.post(url,'',data);
+        }
+        
+        function guardarDocumentos(data){
+            var url=Constants.BaseURLBack+'/estudio/saveDocumentos';
+            return RestService.post(url,'',data);
+        }
+        
+        function actualizarDocumentos(data){
+            var url=Constants.BaseURLBack+'/estudio/updateDocumentos';
+            return RestService.post(url,'',data);
+        }
+
         function guardarEgresos(data){
             var url=Constants.BaseURLBack+'/estudio/saveEgresos';
             return RestService.post(url,'',data);

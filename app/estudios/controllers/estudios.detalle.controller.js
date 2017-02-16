@@ -40,6 +40,8 @@
         scope.empleadoAsignado={};
         scope.ingresos={};
         scope.egresos={};
+        scope.documentos={};
+        scope.evaluacion={};
         //Banderas
         scope.load=false;
         scope.verAccion=false;
@@ -87,6 +89,11 @@
         /*Egresos*/
         scope.guardarEgresos=guardarEgresos;
         
+        /*Docs*/
+        scope.guardarDocumentos=guardarDocumentos;
+        
+        /*Evaluacion*/
+        scope.guardarEvaluacion=guardarEvaluacion;
         
         scope.ingresos.ingreso_otros_miembros=0;
         scope.ingresos.ingreso_renta=0;
@@ -148,10 +155,105 @@
         if($rootScope.tipoUsuario==='2'){
             id=$rootScope.institucion.id_institucion;
         }
+        
+        function setBool(){
+            if(scope.documentos.carta_no_adeudo==='1'){
+                scope.documentos.carta_no_adeudo=true;
+            }
+            if(scope.documentos.carta_no_adeudo==='0'){
+                scope.documentos.carta_no_adeudo=false;
+            }
+            
+            if(scope.documentos.firma_reglamento==='1'){
+                scope.documentos.firma_reglamento=true;
+            }
+            if(scope.documentos.firma_reglamento==='0'){
+                scope.documentos.firma_reglamento=false;
+            }
+            
+            if(scope.documentos.nomina_carta==='1'){
+                scope.documentos.nomina_carta=true;
+            }
+            if(scope.documentos.nomina_carta==='0'){
+                scope.documentos.nomina_carta=false;
+            }
+            
+            if(scope.documentos.poliza==='1'){
+                scope.documentos.poliza=true;
+            }
+            if(scope.documentos.poliza==='0'){
+                scope.documentos.poliza=false;
+            }
+            
+            if(scope.documentos.estado_cuenta==='1'){
+                scope.documentos.estado_cuenta=true;
+            }
+            if(scope.documentos.estado_cuenta==='0'){
+                scope.documentos.estado_cuenta=false;
+            }
+            
+            if(scope.documentos.recibos_renta==='1'){
+                scope.documentos.recibos_renta=true;
+            }
+            if(scope.documentos.recibos_renta==='0'){
+                scope.documentos.recibos_renta=false;
+            }
+            
+            if(scope.documentos.facturas_hospital==='1'){
+                scope.documentos.facturas_hospital=true;
+            }
+            if(scope.documentos.facturas_hospital==='0'){
+                scope.documentos.facturas_hospital=false;
+            }
+           
+             if(scope.documentos.comprobante_finiquito==='1'){
+                scope.documentos.comprobante_finiquito=true;
+            }
+            if(scope.documentos.comprobante_finiquito==='0'){
+                scope.documentos.comprobante_finiquito=false;
+            }
+            
+            if(scope.documentos.demandas_judiciales==='1'){
+                scope.documentos.demandas_judiciales=true;
+            }
+            if(scope.documentos.demandas_judiciales==='0'){
+                scope.documentos.demandas_judiciales=false;
+            }
+
+            if(scope.documentos.servicios==='1'){
+                scope.documentos.servicios=true;
+            }
+            if(scope.documentos.servicios==='0'){
+                scope.documentos.servicios=false;
+            }
+            
+            if(scope.documentos.pagos_credito_hipo==='1'){
+                scope.documentos.pagos_credito_hipo=true;
+            }
+            if(scope.documentos.pagos_credito_hipo==='0'){
+                scope.documentos.pagos_credito_hipo=false;
+            }
+            
+            if(scope.documentos.pagos_credito_auto==='1'){
+                scope.documentos.pagos_credito_auto=true;
+            }
+            if(scope.documentos.pagos_credito_auto==='0'){
+                scope.documentos.pagos_credito_auto=false;
+            }
+            
+            if(scope.documentos.otros==='1'){
+                scope.documentos.otros=true;
+            }
+            if(scope.documentos.otros==='0'){
+                scope.documentos.otros=false;
+            }
+        }
  
        EstudiosService.obtenerDetalleEstudio(EstudiosService.idEstudioSeleccionado, id).then(
             function(response){
                 scope.estudio=response.data;
+                scope.documentos=scope.estudio.documentos[0];
+                scope.evaluacion=scope.estudio.evaluacion[0];
                 if(scope.estudio.padres.length>0){
                     
                     for(var i=0; i<scope.estudio.padres.length; i++){
@@ -247,7 +349,9 @@
                     scope.egresos.otros2=parseFloat(scope.egresos.otros2);
                     
                 }
-				
+                if(response.data.documentos.length>0){
+                    setBool();		
+                }
                 EstudiosService.obtenerEmpleados().then(
                     function(response){
                         scope.listaEmpleado=response.data;
@@ -1221,6 +1325,91 @@
                                     scope.egresos.otros2=parseFloat(scope.egresos.otros2);
 
                                     mensaje('success', 'Aviso.', 'Se guardaron los datos de los egresos correctamente.');
+
+                                },
+                                function(error){
+                                    console.log('Error al guardar hijo: '+error);
+                                }
+                            );
+                        }
+                        
+                    },
+                "No",
+                    function(){}
+            );
+            
+        }
+        
+        
+        function guardarDocumentos(){
+            scope.documentos.id_estudio=scope.estudio.id_estudio;
+            scope.documentos.folio_estudio=scope.estudio.folio_estudio;
+            scope.documentos.id_familia=scope.estudio.id_familia;
+            console.log(scope.documentos);
+            confirmaMsj(
+                "Confirmación de solicitud",
+                "¿Actualizar datos?",
+                "Si",
+                    function(){
+                        if(scope.documentos.id_documento_familia!==undefined){
+                            FamiliaService.actualizarDocumentos(scope.documentos).then(
+                                function(response){
+                                    scope.documentos=response.data[0];
+                                    setBool();
+                                    mensaje('success', 'Aviso.', 'Se actualizaron los datos de los documentos correctamente.');
+
+                                },
+                                function(error){
+                                    console.log('Error al guardar hijo: '+error);
+                                }
+                            );
+                        }else{
+                            FamiliaService.guardarDocumentos(scope.documentos).then(
+                                function(response){
+                                    scope.documentos=response.data[0];
+                                    setBool();
+                                    mensaje('success', 'Aviso.', 'Se guardaron los datos de los documentos correctamente.');
+
+                                },
+                                function(error){
+                                    console.log('Error al guardar hijo: '+error);
+                                }
+                            );
+                        }
+                        
+                    },
+                "No",
+                    function(){}
+            );
+            
+        }
+        
+        function guardarEvaluacion(){
+            scope.evaluacion.id_estudio=scope.estudio.id_estudio;
+            scope.evaluacion.folio_estudio=scope.estudio.folio_estudio;
+            scope.evaluacion.id_familia=scope.estudio.id_familia;
+            console.log(scope.evaluacion);
+            confirmaMsj(
+                "Confirmación de solicitud",
+                "¿Actualizar datos?",
+                "Si",
+                    function(){
+                        if(scope.evaluacion.id_evaluacion_familia!==undefined){
+                            FamiliaService.actualizarEvaluacion(scope.evaluacion).then(
+                                function(response){
+                                    scope.evaluacion=response.data[0];
+                                    mensaje('success', 'Aviso.', 'Se actualizaron los datos de la evaluación correctamente.');
+
+                                },
+                                function(error){
+                                    console.log('Error al guardar hijo: '+error);
+                                }
+                            );
+                        }else{
+                            FamiliaService.guardarEvaluacion(scope.evaluacion).then(
+                                function(response){
+                                    scope.evaluacion=response.data[0];
+                                    mensaje('success', 'Aviso.', 'Se guardaron los datos de la evaluación correctamente.');
 
                                 },
                                 function(error){

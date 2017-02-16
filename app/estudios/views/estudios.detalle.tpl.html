@@ -1014,10 +1014,159 @@
                     </div>
                 </div>
                 <div class="bhoechie-tab-content">
-                    10
+                    <h4 class="text-left">Documentos</h4>
+                    <span>SOLO PONER UNA "x" o "Check" EN LOS PAPELES QUE DEBERÍA DE HABER ENTREGADO Y NO LO HIZO</span>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="">
+                                <p>Carta de no adeudo:
+                                <md-checkbox ng-model="control.documentos.carta_no_adeudo" aria-label="Carta de no adeudo:"></md-checkbox></p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="">
+                                <p>Firma del reglamento de becas:
+                                <md-checkbox ng-model="control.documentos.firma_reglamento" aria-label="Firma del reglamento de becas:"></md-checkbox></p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="">
+                                <p>Nómina/Carta contador:
+                                <md-checkbox ng-model="control.documentos.nomina_carta" aria-label="Nómina/Carta contador:"></md-checkbox></p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="">
+                                <p>Pólizas de seguro:
+                                <md-checkbox ng-model="control.documentos.poliza" aria-label="Pólizas de seguro:"></md-checkbox></p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="">
+                                <p>Estados de cuenta:
+                                <md-checkbox ng-model="control.documentos.estado_cuenta" aria-label="Estados de cuenta:"></md-checkbox></p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="">
+                                <p>Recibo (s) de renta:
+                                <md-checkbox ng-model="control.documentos.recibos_renta" aria-label="Recibo (s) de renta:"></md-checkbox></p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="">
+                                <p>Facturas de hospital:
+                                <md-checkbox ng-model="control.documentos.facturas_hospital" aria-label="Facturas de hospital:"></md-checkbox></p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="">
+                                <p>Comprobante de finiquito:
+                                <md-checkbox ng-model="control.documentos.comprobante_finiquito" aria-label="Comprobante de finiquito:"></md-checkbox></p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="">
+                                <p>Demandas judiciales:
+                                <md-checkbox ng-model="control.documentos.demandas_judiciales" aria-label="Demandas judiciales:"></md-checkbox></p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="">
+                                <p>Servicios:
+                                <md-checkbox ng-model="control.documentos.servicios" aria-label="Servicios:"></md-checkbox></p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="">
+                                <p>Pagos de crédito hipotecario:
+                                <md-checkbox ng-model="control.documentos.pagos_credito_hipo" aria-label="Pagos de crédito hipotecario:"></md-checkbox></p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="">
+                                <p>Pagos de crédito automotriz:
+                                <md-checkbox ng-model="control.documentos.pagos_credito_auto" aria-label="Pagos de crédito automotriz:"></md-checkbox></p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="">
+                                <p>Otros:
+                                <md-checkbox ng-model="control.documentos.otros" aria-label="Otros"></md-checkbox></p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="row">
+                        <div class="form-group label-floating">
+                            <label class="control-label">Comentarios:</label>
+                            <textarea class="form-control" rows="5" ng-model="control.documentos.comentarios"></textarea>
+                        </div>
+                    </div>
+                    <div class="row text-left">
+                        <button 
+                            type="button" class="btn btn-primary btn-xs" 
+                            ng-click="control.guardarDocumentos()">Guardar datos</button>
+                    </div>
                 </div>
                 <div class="bhoechie-tab-content">
-                    11
+                     <h4 class="text-left">Evaluación del entrevistador</h4>
+                     
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">Apreciación: </label>
+                                <select class="form-control" ng-model="control.evaluacion.apreciacion">
+                                    <option value="">-</option>
+                                    <option value="CONFIABLE">CONFIABLE</option>
+                                    <option value="POCO CONFIABLE">POCO CONFIABLE</option>
+                                </select>
+                            </div>
+                                    
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">Discrepancias (Califíque): </label>
+                                <select class="form-control" ng-model="control.evaluacion.discrepancia">
+                                    <option value="">-</option>
+                                    <option value="NINGUNA">NINGUNA</option>
+                                    <option value="MENOR">MENOR</option>
+                                    <option value="MODERADA">MODERADA</option>
+                                    <option value="ALTA">ALTA</option>
+                                    <option value="GRAVE">GRAVE</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row text-left">
+                        <h5>Comentarios motivos</h5>
+                        <hr>
+                        <ul ng-repeat="motivo in control.estudio.motivos">
+                            <li><p class="small">{{motivo.motivo}}</p></li>
+                        </ul>
+                        
+                    </div>
+                    <div class="row text-left">
+                        <button 
+                            type="button" class="btn btn-primary btn-xs" 
+                            ng-click="control.guardarEvaluacion()">Guardar datos</button>
+                    </div>
                 </div>
                 <div class="bhoechie-tab-content">
                     12

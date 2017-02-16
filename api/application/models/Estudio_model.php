@@ -195,8 +195,8 @@ class Estudio_model extends CI_Model {
         $estudio->propiedades=  $this->getPropiedadesFamilia($estudio->id_familia, $estudio->id_estudio);
         $estudio->ingresos=$this->getIngresosFamilia($estudio->id_familia, $estudio->id_estudio);
         $estudio->egresos=$this->getEgresosFamilia($estudio->id_familia, $estudio->id_estudio);
-        $estudio->documentos=array();
-        $estudio->evaluacion=array();
+        $estudio->documentos=$this->getDocumentosFamilia($estudio->id_familia, $estudio->id_estudio);
+        $estudio->evaluacion=$this->getEvaluacionFamilia($estudio->id_familia, $estudio->id_estudio);
         $estudio->comentarios=array();
         $estudio->padres=$this->getPadreFamilia($estudio->id_familia, $estudio->id_estudio);
         return $estudio;
@@ -390,5 +390,43 @@ class Estudio_model extends CI_Model {
         unset($data['id_egreso_familia']);
         $this->db->update('egresos_familia', $data); 
         return $this->getEgresosFamilia($data['id_familia'], $data['id_estudio']); 
+    }
+    
+    public function getDocumentosFamilia($idFamilia, $idEstudio) {
+        $this->db->where('id_familia', $idFamilia);
+        $this->db->where('id_estudio', $idEstudio);
+        $this->db->order_by('id_documento_familia', 'desc');
+        return $this->db->get('documentos_familia')->result();
+    }
+    
+    public function saveDocumentos($data) {
+        $this->db->insert('documentos_familia', $data);
+        return $this->getDocumentosFamilia($data['id_familia'], $data['id_estudio']);
+    }
+    
+    public function updateDocumentos($data) {
+        $this->db->where('id_documento_familia', $data['id_documento_familia']);
+        unset($data['id_documento_familia']);
+        $this->db->update('documentos_familia', $data); 
+        return $this->getDocumentosFamilia($data['id_familia'], $data['id_estudio']); 
+    }
+    
+    public function getEvaluacionFamilia($idFamilia, $idEstudio) {
+        $this->db->where('id_familia', $idFamilia);
+        $this->db->where('id_estudio', $idEstudio);
+        $this->db->order_by('id_evaluacion_familia', 'desc');
+        return $this->db->get('evaluacion_familia')->result();
+    }
+    
+    public function saveEvaluacion($data) {
+        $this->db->insert('evaluacion_familia', $data);
+        return $this->getEvaluacionFamilia($data['id_familia'], $data['id_estudio']);
+    }
+    
+    public function updateEvaluacion($data) {
+        $this->db->where('id_evaluacion_familia', $data['id_evaluacion_familia']);
+        unset($data['id_evaluacion_familia']);
+        $this->db->update('evaluacion_familia', $data); 
+        return $this->getEvaluacionFamilia($data['id_familia'], $data['id_estudio']); 
     }
 }

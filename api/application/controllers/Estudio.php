@@ -196,4 +196,23 @@ class Estudio extends CI_Controller {
         echo json_encode($this->estudio_model->updateEgresos($data));
     }
     
+    public function saveDocumentos() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->estudio_model->saveDocumentos($data));
+    }
+    
+    public function updateDocumentos() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->estudio_model->updateDocumentos($data));
+    }
+    
+    public function saveEvaluacion() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->estudio_model->saveEvaluacion($data));
+    }
+    
+    public function updateEvaluacion() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->estudio_model->updateEvaluacion($data));
+    }
 }
