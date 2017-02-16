@@ -13,6 +13,7 @@
         PropiedadService,
         DependienteService, 
         MotivoService, 
+        ComentarioService,
         $localStorage, 
         $rootScope, 
         $state, 
@@ -36,6 +37,7 @@
         scope.motivo={};
         scope.vehiculo={};
         scope.propiedad={};
+        scope.comentario={};
         scope.listaEmpleado=[];
         scope.empleadoAsignado={};
         scope.ingresos={};
@@ -94,6 +96,12 @@
         
         /*Evaluacion*/
         scope.guardarEvaluacion=guardarEvaluacion;
+        
+        /*Comentarios*/
+        scope.verActualizarComentario=verActualizarComentario;
+        scope.eliminarComentario=eliminarComentario;
+        scope.agregarComentario=agregarComentario;
+        scope.guardarComentario=guardarComentario;
         
         scope.ingresos.ingreso_otros_miembros=0;
         scope.ingresos.ingreso_renta=0;
@@ -252,8 +260,15 @@
        EstudiosService.obtenerDetalleEstudio(EstudiosService.idEstudioSeleccionado, id).then(
             function(response){
                 scope.estudio=response.data;
-                scope.documentos=scope.estudio.documentos[0];
-                scope.evaluacion=scope.estudio.evaluacion[0];
+                
+                if(response.data.evaluacion.length>0){
+                    scope.evaluacion=scope.estudio.evaluacion[0];
+                }
+                
+                if(response.data.documentos.length>0){
+                    scope.documentos=scope.estudio.documentos[0];
+                }
+                
                 if(scope.estudio.padres.length>0){
                     
                     for(var i=0; i<scope.estudio.padres.length; i++){
@@ -1385,6 +1400,15 @@
         }
         
         function guardarEvaluacion(){
+            if(scope.evaluacion.apreciacion===undefined
+                    ||scope.evaluacion.discrepancia===undefined
+                    ||scope.evaluacion.apreciacion===''
+                    ||scope.evaluacion.discrepancia===''
+                    ||scope.evaluacion.apreciacion===null
+                    ||scope.evaluacion.discrepancia===null){
+                mensaje('alert', 'Campos obligatorios', 'Por favor complete los campos.');
+                return;
+            }
             scope.evaluacion.id_estudio=scope.estudio.id_estudio;
             scope.evaluacion.folio_estudio=scope.estudio.folio_estudio;
             scope.evaluacion.id_familia=scope.estudio.id_familia;
@@ -1424,6 +1448,95 @@
             );
             
         }
+        
+        /*comentario*/
+        function verActualizarComentario(comentario){
+            scope.banderaActualizar=true;
+            scope.comentario=comentario;
+            $("#modal_agregar_comentario").modal('show');
+        }
+        
+        function agregarComentario(idFamilia){
+            scope.comentario={};
+            scope.banderaActualizar=false;
+            scope.comentario.id_familia=idFamilia;
+            $("#modal_agregar_comentario").modal('show');
+        }
+        
+        function eliminarComentario(comentario){
+            confirmaMsj("Confirmación de solicitud",
+                "¿Eliminar comentario?",
+                "Si",
+                function(){
+                    ComentarioService.eliminarComentario(comentario).then(
+                        function(response){
+                            scope.estudio.comentarios=response.data;
+                            mensaje('success', 'Aviso.', 'Se eliminó el comentario seleccionado correctamente.');
+                            scope.comentario={};
+                            scope.banderaActualizar=false;
+                        },
+                        function(error){
+                            console.log('Error al guardar hijo: '+error);
+                        }
+                    );
+                },
+                "No",
+                function(){}
+            );
+        }
+        
+        function guardarComentario(){
+            console.log(scope.comentario);
+            scope.comentario.id_estudio=scope.estudio.id_estudio;
+            scope.comentario.folio_estudio=scope.estudio.folio_estudio;
+            if(scope.banderaActualizar){
+                confirmaMsj(
+                    "Confirmación de solicitud",
+                    "¿Actualizar datos?",
+                    "Si",
+                        function(){
+                            ComentarioService.actualizarComentario(scope.comentario).then(
+                                function(response){
+                                    scope.estudio.comentarios=response.data;
+                                    mensaje('success', 'Aviso.', 'Se actualizaron los datos del comentario correctamente.');
+                                    $("#modal_agregar_comentario").modal('hide');
+                                    scope.comentario={};
+                                    scope.banderaActualizar=false;
+                                },
+                                function(error){
+                                    console.log('Error al guardar hijo: '+error);
+                                }
+                            );
+                        },
+                    "No",
+                        function(){}
+                );
+                return;
+            }
+            confirmaMsj(
+                "Confirmación de solicitud",
+                "¿Agregar comentario?",
+                "Si",
+                    function(){
+                        ComentarioService.guardarComentario(scope.comentario).then(
+                            function(response){
+                                scope.estudio.comentarios=response.data;
+                                mensaje('success', 'Aviso.', 'Se guardo el comentario correctamente.');
+                                $("#modal_agregar_comentario").modal('hide');
+                                scope.comentario={};
+                                scope.banderaActualizar=false;
+                            },
+                            function(error){
+                                console.log('Error al guardar hijo: '+error);
+                            }
+                        );
+                    },
+                "No",
+                    function(){}
+            );
+            
+        }
+        
         
     };//end controller
 

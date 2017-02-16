@@ -9,6 +9,7 @@
         console.log('init run app');
         $rootScope.user={};
         $rootScope.isAuth=false;
+        $rootScope.dev=false;
         $rootScope.tipoUsuario=0;
         $rootScope.rolUsuario=0;
         $rootScope.institucion={};

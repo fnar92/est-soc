@@ -1946,8 +1946,9 @@ label.control-label {
 }
 
 .form-group {
-  padding-bottom: 7px;
-  margin: 27px 0 0 0;
+  /* padding-bottom: 7px; */
+  /* margin: 27px 0 0 0; */
+  text-align: left;
 }
 .form-group .form-control {
   margin-bottom: 7px;
@@ -3491,7 +3492,7 @@ footer .btn {
   color: #999999;
 }
 .card .card-content {
-  padding: 15px 20px;
+  padding: 5px 20px;
 }
 .card .card-content .category {
   margin-bottom: 0;

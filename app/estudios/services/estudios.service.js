@@ -18,7 +18,7 @@
         service.obtenerDetalleEstudio=obtenerDetalleEstudio;
         service.actualizarEstudio=actualizarEstudio;
         service.cancelarEstudioInstitucion=cancelarEstudioInstitucion;
-        
+        service.obtenerCicloEscolar=obtenerCicloEscolar;
         return service;
         
         function cancelarEstudioInstitucion(idCancelacion){
@@ -74,6 +74,11 @@
         
         function obtenerDetalleEstudio(idEstudio, idInstitucion){
             var url=Constants.BaseURLBack+'/estudio/getEstudioDetalle/'+idEstudio+'/'+idInstitucion;
+            return RestService.get(url,'');
+        }
+        
+        function obtenerCicloEscolar(){
+            var url=Constants.BaseURLBack+'/estudio/getCicloEscolar';
             return RestService.get(url,'');
         }
         

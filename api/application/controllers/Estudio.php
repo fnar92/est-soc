@@ -215,4 +215,25 @@ class Estudio extends CI_Controller {
         $data = json_decode(file_get_contents('php://input'),true);
         echo json_encode($this->estudio_model->updateEvaluacion($data));
     }
+    
+     public function getCicloEscolar() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->estudio_model->getCicloEscolar());
+    }
+    
+    /*comentarios*/
+    public function saveComentario() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->estudio_model->saveComentario($data));
+    }
+    
+    public function deleteComentario() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->estudio_model->deleteComentario($data));
+    }
+    
+    public function updateComentario() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->estudio_model->updateComentario($data));
+    }
 }

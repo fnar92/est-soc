@@ -28,6 +28,8 @@
         scope.load=false;
         scope.verAccion=false;
         
+        scope.entrevista={};
+        
         //acctiones
         scope.buscarEstudios=buscarEstudios;
         scope.verDetalle=verDetalle;
@@ -35,6 +37,8 @@
         scope.agendarEstudio=agendarEstudio;
         scope.reagendarEstudio=reagendarEstudio;
         scope.cancelarEstudio=cancelarEstudio;
+        scope.agendarSave=agendarSave;
+        
        
        
         if (!$localStorage.globals||!$rootScope.isAuth) {
@@ -104,10 +108,16 @@
         }
         
         function agendarEstudio(){
+            $("#modal_agendar_entrevista").modal('show');
+        }
+
+        function agendarSave(){
             var obj={};
             obj.id_estudio=scope.estudio.id_estudio;
             obj.id_estatus_estudio=3;
-            
+            obj.fecha_entrevista=scope.entrevista.fecha_entrevista;
+            obj.comentarios=scope.entrevista.comentarios;
+            console.log(obj);
             confirmaMsj(
                 "Confirmación de solicitud",
                 "¿Agendar estudio?",
@@ -119,6 +129,7 @@
                                 scope.estudio={};
                                 mensaje('success', 'Aviso.', 'Se agendo el estudio correctamente.');
                                 scope.buscarEstudios();
+                                $("#modal_agendar_entrevista").modal('hide');
                                 $("#modal_agendar").modal('hide');
                             },
                             function(error){
@@ -129,9 +140,7 @@
                 "No",
                     function(){}
             );
-            
         }
-
         function reagendarEstudio(){
             var obj={};
             obj.id_estudio=scope.estudio.id_estudio;

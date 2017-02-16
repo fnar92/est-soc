@@ -28,6 +28,7 @@
         scope.estudios=[];
         scope.familia={};
         scope.estudio={};
+        scope.cicloEscolar={};
         scope.estudioInstitucion={};
         scope.filtroFamilia="";
         scope.listaFamiliasEncontradas=[];
@@ -57,6 +58,16 @@
         scope.solicitarEstudio=solicitarEstudio;
         scope.cancelarEstudio=cancelarEstudio;
         
+        
+        EstudiosService.obtenerCicloEscolar().then(
+            function(response){
+                if(response.data.length>0){
+                    scope.cicloEscolar=response.data[0];
+                }
+            },function(error){
+                console.log('Error al obtener el ciclo: '+error);
+            }
+        );
        
         function accionInicial(){
             scope.bandera_menu=false;
@@ -128,6 +139,11 @@
         }
         
         function guardar_solicitud(){
+            if(scope.cicloEscolar.id_ciclo_escolar===undefined){
+                mensaje('alert','Error ciclo escolar','No existe ciclo escolar activo, consulte a los ejecutivos.', 5000);
+                return;
+            }
+            
             if(scope.familia.familia===''||
                 scope.familia.familia===null||
                 scope.familia.familia===undefined
@@ -150,7 +166,6 @@
         function guardarSolicitudAccion(){
             //Insertar familia nueva
             show();
-            
             if(scope.familia.id_familia===undefined){
                 scope.familia.id_institucion= parseInt($rootScope.user.id_institucion);
                 EstudiosService.guardarFamilia(scope.familia).then(
@@ -168,6 +183,7 @@
                             scope.estudio.institucion_solicito=$rootScope.institucion.clave_institucion;
                             scope.estudio.id_usuario_asignado=0;
                             scope.estudio.id_usuario_asigno=0;
+                            scope.estudio.ciclo_escolar=scope.cicloEscolar.ciclo_escolar;
                             EstudiosService.guardarEstudio(scope.estudio).then(
                                 function(response){
                                     if(response.data.id_estudio===undefined){
@@ -202,6 +218,7 @@
                 
             }else{
                 if(scope.familia.id_familia!==undefined&&scope.estudio.id_estudio===undefined){
+                    scope.estudio.ciclo_escolar=scope.cicloEscolar.ciclo_escolar;
                     scope.estudio.id_estatus_estudio=1;//Enviado para solicitud
                     scope.estudio.id_institucion_solicito= parseInt($rootScope.user.id_institucion);
                     scope.estudio.id_familia=scope.familia.id_familia;

@@ -118,7 +118,7 @@ class Estudio_model extends CI_Model {
         if($idInstitucion!=0){
             $add=",in.clave_institucion";
         }
-        $this->db->select('es_in.id_estudio_institucion, es_in.id_estudio, es.pago,'
+        $this->db->select('es_in.id_estudio_institucion, es_in.id_estudio, es.pago, es.ciclo_escolar,'
                 . 'es.num_recibo, es.id_estatus_estudio, es_in.id_institucion'
                 . $add);
         $this->db->from('estudios_instituciones es_in');
@@ -197,7 +197,7 @@ class Estudio_model extends CI_Model {
         $estudio->egresos=$this->getEgresosFamilia($estudio->id_familia, $estudio->id_estudio);
         $estudio->documentos=$this->getDocumentosFamilia($estudio->id_familia, $estudio->id_estudio);
         $estudio->evaluacion=$this->getEvaluacionFamilia($estudio->id_familia, $estudio->id_estudio);
-        $estudio->comentarios=array();
+        $estudio->comentarios=$this->getComentarioesFamilia($estudio->id_familia, $estudio->id_estudio);
         $estudio->padres=$this->getPadreFamilia($estudio->id_familia, $estudio->id_estudio);
         return $estudio;
     }
@@ -428,5 +428,36 @@ class Estudio_model extends CI_Model {
         unset($data['id_evaluacion_familia']);
         $this->db->update('evaluacion_familia', $data); 
         return $this->getEvaluacionFamilia($data['id_familia'], $data['id_estudio']); 
+    }
+    
+    public function getCicloEscolar() {
+        $this->db->where('status', 1);
+        return $this->db->get('cat_ciclo_escolar')->result(); 
+    }
+    
+    /*comentarios*/
+    public function getComentarioesFamilia($idFamilia, $idEstudio){
+        $this->db->where('id_familia', $idFamilia);
+        $this->db->where('id_estudio', $idEstudio);
+        return $this->db->get('comentario_familia')->result();
+    }
+    
+    public function saveComentario($data){
+        $this->db->insert('comentario_familia', $data);
+        return $this->getComentarioesFamilia($data['id_familia'], $data['id_estudio']);
+        
+    }
+    
+    public function deleteComentario($data){
+        $this->db->where('id_comentario_familia', $data['id_comentario_familia']);
+        $this->db->delete('comentario_familia'); 
+        return $this->getComentarioesFamilia($data['id_familia'], $data['id_estudio']);
+    }
+    
+    public function updateComentario($data){
+        $this->db->where('id_comentario_familia', $data['id_comentario_familia']);
+        unset($data['id_comentario_familia']);
+        $this->db->update('comentario_familia', $data); 
+        return $this->getComentarioesFamilia($data['id_familia'], $data['id_estudio']);
     }
 }
