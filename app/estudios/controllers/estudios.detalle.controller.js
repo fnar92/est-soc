@@ -19,7 +19,7 @@
         $state, 
         $mdDialog, 
         $mdToast, 
-        DialogService, RestService, AuthenticationService, Constants, UserService) {
+        DialogService, RestService, AuthenticationService, Constants, UserService, $q) {
         /* jshint validthis: true */
         console.log('init estudios ver detalle');
         
@@ -102,6 +102,13 @@
         scope.eliminarComentario=eliminarComentario;
         scope.agregarComentario=agregarComentario;
         scope.guardarComentario=guardarComentario;
+        scope.calcula=calcula;
+        scope.setSueldo=setSueldo;
+        
+        /*cambia estatus estudio*/
+        scope.finalizarCaptura=finalizarCaptura;
+        scope.enviarARevision=enviarARevision;
+        scope.enviarATerminado=enviarATerminado;
         
         scope.ingresos.ingreso_otros_miembros=0;
         scope.ingresos.ingreso_renta=0;
@@ -115,8 +122,80 @@
         scope.ingresos.sueldo_mama=0;
         scope.ingresos.ingreso_percapita=0;
         scope.ingresos.clasificacion='';
-        scope.calcula=calcula;
-        scope.setSueldo=setSueldo;
+        
+        var id=0;
+        if($rootScope.tipoUsuario==='2'){
+            id=$rootScope.institucion.id_institucion;
+        }
+        load();
+        
+        function enviarATerminado(){
+            var obj={};
+            obj.id_estudio=scope.estudio.id_estudio;
+            obj.id_estatus_estudio=7;
+            confirmaMsj(
+                "Confirmación de solicitud",
+                "¿Terminar estudio? Será visible para la institución.",
+                "Si",
+                    function(){
+                        show();
+                        var promesas=[];
+                        promesas.push(EstudiosService.actualizarEstudio(obj));
+                        $q.all(promesas).then(
+                            function(response){
+                                load();
+                            }
+                        );
+                    },
+                "No",
+                    function(){}
+            );
+        }
+        function finalizarCaptura(){
+            var obj={};
+            obj.id_estudio=scope.estudio.id_estudio;
+            obj.id_estatus_estudio=5;
+            confirmaMsj(
+                "Confirmación de solicitud",
+                "¿Terminar captura?",
+                "Si",
+                    function(){
+                        show();
+                        var promesas=[];
+                        promesas.push(EstudiosService.actualizarEstudio(obj));
+                        $q.all(promesas).then(
+                            function(response){
+                                load();
+                            }
+                        );
+                    },
+                "No",
+                    function(){}
+            );
+        }
+        
+        function enviarARevision(){
+            var obj={};
+            obj.id_estudio=scope.estudio.id_estudio;
+            obj.id_estatus_estudio=6;
+            confirmaMsj(
+                "Confirmación de solicitud",
+                "¿Enviar estudio a revisión?",
+                "Si",
+                    function(){
+                        show();
+                        var promesas=[];
+                        promesas.push(EstudiosService.actualizarEstudio(obj));
+                        $q.all(promesas).then(
+                            function(response){
+                                load();
+                            }
+                        );
+                    },
+                "No",
+                    function(){}
+            );
+        }
         
         function setSueldo(){
             scope.ingresos.sueldo_papa=scope.estudio.sueldo_papa;
@@ -158,10 +237,6 @@
         if (!$localStorage.globals||!$rootScope.isAuth) {
             mensaje('error', 'Session', 'Tu session ha expirado.');
             location.href='#/login';
-        }
-        var id=0;
-        if($rootScope.tipoUsuario==='2'){
-            id=$rootScope.institucion.id_institucion;
         }
         
         function setBool(){
@@ -256,131 +331,133 @@
                 scope.documentos.otros=false;
             }
         }
- 
-       EstudiosService.obtenerDetalleEstudio(EstudiosService.idEstudioSeleccionado, id).then(
-            function(response){
-                scope.estudio=response.data;
-                
-                if(response.data.evaluacion.length>0){
-                    scope.evaluacion=scope.estudio.evaluacion[0];
-                }
-                
-                if(response.data.documentos.length>0){
-                    scope.documentos=scope.estudio.documentos[0];
-                }
-                
-                if(scope.estudio.padres.length>0){
-                    
-                    for(var i=0; i<scope.estudio.padres.length; i++){
-                        if(scope.estudio.padres[i].tipo_persona==='PAPA'){
-                            scope.estudio.id_papa=scope.estudio.padres[i].id_padre_familia;
-                            scope.estudio.nombre_papa=scope.estudio.padres[i].nombre;
-                            scope.estudio.apellido_paterno_papa=scope.estudio.padres[i].apellido_paterno;
-                            scope.estudio.apellido_materno_papa=scope.estudio.padres[i].apellido_materno;
-                            scope.estudio.edad_papa=scope.estudio.padres[i].edad;
-                            scope.estudio.correo_papa=scope.estudio.padres[i].correo;
-                            scope.estudio.rfc_papa=scope.estudio.padres[i].rfc;
-                            scope.estudio.celular_papa=scope.estudio.padres[i].celular;
-                            scope.estudio.profesion_papa=scope.estudio.padres[i].profesion;
-                            scope.estudio.ocupacion_papa=scope.estudio.padres[i].ocupacion;
-                            scope.estudio.empresa_papa=scope.estudio.padres[i].empresa;
-                            scope.estudio.puesto_papa=scope.estudio.padres[i].puesto;
-                            scope.estudio.giro_papa=scope.estudio.padres[i].giro;
-                            scope.estudio.dueno_papa=scope.estudio.padres[i].dueno;
-                            scope.estudio.antiguedad_papa=scope.estudio.padres[i].antiguedad;
-                            scope.estudio.sueldo_papa=scope.estudio.padres[i].sueldo_neto;
-                        }
-                        if(scope.estudio.padres[i].tipo_persona==='MAMA'){
-                            scope.estudio.id_mama=scope.estudio.padres[i].id_padre_familia;
-                            scope.estudio.nombre_mama=scope.estudio.padres[i].nombre;
-                            scope.estudio.apellido_paterno_mama=scope.estudio.padres[i].apellido_paterno;
-                            scope.estudio.apellido_materno_mama=scope.estudio.padres[i].apellido_materno;
-                            scope.estudio.edad_mama=scope.estudio.padres[i].edad;
-                            scope.estudio.correo_mama=scope.estudio.padres[i].correo;
-                            scope.estudio.rfc_mama=scope.estudio.padres[i].rfc;
-                            scope.estudio.celular_mama=scope.estudio.padres[i].celular;
-                            scope.estudio.profesion_mama=scope.estudio.padres[i].profesion;
-                            scope.estudio.ocupacion_mama=scope.estudio.padres[i].ocupacion;
-                            scope.estudio.empresa_mama=scope.estudio.padres[i].empresa;
-                            scope.estudio.puesto_mama=scope.estudio.padres[i].puesto;
-                            scope.estudio.giro_mama=scope.estudio.padres[i].giro;
-                            scope.estudio.dueno_mama=scope.estudio.padres[i].dueno;
-                            scope.estudio.antiguedad_mama=scope.estudio.padres[i].antiguedad;
-                            scope.estudio.sueldo_mama=scope.estudio.padres[i].sueldo_neto;
-                        }
+        
+        function load(){
+            EstudiosService.obtenerDetalleEstudio(EstudiosService.idEstudioSeleccionado, id).then(
+                function(response){
+                    scope.estudio=response.data;
+
+                    if(response.data.evaluacion.length>0){
+                        scope.evaluacion=scope.estudio.evaluacion[0];
                     }
-                    
-                }
-                
-                
-                scope.estudio.sueldo_papa=parseFloat(scope.estudio.sueldo_papa);
-                scope.estudio.sueldo_mama=parseFloat(scope.estudio.sueldo_mama);
-                scope.ingresos.sueldo_papa=scope.estudio.sueldo_papa;
-                scope.ingresos.sueldo_mama=scope.estudio.sueldo_mama;
-                
-                
-                
-                if(response.data.ingresos.length>0){
-                    scope.ingresos=response.data.ingresos[0];
-                    scope.ingresos.ingreso_otros_miembros=parseFloat(scope.ingresos.ingreso_otros_miembros);
-                    scope.ingresos.ingreso_renta=parseFloat(scope.ingresos.ingreso_renta);
-                    scope.ingresos.ingreso_honorarios=parseFloat(scope.ingresos.ingreso_inversiones);
-                    scope.ingresos.ingreso_inversiones=parseFloat(scope.ingresos.ingreso_inversiones);
-                    scope.ingresos.ingreso_pensiones=parseFloat(scope.ingresos.ingreso_pensiones);
-                    scope.ingresos.ingreso_ventas=parseFloat(scope.ingresos.ingreso_ventas);
-                    scope.ingresos.otros_ingresos=parseFloat(scope.ingresos.otros_ingresos);
-                    scope.ingresos.total_otros_ingresos=parseFloat(scope.ingresos.total_otros_ingresos);
-                    scope.ingresos.sueldo_papa=parseFloat(scope.ingresos.sueldo_papa);
-                    scope.ingresos.sueldo_mama=parseFloat(scope.ingresos.sueldo_mama);
-                    scope.ingresos.ingreso_percapita=parseFloat(scope.ingresos.ingreso_percapita);
-                    scope.ingresos.total_ingresos=parseFloat(scope.ingresos.total_ingresos);
-                }
-                
-                if(response.data.egresos.length>0){
-                    scope.egresos=response.data.egresos[0];
-                    scope.egresos.alimentacion_despensa=parseFloat(scope.egresos.alimentacion_despensa);
-                    scope.egresos.renta=parseFloat(scope.egresos.renta);
-                    scope.egresos.credito_hipotecario=parseFloat(scope.egresos.credito_hipotecario);
-                    scope.egresos.colegiaturas=parseFloat(scope.egresos.colegiaturas);
-                    scope.egresos.otras_colegiaturas=parseFloat(scope.egresos.otras_colegiaturas);
-                    scope.egresos.clases_particulares=parseFloat(scope.egresos.clases_particulares);
-                    scope.egresos.agua=parseFloat(scope.egresos.agua);
-                    scope.egresos.luz=parseFloat(scope.egresos.luz);
-                    scope.egresos.telefono=parseFloat(scope.egresos.telefono);
-                    scope.egresos.servicio_domestico=parseFloat(scope.egresos.servicio_domestico);
-                    scope.egresos.gas=parseFloat(scope.egresos.gas);
-                    scope.egresos.total_servicios=parseFloat(scope.egresos.total_servicios);
-                    scope.egresos.gasolina=parseFloat(scope.egresos.gasolina);
-                    scope.egresos.credito_auto=parseFloat(scope.egresos.credito_auto);
-                    scope.egresos.pago_tdc_mensual=parseFloat(scope.egresos.pago_tdc_mensual);
-                    scope.egresos.saldo_tdc=parseFloat(scope.egresos.saldo_tdc);
-                    scope.egresos.creditos_comerciales=parseFloat(scope.egresos.creditos_comerciales);
-                    scope.egresos.vestido_calzado=parseFloat(scope.egresos.vestido_calzado);
-                    scope.egresos.medico_medicinas=parseFloat(scope.egresos.medico_medicinas);
-                    scope.egresos.diversion_entretenimiento=parseFloat(scope.egresos.diversion_entretenimiento);
-                    scope.egresos.clubes_deportivos=parseFloat(scope.egresos.clubes_deportivos);
-                    scope.egresos.seguros=parseFloat(scope.egresos.seguros);
-                    scope.egresos.vacaciones=parseFloat(scope.egresos.vacaciones);
-                    scope.egresos.otros2=parseFloat(scope.egresos.otros2);
-                    
-                }
-                if(response.data.documentos.length>0){
-                    setBool();		
-                }
-                EstudiosService.obtenerEmpleados().then(
-                    function(response){
-                        scope.listaEmpleado=response.data;
-                        hide();
-                    },
-                    function(error){
-                        console.log('Error al obtener empleados: '+error);
+
+                    if(response.data.documentos.length>0){
+                        scope.documentos=scope.estudio.documentos[0];
                     }
-                );
-            },
-            function(error){
-                console.log('Error al obtener el detalle: '+error);
-            }
-        );
+
+                    if(scope.estudio.padres.length>0){
+
+                        for(var i=0; i<scope.estudio.padres.length; i++){
+                            if(scope.estudio.padres[i].tipo_persona==='PAPA'){
+                                scope.estudio.id_papa=scope.estudio.padres[i].id_padre_familia;
+                                scope.estudio.nombre_papa=scope.estudio.padres[i].nombre;
+                                scope.estudio.apellido_paterno_papa=scope.estudio.padres[i].apellido_paterno;
+                                scope.estudio.apellido_materno_papa=scope.estudio.padres[i].apellido_materno;
+                                scope.estudio.edad_papa=scope.estudio.padres[i].edad;
+                                scope.estudio.correo_papa=scope.estudio.padres[i].correo;
+                                scope.estudio.rfc_papa=scope.estudio.padres[i].rfc;
+                                scope.estudio.celular_papa=scope.estudio.padres[i].celular;
+                                scope.estudio.profesion_papa=scope.estudio.padres[i].profesion;
+                                scope.estudio.ocupacion_papa=scope.estudio.padres[i].ocupacion;
+                                scope.estudio.empresa_papa=scope.estudio.padres[i].empresa;
+                                scope.estudio.puesto_papa=scope.estudio.padres[i].puesto;
+                                scope.estudio.giro_papa=scope.estudio.padres[i].giro;
+                                scope.estudio.dueno_papa=scope.estudio.padres[i].dueno;
+                                scope.estudio.antiguedad_papa=scope.estudio.padres[i].antiguedad;
+                                scope.estudio.sueldo_papa=scope.estudio.padres[i].sueldo_neto;
+                            }
+                            if(scope.estudio.padres[i].tipo_persona==='MAMA'){
+                                scope.estudio.id_mama=scope.estudio.padres[i].id_padre_familia;
+                                scope.estudio.nombre_mama=scope.estudio.padres[i].nombre;
+                                scope.estudio.apellido_paterno_mama=scope.estudio.padres[i].apellido_paterno;
+                                scope.estudio.apellido_materno_mama=scope.estudio.padres[i].apellido_materno;
+                                scope.estudio.edad_mama=scope.estudio.padres[i].edad;
+                                scope.estudio.correo_mama=scope.estudio.padres[i].correo;
+                                scope.estudio.rfc_mama=scope.estudio.padres[i].rfc;
+                                scope.estudio.celular_mama=scope.estudio.padres[i].celular;
+                                scope.estudio.profesion_mama=scope.estudio.padres[i].profesion;
+                                scope.estudio.ocupacion_mama=scope.estudio.padres[i].ocupacion;
+                                scope.estudio.empresa_mama=scope.estudio.padres[i].empresa;
+                                scope.estudio.puesto_mama=scope.estudio.padres[i].puesto;
+                                scope.estudio.giro_mama=scope.estudio.padres[i].giro;
+                                scope.estudio.dueno_mama=scope.estudio.padres[i].dueno;
+                                scope.estudio.antiguedad_mama=scope.estudio.padres[i].antiguedad;
+                                scope.estudio.sueldo_mama=scope.estudio.padres[i].sueldo_neto;
+                            }
+                        }
+
+                    }
+
+
+                    scope.estudio.sueldo_papa=parseFloat(scope.estudio.sueldo_papa);
+                    scope.estudio.sueldo_mama=parseFloat(scope.estudio.sueldo_mama);
+                    scope.ingresos.sueldo_papa=scope.estudio.sueldo_papa;
+                    scope.ingresos.sueldo_mama=scope.estudio.sueldo_mama;
+
+
+
+                    if(response.data.ingresos.length>0){
+                        scope.ingresos=response.data.ingresos[0];
+                        scope.ingresos.ingreso_otros_miembros=parseFloat(scope.ingresos.ingreso_otros_miembros);
+                        scope.ingresos.ingreso_renta=parseFloat(scope.ingresos.ingreso_renta);
+                        scope.ingresos.ingreso_honorarios=parseFloat(scope.ingresos.ingreso_inversiones);
+                        scope.ingresos.ingreso_inversiones=parseFloat(scope.ingresos.ingreso_inversiones);
+                        scope.ingresos.ingreso_pensiones=parseFloat(scope.ingresos.ingreso_pensiones);
+                        scope.ingresos.ingreso_ventas=parseFloat(scope.ingresos.ingreso_ventas);
+                        scope.ingresos.otros_ingresos=parseFloat(scope.ingresos.otros_ingresos);
+                        scope.ingresos.total_otros_ingresos=parseFloat(scope.ingresos.total_otros_ingresos);
+                        scope.ingresos.sueldo_papa=parseFloat(scope.ingresos.sueldo_papa);
+                        scope.ingresos.sueldo_mama=parseFloat(scope.ingresos.sueldo_mama);
+                        scope.ingresos.ingreso_percapita=parseFloat(scope.ingresos.ingreso_percapita);
+                        scope.ingresos.total_ingresos=parseFloat(scope.ingresos.total_ingresos);
+                    }
+
+                    if(response.data.egresos.length>0){
+                        scope.egresos=response.data.egresos[0];
+                        scope.egresos.alimentacion_despensa=parseFloat(scope.egresos.alimentacion_despensa);
+                        scope.egresos.renta=parseFloat(scope.egresos.renta);
+                        scope.egresos.credito_hipotecario=parseFloat(scope.egresos.credito_hipotecario);
+                        scope.egresos.colegiaturas=parseFloat(scope.egresos.colegiaturas);
+                        scope.egresos.otras_colegiaturas=parseFloat(scope.egresos.otras_colegiaturas);
+                        scope.egresos.clases_particulares=parseFloat(scope.egresos.clases_particulares);
+                        scope.egresos.agua=parseFloat(scope.egresos.agua);
+                        scope.egresos.luz=parseFloat(scope.egresos.luz);
+                        scope.egresos.telefono=parseFloat(scope.egresos.telefono);
+                        scope.egresos.servicio_domestico=parseFloat(scope.egresos.servicio_domestico);
+                        scope.egresos.gas=parseFloat(scope.egresos.gas);
+                        scope.egresos.total_servicios=parseFloat(scope.egresos.total_servicios);
+                        scope.egresos.gasolina=parseFloat(scope.egresos.gasolina);
+                        scope.egresos.credito_auto=parseFloat(scope.egresos.credito_auto);
+                        scope.egresos.pago_tdc_mensual=parseFloat(scope.egresos.pago_tdc_mensual);
+                        scope.egresos.saldo_tdc=parseFloat(scope.egresos.saldo_tdc);
+                        scope.egresos.creditos_comerciales=parseFloat(scope.egresos.creditos_comerciales);
+                        scope.egresos.vestido_calzado=parseFloat(scope.egresos.vestido_calzado);
+                        scope.egresos.medico_medicinas=parseFloat(scope.egresos.medico_medicinas);
+                        scope.egresos.diversion_entretenimiento=parseFloat(scope.egresos.diversion_entretenimiento);
+                        scope.egresos.clubes_deportivos=parseFloat(scope.egresos.clubes_deportivos);
+                        scope.egresos.seguros=parseFloat(scope.egresos.seguros);
+                        scope.egresos.vacaciones=parseFloat(scope.egresos.vacaciones);
+                        scope.egresos.otros2=parseFloat(scope.egresos.otros2);
+
+                    }
+                    if(response.data.documentos.length>0){
+                        setBool();		
+                    }
+                    EstudiosService.obtenerEmpleados().then(
+                        function(response){
+                            scope.listaEmpleado=response.data;
+                            hide();
+                        },
+                        function(error){
+                            console.log('Error al obtener empleados: '+error);
+                        }
+                    );
+                },
+                function(error){
+                    console.log('Error al obtener el detalle: '+error);
+                }
+            );
+        }//end load
 
         function verActualizarHijo(hijo){
             scope.banderaActualizar=true;
@@ -1489,7 +1566,9 @@
             console.log(scope.comentario);
             scope.comentario.id_estudio=scope.estudio.id_estudio;
             scope.comentario.folio_estudio=scope.estudio.folio_estudio;
+            
             if(scope.banderaActualizar){
+                delete scope.comentario.tipo;
                 confirmaMsj(
                     "Confirmación de solicitud",
                     "¿Actualizar datos?",
@@ -1513,6 +1592,7 @@
                 );
                 return;
             }
+            scope.comentario.tipo='GENERAL';
             confirmaMsj(
                 "Confirmación de solicitud",
                 "¿Agregar comentario?",

@@ -75,8 +75,9 @@
                                                         <span  ng-switch-when="4" class="label label-primary">Reagendado</span>
                                                         <span  ng-switch-when="5" class="label label-success">Capturado</span>
                                                         <span  ng-switch-when="6" class="label label-danger">En revisión</span>
-                                                        <span  ng-switch-when="7" class="label label-danger">Terminado</span>
+                                                        <span  ng-switch-when="7" class="label label-primary">Terminado</span>
                                                         <span  ng-switch-when="8" class="label label-danger">Cancelado</span>
+                                                        <span  ng-switch-when="9" class="label label-danger">Cita cancelada</span>
                                                     </div>
                                                 </td>
                                                 <td ng-show="tipoUsuario==='1'" class="text-center">
@@ -87,25 +88,30 @@
                                                     
                                                     <button
                                                         ng-disabled="estudio.estatus==='2'"
-                                                        ng-show="tipoUsuario==='1'&&(estudio.id_estatus_estudio==='2'||estudio.id_estatus_estudio==='4')" 
+                                                        ng-show="tipoUsuario==='1'&&rolUsuario==='2'&&(estudio.id_estatus_estudio==='2'||estudio.id_estatus_estudio==='4'||estudio.id_estatus_estudio==='9')" 
                                                         type="button" class="btn btn-info btn-xs" 
                                                         ng-click="estudios.agendarView(estudio)">Agendar</button>
                                                     
                                                     <button 
-                                                        ng-disabled="estudio.estatus==='2'"
-                                                        ng-show="tipoUsuario==='1'&&(rolUsuario==='2'&&estudio.id_estatus_estudio==='3')" 
+                                                        ng-show="tipoUsuario==='1'&&rolUsuario==='2'&&(estudio.id_estatus_estudio==='3'||estudio.id_estatus_estudio==='5'
+                                                                    ||estudio.id_estatus_estudio==='6'||estudio.id_estatus_estudio==='7')" 
                                                             type="button" class="btn btn-primary btn-xs"
                                                             ng-click="estudios.verDetalle(estudio.id_estudio)">Estudio captura</button>
                                                     
                                                     
                                                     <button 
-                                                        ng-disabled="estudio.estatus==='2'"
                                                         ng-show="tipoUsuario==='2'||(tipoUsuario==='1'&&rolUsuario==='1')" type="button" class="btn btn-primary btn-xs" ng-click="estudios.verDetalle(estudio.id_estudio)">
                                                         <div ng-show="tipoUsuario==='2'">Ver estudio</div>
                                                         <div ng-show="tipoUsuario==='1'">Estudio captura</div>
                                                     </button >
                                                     
-                                                    <button ng-show="tipoUsuario==='2'&&estudio.estatus==='1'"  class="btn btn-xs btn-danger" name="seleccionar_familia" ng-click="estudios.cancelarEstudio(estudio)">Cancelar</button>
+                                                    <button 
+                                                        ng-show="estudio.id_estatus_estudio==='3'&&(tipoUsuario==='1'&&rolUsuario==='2')" 
+                                                        type="button" class="btn btn-warning btn-xs" 
+                                                        ng-click="estudios.cancelarCita(estudio)">
+                                                        Cancelar cita
+                                                    </button>
+                                                    <button ng-show="tipoUsuario==='2'&&estudio.estatus==='1'&&(estudio.id_estatus_estudio!=='7')"  class="btn btn-xs btn-danger" name="seleccionar_familia" ng-click="estudios.cancelarEstudio(estudio)">Cancelar</button>
                                                     <div ng-show="estudio.estatus==='2'" class="label label-danger">Cancelado</div>
                                                 </td>
                                             </tr>
@@ -340,6 +346,79 @@
             <div class="row">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-primary " ng-click="estudios.agendarSave()">Agendar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal_dependiente -->
+<div class="modal fade ativa-scroll" id="modal_reagendar_entrevista" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content pagination-centered text-center">
+            <div class="modal-header">
+                <button type="button" class="close cros_close_modal" data-dismiss="modal">&times;</button>
+                <h5>Datos entrevista (reagendar):</h5>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Fecha para reagendar:</label>
+                                    <input type="date" class="form-control" ng-model="estudios.entrevista.fecha_reagendar_entrevista">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Comentarios:</label>
+                                    <textarea class="form-control" ng-model="estudios.entrevista.comentarios"> </textarea>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="clearfix"></div>
+            </div>
+
+            <div class="row">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary " ng-click="estudios.reagendarEstudioSave()">Reagendar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- modal_dependiente -->
+<div class="modal fade ativa-scroll" id="modal_cancelar_entrevista" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content pagination-centered text-center">
+            <div class="modal-header">
+                <button type="button" class="close cros_close_modal" data-dismiss="modal">&times;</button>
+                <h5>Cancelar entrevista:</h5>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Fecha para reagendar:</label>
+                                    <input type="date" class="form-control" ng-model="estudios.entrevista.fecha_reagendar_entrevista">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Motivo:</label>
+                                    <textarea class="form-control" ng-model="estudios.entrevista.comentarios"> </textarea>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="clearfix"></div>
+            </div>
+
+            <div class="row">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary " ng-click="estudios.cancelarCitaSave()">Cancelar entrevista</button>
             </div>
         </div>
     </div>

@@ -5,7 +5,7 @@
 	.module('app.estudios')
 	.controller('EstudiosVerController', EstudiosVerController);
     
-    function EstudiosVerController (EstudiosService, $localStorage, $rootScope, $state, $mdDialog, $mdToast, DialogService, RestService, AuthenticationService, Constants, UserService) {
+    function EstudiosVerController (EstudiosService, ComentarioService, $localStorage, $rootScope, $state, $mdDialog, $mdToast, DialogService, RestService, AuthenticationService, Constants, UserService) {
         /* jshint validthis: true */
         console.log('init estudios ver');
         
@@ -38,7 +38,9 @@
         scope.reagendarEstudio=reagendarEstudio;
         scope.cancelarEstudio=cancelarEstudio;
         scope.agendarSave=agendarSave;
-        
+        scope.reagendarEstudioSave=reagendarEstudioSave;
+        scope.cancelarCita=cancelarCita;
+        scope.cancelarCitaSave=cancelarCitaSave;
        
        
         if (!$localStorage.globals||!$rootScope.isAuth) {
@@ -108,15 +110,21 @@
         }
         
         function agendarEstudio(){
+            scope.entrevista={};
             $("#modal_agendar_entrevista").modal('show');
         }
 
         function agendarSave(){
             var obj={};
+            var obj2={};
             obj.id_estudio=scope.estudio.id_estudio;
             obj.id_estatus_estudio=3;
             obj.fecha_entrevista=scope.entrevista.fecha_entrevista;
-            obj.comentarios=scope.entrevista.comentarios;
+            obj2.comentario=scope.entrevista.comentarios;
+            obj2.tipo='ACEPTO_ENTREVISTA';
+            obj2.id_estudio=scope.estudio.id_estudio;
+            obj2.folio_estudio=scope.estudio.folio_estudio;
+            obj2.id_familia=scope.estudio.id_familia;
             console.log(obj);
             confirmaMsj(
                 "Confirmación de solicitud",
@@ -125,6 +133,7 @@
                     function(){
                         EstudiosService.actualizarEstudio(obj).then(
                             function(response){
+                                ComentarioService.guardarComentario(obj2);
                                 scope.familia={};
                                 scope.estudio={};
                                 mensaje('success', 'Aviso.', 'Se agendo el estudio correctamente.');
@@ -141,12 +150,25 @@
                     function(){}
             );
         }
+        
         function reagendarEstudio(){
+            scope.entrevista={};
+            $("#modal_reagendar_entrevista").modal('show');
+        }
+        
+        function reagendarEstudioSave(){
             var obj={};
             obj.id_estudio=scope.estudio.id_estudio;
             obj.id_estatus_estudio=4;
-            
+            obj.fecha_reagendar_entrevista=scope.entrevista.fecha_reagendar_entrevista;
+            var obj2={};
+            obj2.comentario=scope.entrevista.comentarios;
+            obj2.tipo='REAGENDO_ENTREVISTA';
+            obj2.id_estudio=scope.estudio.id_estudio;
+            obj2.folio_estudio=scope.estudio.folio_estudio;
+            obj2.id_familia=scope.estudio.id_familia;
             console.log(obj);
+            console.log(obj2);
             
             confirmaMsj(
                 "Confirmación de solicitud",
@@ -157,9 +179,11 @@
                             function(response){
                                 scope.familia={};
                                 scope.estudio={};
+                                ComentarioService.guardarComentario(obj2);
                                 mensaje('success', 'Aviso.', 'Se reagendo el estudio correctamente.');
                                 scope.buscarEstudios();
                                 $("#modal_agendar").modal('hide');
+                                $("#modal_reagendar_entrevista").modal('hide');
                             },
                             function(error){
                                 console.log('Error al guardar hijo: '+error);
@@ -189,6 +213,52 @@
                 },
                 "No",
                 function(){}
+            );
+        }
+        
+        
+        function cancelarCita(estudio){
+            scope.estudio=estudio;
+            scope.entrevista={};
+            $("#modal_cancelar_entrevista").modal('show');
+        }
+        
+        function cancelarCitaSave(){
+            var obj={};
+            obj.id_estudio=scope.estudio.id_estudio;
+            obj.id_estatus_estudio=9;
+            obj.fecha_reagendar_entrevista=scope.entrevista.fecha_reagendar_entrevista;
+            var obj2={};
+            obj2.comentario=scope.entrevista.comentarios;
+            obj2.tipo='CANCELO_ENTREVISTA';
+            obj2.id_estudio=scope.estudio.id_estudio;
+            obj2.folio_estudio=scope.estudio.folio_estudio;
+            obj2.id_familia=scope.estudio.id_familia;
+            console.log(obj);
+            console.log(obj2);
+            
+            confirmaMsj(
+                "Confirmación de solicitud",
+                "¿Cancelar entrevista del estudio?",
+                "Si",
+                    function(){
+                        EstudiosService.actualizarEstudio(obj).then(
+                            function(response){
+                                scope.familia={};
+                                scope.estudio={};
+                                ComentarioService.guardarComentario(obj2);
+                                mensaje('success', 'Aviso.', 'Se cancelo entrevista del estudio correctamente.');
+                                scope.buscarEstudios();
+                                $("#modal_agendar").modal('hide');
+                                $("#modal_cancelar_entrevista").modal('hide');
+                            },
+                            function(error){
+                                console.log('Error cancelar entrevista: '+error);
+                            }
+                        );
+                    },
+                "No",
+                    function(){}
             );
         }
         
