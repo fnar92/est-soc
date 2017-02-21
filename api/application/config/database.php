@@ -75,7 +75,7 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
+	'hostname' => 'hrwise.local',
 	'username' => 'root',
 	'password' => '',
 	'database' => 'estudios_soc',

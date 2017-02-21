@@ -20,6 +20,8 @@
         
         //functions
         scope.logout = logout;
+        scope.pull=pull;
+        scope.push=push;
         
         if ($localStorage.globals) {
             console.log($localStorage.globals);
@@ -73,6 +75,37 @@
             });         
         */
        
+        function pull(){
+            show();
+            RestService.get(Constants.BaseURLBack+'/pull.php', '').then(
+                function(response){
+                    hide();
+                    mensaje('success', 'Importar datos.', 'Los datos se importaron correctamente, se actualizara el sistema, espere...',6000);
+                    setTimeout(function(){window.location.reload(true);}, 6000);
+                },
+                function(error){
+                    hide();
+                    mensaje('error', 'Importar datos.', 'Ocurrio un error al importar los datos desde el servidor.');
+                    console.log('Error pull: '+error);
+                }
+            );
+        }
+       
+        function push(){
+            show();
+            RestService.get(Constants.BaseURLBack+'/push.php', '').then(
+                function(response){
+                    hide();
+                    mensaje('success', 'Exportar datos.', 'Los datos se exportaron correctamente, verifíquelos en el servidor.',6000);
+                    setTimeout(function(){window.location.reload(true);}, 6000);
+                },
+                function(error){
+                    hide();
+                    mensaje('error', 'Importar datos.', 'Ocurrio un error al importar los datos desde el servidor.');
+                    console.log('Error pull: '+error);
+                }
+            );
+        } 
        
             
     function logout(ev) {
