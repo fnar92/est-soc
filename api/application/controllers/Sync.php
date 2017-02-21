@@ -16,14 +16,6 @@ class Sync extends CI_Controller {
             $idEstudio=$estudio->id_estudio;
             $idFamilia=$estudio->id_familia;
             
-            $papa=$this->estudio_model->getPadreFamilia($idEstudio, $idFamilia);
-            
-            
-            
-            
-            
-            
-            
             $return.='delete from padre_familia where id_estudio='.$idEstudio.' and id_familia='.$idFamilia.';';
             $return.= "\n";    
             $return.='delete from hijo_familia where id_estudio='.$idEstudio.' and id_familia='.$idFamilia.';';
@@ -36,11 +28,11 @@ class Sync extends CI_Controller {
             $return.= "\n";
             $return.='delete from propiedad_familia where id_estudio='.$idEstudio.' and id_familia='.$idFamilia.';';
             $return.= "\n";
-            $return.='delete from ingreso_familia where id_estudio='.$idEstudio.' and id_familia='.$idFamilia.';';
+            $return.='delete from ingresos_familia where id_estudio='.$idEstudio.' and id_familia='.$idFamilia.';';
             $return.= "\n";
-            $return.='delete from egreso_familia where id_estudio='.$idEstudio.' and id_familia='.$idFamilia.';';
+            $return.='delete from egresos_familia where id_estudio='.$idEstudio.' and id_familia='.$idFamilia.';';
             $return.= "\n";
-            $return.='delete from documento_familia where id_estudio='.$idEstudio.' and id_familia='.$idFamilia.';';
+            $return.='delete from documentos_familia where id_estudio='.$idEstudio.' and id_familia='.$idFamilia.';';
             $return.= "\n";
             $return.='delete from evaluacion_familia where id_estudio='.$idEstudio.' and id_familia='.$idFamilia.';';
             $return.= "\n";
@@ -48,11 +40,25 @@ class Sync extends CI_Controller {
             $return.= "\n";
             $return.= "\n";
             
+            $papas=$this->estudio_model->getPadreFamilia($idFamilia, $idEstudio);
+            
+            foreach ($papas as $papa) {
+                $padres="insert into padre_familia(id_familia, id_estudio, nombre, apellido_paterno, apellido_materno, edad, correo, rfc, celular, profesion, ocupacion,empresa, puesto, giro, dueno, antiguedad, sueldo_neto, tipo_persona) values ('$idFamilia', '$idEstudio', '$papa->nombre','$papa->apellido_paterno', '$papa->apellido_materno','$papa->edad', '$papa->correo', '$papa->rfc', '$papa->celular', '$papa->profesion', '$papa->ocupacion','$papa->empresa', '$papa->puesto', '$papa->giro', '$papa->dueno', '$papa->antiguedad',   '$papa->sueldo_neto',  '$papa->tipo_persona'); \n";
+                $return.=$padres;
+                $return.= "\n";
+                
+            }
             
             
             
-            $return .='update estudio set sync=0 where id_estudio='.$idEstudio;
-            echo $return;
+            
+            
+            
+            
+            
+            
+            //$return .='update esdtudio set sync=1 where id_estudio='.$idEstudio.';';
+            //echo $return;
         }
         
         $file='backs/est-soc-local-'./*.time().*/'-'./*(md5(implode(',',$tables)))*/date('Y.m.d').'.sql';
@@ -60,7 +66,22 @@ class Sync extends CI_Controller {
 	fwrite($handle,$return);
 	fclose($handle);
         
-        var_dump($papa);
+        $mysql_host = "hrwise.com.mx";
+        $mysql_database = "hrwistoz_estudios_soc";
+        $mysql_user = "hrwistoz";
+        $mysql_password = "mx-fn@paco";
+        # MySQL with PDO_MYSQL  
+        $db = new PDO("mysql:host=$mysql_host;dbname=$mysql_database", $mysql_user, $mysql_password);
+
+        $query = file_get_contents($file);
+        
+        $stmt = $db->prepare($query);
+
+        if ($stmt->execute()) {
+            echo json_encode(array('status' => '200'));
+        } else {
+            echo json_encode(array('status' => '400'));
+        }
         
     }
 }
