@@ -5,7 +5,7 @@
 	.module('app.dashboard')
 	.controller('DashboardController', DashboardController);
     
-    function DashboardController ($localStorage, $rootScope, $state, $mdDialog, $mdToast, DialogService, RestService, AuthenticationService, Constants, UserService) {
+    function DashboardController ($localStorage, $rootScope, $state, $mdDialog, $mdToast, DialogService, RestService, AuthenticationService, Constants, UserService, $q) {
         /* jshint validthis: true */
         console.log('init dashboard');
         
@@ -93,37 +93,43 @@
        
         function push(){
             show();
-            RestService.get(Constants.BaseURLBack+'/push.php', '').then(
+            var promesas=[];
+            promesas.push(RestService.get(Constants.BaseURLBack+'/sync', ''));
+            promesas.push(RestService.get(Constants.BaseURLBack+'/pull.php', ''));
+            
+            $q.all(promesas).then(
                 function(response){
                     hide();
-                    mensaje('success', 'Exportar datos.', 'Los datos se exportaron correctamente, verifíquelos en el servidor.',6000);
+                    mensaje('success', 'Exportar datos.', 'Los datos se exportaron correctamente, verifíquelos en el servidor. <br> Se actualizara el sistema, espere...',6000);
                     setTimeout(function(){window.location.reload(true);}, 6000);
-                },
-                function(error){
+                }, 
+                function (error){
                     hide();
                     mensaje('error', 'Importar datos.', 'Ocurrio un error al importar los datos desde el servidor.');
                     console.log('Error pull: '+error);
                 }
             );
+    
         } 
        
+       
             
-    function logout(ev) {
-        console.log('salir');
-        var quest= '¿Salir del sistema?';
-        var confirm = DialogService.dialogConfirm(ev,'Confirmación', quest,'Si','No');
-        $mdDialog.show(confirm).then(function() {
-            RestService.get(Constants.BaseURLBack + '/auth/logout','','');  
-            AuthenticationService.ClearCredentials();
-            $rootScope.isAuth=false;
-            $rootScope.user={};
-            window.location.href='#/login';
-             //window.location.reload();
-            //$state.go('/home');
-        }, function() {
-            $mdDialog.hide();
-        });      
-    }
+        function logout(ev) {
+            console.log('salir');
+            var quest= '¿Salir del sistema?';
+            var confirm = DialogService.dialogConfirm(ev,'Confirmación', quest,'Si','No');
+            $mdDialog.show(confirm).then(function() {
+                RestService.get(Constants.BaseURLBack + '/auth/logout','','');  
+                AuthenticationService.ClearCredentials();
+                $rootScope.isAuth=false;
+                $rootScope.user={};
+                window.location.href='#/login';
+                 //window.location.reload();
+                //$state.go('/home');
+            }, function() {
+                $mdDialog.hide();
+            });      
+        }
         
         /*
         function login() {

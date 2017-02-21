@@ -178,6 +178,9 @@
             var obj={};
             obj.id_estudio=scope.estudio.id_estudio;
             obj.id_estatus_estudio=6;
+            if($rootScope.isLocal){
+                obj.sync=1;
+            }
             confirmaMsj(
                 "Confirmación de solicitud",
                 "¿Enviar estudio a revisión?",
