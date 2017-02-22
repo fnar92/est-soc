@@ -110,6 +110,9 @@
         scope.enviarARevision=enviarARevision;
         scope.enviarATerminado=enviarATerminado;
         
+        scope.calculaEgresos=calculaEgresos;
+        scope.calculaEgresosServicios=calculaEgresosServicios;
+        
         scope.ingresos.ingreso_otros_miembros=0;
         scope.ingresos.ingreso_renta=0;
         scope.ingresos.ingreso_honorarios=0;
@@ -122,6 +125,32 @@
         scope.ingresos.sueldo_mama=0;
         scope.ingresos.ingreso_percapita=0;
         scope.ingresos.clasificacion='';
+        
+        scope.egresos.alimentacion_despensa=0;
+        scope.egresos.renta=0;
+        scope.egresos.credito_hipotecario=0;
+        scope.egresos.colegiaturas=0;
+        scope.egresos.otras_colegiaturas=0;
+        scope.egresos.clases_particulares=0;
+        scope.egresos.agua=0;
+        scope.egresos.luz=0;
+        scope.egresos.telefono=0;
+        scope.egresos.servicio_domestico=0;
+        scope.egresos.gas=0;
+        scope.egresos.total_servicios=0;
+        scope.egresos.gasolina=0;
+        scope.egresos.credito_auto=0;
+        scope.egresos.pago_tdc_mensual=0;
+        scope.egresos.saldo_tdc=0;
+        scope.egresos.creditos_comerciales=0;
+        scope.egresos.vestido_calzado=0;
+        scope.egresos.medico_medicinas=0;
+        scope.egresos.diversion_entretenimiento=0;
+        scope.egresos.clubes_deportivos=0;
+        scope.egresos.seguros=0;
+        scope.egresos.vacaciones=0;
+        scope.egresos.otros2=0;
+        
         
         var id=0;
         if($rootScope.tipoUsuario==='2'){
@@ -235,6 +264,47 @@
                 scope.ingresos.clasificacion='C-';
             }
             
+        }
+        
+        function calculaEgresos(){
+            var renta=0;
+            var hipoteca=0;
+            var cole=0;
+            var otrasCole=0;
+            var creditoAuto=0;
+            
+            for(var i=0; i<scope.estudio.propiedades.length; i++){
+                if(scope.estudio.propiedades[i].status==='Rentada'){
+                    renta+=parseFloat(scope.estudio.propiedades[i].monto_renta);
+                }
+                if(scope.estudio.propiedades[i].status==='Hipotecada'){
+                    hipoteca+=parseFloat(scope.estudio.propiedades[i].monto_renta);
+                }
+            }
+            
+            for(var i=0; i<scope.estudio.hijos.length; i++){
+                cole+=parseFloat(scope.estudio.hijos[i].colegiatura_actual);
+                otrasCole+=parseFloat(scope.estudio.hijos[i].otras_colegiaturas);
+            }
+            
+            for(var i=0; i<scope.estudio.vehiculos.length; i++){
+                creditoAuto+=parseFloat(scope.estudio.vehiculos[i].pago_mensual);
+            }
+            
+            scope.egresos.renta=renta;
+            scope.egresos.credito_hipotecario=hipoteca;
+            scope.egresos.colegiaturas=cole;
+            scope.egresos.otras_colegiaturas=otrasCole;
+            scope.egresos.credito_auto=creditoAuto;
+        }
+        
+        function calculaEgresosServicios(){
+            scope.egresos.total_servicios+=scope.egresos.clases_particulares;
+            scope.egresos.total_servicios+=scope.egresos.agua;
+            scope.egresos.total_servicios+=scope.egresos.luz;
+            scope.egresos.total_servicios+=scope.egresos.telefono;
+            scope.egresos.total_servicios+=scope.egresos.servicio_domestico;
+            scope.egresos.total_servicios+=scope.egresos.gas;
         }
         
         if (!$localStorage.globals||!$rootScope.isAuth) {
@@ -446,6 +516,7 @@
                     if(response.data.documentos.length>0){
                         setBool();		
                     }
+                    calculaEgresos();
                     EstudiosService.obtenerEmpleados().then(
                         function(response){
                             scope.listaEmpleado=response.data;
@@ -487,6 +558,7 @@
                             mensaje('success', 'Aviso.', 'Se eliminó al hijo seleccionado correctamente.');
                             scope.hijo={};
                             scope.banderaActualizar=false;
+                            scope.calculaEgresos();
                         },
                         function(error){
                             console.log('Error al guardar hijo: '+error);
@@ -515,6 +587,7 @@
                                     $("#modal_agregar_hijo").modal('hide');
                                     scope.hijo={};
                                     scope.banderaActualizar=false;
+                                    scope.calculaEgresos();
                                 },
                                 function(error){
                                     console.log('Error al guardar hijo: '+error);
@@ -538,6 +611,7 @@
                                 $("#modal_agregar_hijo").modal('hide');
                                 scope.hijo={};
                                 scope.banderaActualizar=false;
+                                scope.calculaEgresos();
                             },
                             function(error){
                                 console.log('Error al guardar hijo: '+error);
@@ -1127,6 +1201,7 @@
                             mensaje('success', 'Aviso.', 'Se eliminó el vehiculo seleccionado correctamente.');
                             scope.vehiculo={};
                             scope.banderaActualizar=false;
+                            scope.calculaEgresos();
                         },
                         function(error){
                             console.log('Error al guardar hijo: '+error);
@@ -1155,6 +1230,7 @@
                                     $("#modal_agregar_vehiculo").modal('hide');
                                     scope.vehiculo={};
                                     scope.banderaActualizar=false;
+                                    scope.calculaEgresos();
                                 },
                                 function(error){
                                     console.log('Error al guardar hijo: '+error);
@@ -1178,6 +1254,7 @@
                                 $("#modal_agregar_vehiculo").modal('hide');
                                 scope.vehiculo={};
                                 scope.banderaActualizar=false;
+                                scope.calculaEgresos();
                             },
                             function(error){
                                 console.log('Error al guardar hijo: '+error);
@@ -1187,7 +1264,7 @@
                 "No",
                     function(){}
             );
-            
+    
         }
         
         /*propiedad*/
@@ -1215,6 +1292,7 @@
                             mensaje('success', 'Aviso.', 'Se eliminó el propiedad seleccionado correctamente.');
                             scope.propiedad={};
                             scope.banderaActualizar=false;
+                            scope.calculaEgresos();
                         },
                         function(error){
                             console.log('Error al guardar hijo: '+error);
@@ -1243,6 +1321,7 @@
                                     $("#modal_agregar_propiedad").modal('hide');
                                     scope.propiedad={};
                                     scope.banderaActualizar=false;
+                                    scope.calculaEgresos();
                                 },
                                 function(error){
                                     console.log('Error al guardar hijo: '+error);
@@ -1266,6 +1345,7 @@
                                 $("#modal_agregar_propiedad").modal('hide');
                                 scope.propiedad={};
                                 scope.banderaActualizar=false;
+                                scope.calculaEgresos();
                             },
                             function(error){
                                 console.log('Error al guardar hijo: '+error);
@@ -1275,7 +1355,7 @@
                 "No",
                     function(){}
             );
-            
+    
         }
         
         function guardarIngresos(){

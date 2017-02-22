@@ -129,7 +129,7 @@ class Sync extends CI_Controller {
                 $return.=$sql;
             }
             
-            //$return .='update estudio set sync=1 where id_estudio='.$idEstudio.';';
+            $return .='update estudio set id_estatus_estudio=6 where id_estudio='.$idEstudio.';';
         }
         //echo $return;
         
