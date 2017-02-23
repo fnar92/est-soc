@@ -861,37 +861,37 @@
                         <div class="col-md-4">
                             <div class="form-group ">
                                     <label class="control-label">Alimentación/Despensa: </label>
-                                    <input type="text" min="0" class="form-control" ng-model="control.egresos.alimentacion_despensa">
+                                    <input type="text" min="0" class="form-control" ng-model="control.egresos.alimentacion_despensa" ng-change="control.calculaEgresosTotal()">
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group ">
                                     <label class="control-label">Renta:</label>
-                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.renta" disabled="">
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.renta" disabled="" ng-change="control.calculaEgresosTotal()">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group ">
                                     <label class="control-label">Credito hipotecario:</label>
-                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.credito_hipotecario" disabled="">
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.credito_hipotecario" disabled="" ng-change="control.calculaEgresosTotal()">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group ">
                                     <label class="control-label">Colegiaturas: </label>
-                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.colegiaturas" disabled="">
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.colegiaturas" disabled="" ng-change="control.calculaEgresosTotal()">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group ">
                                     <label class="control-label">Otras colegiaturas:</label>
-                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.otras_colegiaturas" disabled="">
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.otras_colegiaturas" disabled="" ng-change="control.calculaEgresosTotal()">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group ">
                                     <label class="control-label">Clases particulares:</label>
-                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.clases_particulares" ng-change="control.calculaEgresosServicios()">
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.clases_particulares" ng-change="control.calculaEgresosTotal()">
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -916,7 +916,7 @@
                         <div class="col-md-3">
                             <div class="form-group ">
                                     <label class="control-label">Servicio domestico:</label>
-                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.servicio_domestico" ng-change="control.calculaEgresosServicios()">
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.servicio_domestico" ng-change="control.calculaEgresosTotal()">
                             </div>
                         </div>
                         
@@ -924,6 +924,13 @@
                             <div class="form-group ">
                                     <label class="control-label">Gas:</label>
                                     <input type="number" min="0" class="form-control" ng-model="control.egresos.gas" ng-change="control.calculaEgresosServicios()">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-2">
+                            <div class="form-group ">
+                                    <label class="control-label">Otros (Jardinero, alarmas, etc...):</label>
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.otros" ng-change="control.calculaEgresosTotal()">
                             </div>
                         </div>
                         
@@ -939,13 +946,13 @@
                         <div class="col-md-2">
                             <div class="form-group ">
                                     <label class="control-label">Gasolina:</label>
-                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.gasolina">
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.gasolina" ng-change="control.calculaEgresosTotal()">
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group ">
                                     <label class="control-label">Credito automovil:</label>
-                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.credito_auto" disabled="">
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.credito_auto" disabled="" ng-change="control.calculaEgresosTotal()">
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -969,49 +976,49 @@
                         <div class="col-md-3">
                             <div class="form-group ">
                                     <label class="control-label">Vestido/Calzado:</label>
-                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.vestido_calzado">
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.vestido_calzado" ng-change="control.calculaEgresosTotal()">
                             </div>
                         </div>
                         
                         <div class="col-md-3">
                             <div class="form-group ">
                                     <label class="control-label">Médico y medicinas:</label>
-                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.medico_medicinas">
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.medico_medicinas" ng-change="control.calculaEgresosTotal()">
                             </div>
                         </div>
                         
                         <div class="col-md-3">
                             <div class="form-group ">
                                     <label class="control-label">Diversión/Entretenimiento:</label>
-                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.diversion_entretenimiento">
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.diversion_entretenimiento" ng-change="control.calculaEgresosTotal()">
                             </div>
                         </div>
                         
                         <div class="col-md-3">
                             <div class="form-group ">
                                     <label class="control-label">Clubes deportivos:</label>
-                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.clubes_deportivos">
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.clubes_deportivos" ng-change="control.calculaEgresosTotal()">
                             </div>
                         </div>
                         
                         <div class="col-md-4">
                             <div class="form-group ">
                                     <label class="control-label">Seguros (Vida, Automovil):</label>
-                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.seguros">
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.seguros" ng-change="control.calculaEgresosTotal()">
                             </div>
                         </div>
                         
                         <div class="col-md-4">
                             <div class="form-group ">
                                     <label class="control-label">Vacaciones:</label>
-                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.vacaciones">
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.vacaciones" ng-change="control.calculaEgresosTotal()">
                             </div>
                         </div>
                         
                         <div class="col-md-4">
                             <div class="form-group ">
                                     <label class="control-label">Otros egresos:</label>
-                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.otros2">
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.otros2" ng-change="control.calculaEgresosTotal()">
                             </div>
                         </div>
                     </div>

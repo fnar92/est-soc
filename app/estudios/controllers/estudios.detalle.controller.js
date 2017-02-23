@@ -31,6 +31,11 @@
         if(EstudiosService.idEstudioSeleccionado===0){
             error();
         }
+        if (!$localStorage.globals||!$rootScope.isAuth) {
+            mensaje('error', 'Session', 'Tu session ha expirado.');
+            location.href='#/login';
+        }
+        
         scope.estudio={};
         scope.hijo={};
         scope.dependiente={};
@@ -112,6 +117,7 @@
         
         scope.calculaEgresos=calculaEgresos;
         scope.calculaEgresosServicios=calculaEgresosServicios;
+        scope.calculaEgresosTotal=calculaEgresosTotal;
         
         scope.ingresos.ingreso_otros_miembros=0;
         scope.ingresos.ingreso_renta=0;
@@ -149,8 +155,10 @@
         scope.egresos.clubes_deportivos=0;
         scope.egresos.seguros=0;
         scope.egresos.vacaciones=0;
+        scope.egresos.otros=0;
         scope.egresos.otros2=0;
-        
+        scope.egresos.total_egresos=0;
+        scope.egresos.diferencia_egre_ingre=0;
         
         var id=0;
         if($rootScope.tipoUsuario==='2'){
@@ -229,182 +237,6 @@
             );
         }
         
-        function setSueldo(){
-            scope.ingresos.sueldo_papa=scope.estudio.sueldo_papa;
-            scope.ingresos.sueldo_mama=scope.estudio.sueldo_mama;
-        }
-        
-        function calcula(){
-            var suma=0;
-            
-            suma+=scope.ingresos.ingreso_otros_miembros;
-            suma+=scope.ingresos.ingreso_renta;
-            suma+=scope.ingresos.ingreso_honorarios;
-            suma+=scope.ingresos.ingreso_inversiones;
-            suma+=scope.ingresos.ingreso_pensiones;
-            suma+=scope.ingresos.ingreso_ventas;
-            suma+=scope.ingresos.otros_ingresos;
-            scope.ingresos.total_otros_ingresos=suma;
-            
-            scope.ingresos.total_ingresos=scope.ingresos.sueldo_papa+scope.ingresos.sueldo_mama+scope.ingresos.total_otros_ingresos;
-            var n=scope.estudio.dependientes.length+scope.estudio.hijos.length;
-            scope.ingresos.ingreso_percapita=scope.ingresos.total_ingresos/n;
-            
-            
-            if(scope.ingresos.ingreso_percapita>15000){
-                scope.ingresos.clasificacion='A';
-            }
-            if(scope.ingresos.ingreso_percapita>8000&&scope.ingresos.ingreso_percapita<14999){
-                scope.ingresos.clasificacion='B';
-            }
-            if(scope.ingresos.ingreso_percapita<8000){
-                scope.ingresos.clasificacion='C';
-            }
-            if(scope.ingresos.ingreso_percapita<8000){
-                scope.ingresos.clasificacion='C-';
-            }
-            
-        }
-        
-        function calculaEgresos(){
-            var renta=0;
-            var hipoteca=0;
-            var cole=0;
-            var otrasCole=0;
-            var creditoAuto=0;
-            
-            for(var i=0; i<scope.estudio.propiedades.length; i++){
-                if(scope.estudio.propiedades[i].status==='Rentada'){
-                    renta+=parseFloat(scope.estudio.propiedades[i].monto_renta);
-                }
-                if(scope.estudio.propiedades[i].status==='Hipotecada'){
-                    hipoteca+=parseFloat(scope.estudio.propiedades[i].monto_renta);
-                }
-            }
-            
-            for(var i=0; i<scope.estudio.hijos.length; i++){
-                cole+=parseFloat(scope.estudio.hijos[i].colegiatura_actual);
-                otrasCole+=parseFloat(scope.estudio.hijos[i].otras_colegiaturas);
-            }
-            
-            for(var i=0; i<scope.estudio.vehiculos.length; i++){
-                creditoAuto+=parseFloat(scope.estudio.vehiculos[i].pago_mensual);
-            }
-            
-            scope.egresos.renta=renta;
-            scope.egresos.credito_hipotecario=hipoteca;
-            scope.egresos.colegiaturas=cole;
-            scope.egresos.otras_colegiaturas=otrasCole;
-            scope.egresos.credito_auto=creditoAuto;
-        }
-        
-        function calculaEgresosServicios(){
-            scope.egresos.total_servicios+=scope.egresos.clases_particulares;
-            scope.egresos.total_servicios+=scope.egresos.agua;
-            scope.egresos.total_servicios+=scope.egresos.luz;
-            scope.egresos.total_servicios+=scope.egresos.telefono;
-            scope.egresos.total_servicios+=scope.egresos.servicio_domestico;
-            scope.egresos.total_servicios+=scope.egresos.gas;
-        }
-        
-        if (!$localStorage.globals||!$rootScope.isAuth) {
-            mensaje('error', 'Session', 'Tu session ha expirado.');
-            location.href='#/login';
-        }
-        
-        function setBool(){
-            if(scope.documentos.carta_no_adeudo==='1'){
-                scope.documentos.carta_no_adeudo=true;
-            }
-            if(scope.documentos.carta_no_adeudo==='0'){
-                scope.documentos.carta_no_adeudo=false;
-            }
-            
-            if(scope.documentos.firma_reglamento==='1'){
-                scope.documentos.firma_reglamento=true;
-            }
-            if(scope.documentos.firma_reglamento==='0'){
-                scope.documentos.firma_reglamento=false;
-            }
-            
-            if(scope.documentos.nomina_carta==='1'){
-                scope.documentos.nomina_carta=true;
-            }
-            if(scope.documentos.nomina_carta==='0'){
-                scope.documentos.nomina_carta=false;
-            }
-            
-            if(scope.documentos.poliza==='1'){
-                scope.documentos.poliza=true;
-            }
-            if(scope.documentos.poliza==='0'){
-                scope.documentos.poliza=false;
-            }
-            
-            if(scope.documentos.estado_cuenta==='1'){
-                scope.documentos.estado_cuenta=true;
-            }
-            if(scope.documentos.estado_cuenta==='0'){
-                scope.documentos.estado_cuenta=false;
-            }
-            
-            if(scope.documentos.recibos_renta==='1'){
-                scope.documentos.recibos_renta=true;
-            }
-            if(scope.documentos.recibos_renta==='0'){
-                scope.documentos.recibos_renta=false;
-            }
-            
-            if(scope.documentos.facturas_hospital==='1'){
-                scope.documentos.facturas_hospital=true;
-            }
-            if(scope.documentos.facturas_hospital==='0'){
-                scope.documentos.facturas_hospital=false;
-            }
-           
-             if(scope.documentos.comprobante_finiquito==='1'){
-                scope.documentos.comprobante_finiquito=true;
-            }
-            if(scope.documentos.comprobante_finiquito==='0'){
-                scope.documentos.comprobante_finiquito=false;
-            }
-            
-            if(scope.documentos.demandas_judiciales==='1'){
-                scope.documentos.demandas_judiciales=true;
-            }
-            if(scope.documentos.demandas_judiciales==='0'){
-                scope.documentos.demandas_judiciales=false;
-            }
-
-            if(scope.documentos.servicios==='1'){
-                scope.documentos.servicios=true;
-            }
-            if(scope.documentos.servicios==='0'){
-                scope.documentos.servicios=false;
-            }
-            
-            if(scope.documentos.pagos_credito_hipo==='1'){
-                scope.documentos.pagos_credito_hipo=true;
-            }
-            if(scope.documentos.pagos_credito_hipo==='0'){
-                scope.documentos.pagos_credito_hipo=false;
-            }
-            
-            if(scope.documentos.pagos_credito_auto==='1'){
-                scope.documentos.pagos_credito_auto=true;
-            }
-            if(scope.documentos.pagos_credito_auto==='0'){
-                scope.documentos.pagos_credito_auto=false;
-            }
-            
-            if(scope.documentos.otros==='1'){
-                scope.documentos.otros=true;
-            }
-            if(scope.documentos.otros==='0'){
-                scope.documentos.otros=false;
-            }
-        }
-        
         function load(){
             EstudiosService.obtenerDetalleEstudio(EstudiosService.idEstudioSeleccionado, id).then(
                 function(response){
@@ -471,47 +303,13 @@
 
                     if(response.data.ingresos.length>0){
                         scope.ingresos=response.data.ingresos[0];
-                        scope.ingresos.ingreso_otros_miembros=parseFloat(scope.ingresos.ingreso_otros_miembros);
-                        scope.ingresos.ingreso_renta=parseFloat(scope.ingresos.ingreso_renta);
-                        scope.ingresos.ingreso_honorarios=parseFloat(scope.ingresos.ingreso_inversiones);
-                        scope.ingresos.ingreso_inversiones=parseFloat(scope.ingresos.ingreso_inversiones);
-                        scope.ingresos.ingreso_pensiones=parseFloat(scope.ingresos.ingreso_pensiones);
-                        scope.ingresos.ingreso_ventas=parseFloat(scope.ingresos.ingreso_ventas);
-                        scope.ingresos.otros_ingresos=parseFloat(scope.ingresos.otros_ingresos);
-                        scope.ingresos.total_otros_ingresos=parseFloat(scope.ingresos.total_otros_ingresos);
-                        scope.ingresos.sueldo_papa=parseFloat(scope.ingresos.sueldo_papa);
-                        scope.ingresos.sueldo_mama=parseFloat(scope.ingresos.sueldo_mama);
-                        scope.ingresos.ingreso_percapita=parseFloat(scope.ingresos.ingreso_percapita);
-                        scope.ingresos.total_ingresos=parseFloat(scope.ingresos.total_ingresos);
+                        parseIngresos();
+                        calcula();
                     }
 
                     if(response.data.egresos.length>0){
                         scope.egresos=response.data.egresos[0];
-                        scope.egresos.alimentacion_despensa=parseFloat(scope.egresos.alimentacion_despensa);
-                        scope.egresos.renta=parseFloat(scope.egresos.renta);
-                        scope.egresos.credito_hipotecario=parseFloat(scope.egresos.credito_hipotecario);
-                        scope.egresos.colegiaturas=parseFloat(scope.egresos.colegiaturas);
-                        scope.egresos.otras_colegiaturas=parseFloat(scope.egresos.otras_colegiaturas);
-                        scope.egresos.clases_particulares=parseFloat(scope.egresos.clases_particulares);
-                        scope.egresos.agua=parseFloat(scope.egresos.agua);
-                        scope.egresos.luz=parseFloat(scope.egresos.luz);
-                        scope.egresos.telefono=parseFloat(scope.egresos.telefono);
-                        scope.egresos.servicio_domestico=parseFloat(scope.egresos.servicio_domestico);
-                        scope.egresos.gas=parseFloat(scope.egresos.gas);
-                        scope.egresos.total_servicios=parseFloat(scope.egresos.total_servicios);
-                        scope.egresos.gasolina=parseFloat(scope.egresos.gasolina);
-                        scope.egresos.credito_auto=parseFloat(scope.egresos.credito_auto);
-                        scope.egresos.pago_tdc_mensual=parseFloat(scope.egresos.pago_tdc_mensual);
-                        scope.egresos.saldo_tdc=parseFloat(scope.egresos.saldo_tdc);
-                        scope.egresos.creditos_comerciales=parseFloat(scope.egresos.creditos_comerciales);
-                        scope.egresos.vestido_calzado=parseFloat(scope.egresos.vestido_calzado);
-                        scope.egresos.medico_medicinas=parseFloat(scope.egresos.medico_medicinas);
-                        scope.egresos.diversion_entretenimiento=parseFloat(scope.egresos.diversion_entretenimiento);
-                        scope.egresos.clubes_deportivos=parseFloat(scope.egresos.clubes_deportivos);
-                        scope.egresos.seguros=parseFloat(scope.egresos.seguros);
-                        scope.egresos.vacaciones=parseFloat(scope.egresos.vacaciones);
-                        scope.egresos.otros2=parseFloat(scope.egresos.otros2);
-
+                        parseEgresos();
                     }
                     if(response.data.documentos.length>0){
                         setBool();		
@@ -907,7 +705,8 @@
                                     scope.estudio.sueldo_mama=parseFloat(scope.estudio.sueldo_mama);
                                     scope.ingresos.sueldo_papa=scope.estudio.sueldo_papa;
                                     scope.ingresos.sueldo_mama=scope.estudio.sueldo_mama;
-
+                                    calcula();
+                                    calculaEgresos();
                                     mensaje('success', 'Aviso.', 'Se actualizaron los datos del papa correctamente.');
                                 },
                                 function(error){
@@ -989,7 +788,8 @@
                                     scope.estudio.sueldo_mama=parseFloat(scope.estudio.sueldo_mama);
                                     scope.ingresos.sueldo_papa=scope.estudio.sueldo_papa;
                                     scope.ingresos.sueldo_mama=scope.estudio.sueldo_mama;
-
+                                    calcula();
+                                    calculaEgresos();
                                     mensaje('success', 'Aviso.', 'Se guardaron los datos del papa correctamente.');
                                     
                                 },
@@ -1078,7 +878,8 @@
                                     scope.estudio.sueldo_mama=parseFloat(scope.estudio.sueldo_mama);
                                     scope.ingresos.sueldo_papa=scope.estudio.sueldo_papa;
                                     scope.ingresos.sueldo_mama=scope.estudio.sueldo_mama;
-
+                                    calcula();
+                                    calculaEgresos();
                                     mensaje('success', 'Aviso.', 'Se actualizaron los datos del papa correctamente.');
                                 },
                                 function(error){
@@ -1160,7 +961,8 @@
                                     scope.estudio.sueldo_mama=parseFloat(scope.estudio.sueldo_mama);
                                     scope.ingresos.sueldo_papa=scope.estudio.sueldo_papa;
                                     scope.ingresos.sueldo_mama=scope.estudio.sueldo_mama;
-
+                                    calcula();
+                                    calculaEgresos();
                                     mensaje('success', 'Aviso.', 'Se guardaron los datos de la mama correctamente.');
                                     
                                 },
@@ -1372,19 +1174,7 @@
                             FamiliaService.actualizarIngresos(scope.ingresos).then(
                                 function(response){
                                     scope.ingresos=response.data[0];
-                                    scope.ingresos.ingreso_otros_miembros=parseFloat(scope.ingresos.ingreso_otros_miembros);
-                                    scope.ingresos.ingreso_renta=parseFloat(scope.ingresos.ingreso_renta);
-                                    scope.ingresos.ingreso_honorarios=parseFloat(scope.ingresos.ingreso_inversiones);
-                                    scope.ingresos.ingreso_inversiones=parseFloat(scope.ingresos.ingreso_inversiones);
-                                    scope.ingresos.ingreso_pensiones=parseFloat(scope.ingresos.ingreso_pensiones);
-                                    scope.ingresos.ingreso_ventas=parseFloat(scope.ingresos.ingreso_ventas);
-                                    scope.ingresos.otros_ingresos=parseFloat(scope.ingresos.otros_ingresos);
-                                    scope.ingresos.total_otros_ingresos=parseFloat(scope.ingresos.total_otros_ingresos);
-                                    scope.ingresos.sueldo_papa=parseFloat(scope.ingresos.sueldo_papa);
-                                    scope.ingresos.sueldo_mama=parseFloat(scope.ingresos.sueldo_mama);
-                                    scope.ingresos.ingreso_percapita=parseFloat(scope.ingresos.ingreso_percapita);
-                                    scope.ingresos.total_ingresos=parseFloat(scope.ingresos.total_ingresos);
-
+                                    parseIngresos();
                                     mensaje('success', 'Aviso.', 'Se actualizaron los datos de los ingresos correctamente.');
 
                                 },
@@ -1396,19 +1186,7 @@
                             FamiliaService.guardarIngresos(scope.ingresos).then(
                                 function(response){
                                     scope.ingresos=response.data[0];
-                                    scope.ingresos.ingreso_otros_miembros=parseFloat(scope.ingresos.ingreso_otros_miembros);
-                                    scope.ingresos.ingreso_renta=parseFloat(scope.ingresos.ingreso_renta);
-                                    scope.ingresos.ingreso_honorarios=parseFloat(scope.ingresos.ingreso_inversiones);
-                                    scope.ingresos.ingreso_inversiones=parseFloat(scope.ingresos.ingreso_inversiones);
-                                    scope.ingresos.ingreso_pensiones=parseFloat(scope.ingresos.ingreso_pensiones);
-                                    scope.ingresos.ingreso_ventas=parseFloat(scope.ingresos.ingreso_ventas);
-                                    scope.ingresos.otros_ingresos=parseFloat(scope.ingresos.otros_ingresos);
-                                    scope.ingresos.total_otros_ingresos=parseFloat(scope.ingresos.total_otros_ingresos);
-                                    scope.ingresos.sueldo_papa=parseFloat(scope.ingresos.sueldo_papa);
-                                    scope.ingresos.sueldo_mama=parseFloat(scope.ingresos.sueldo_mama);
-                                    scope.ingresos.ingreso_percapita=parseFloat(scope.ingresos.ingreso_percapita);
-                                    scope.ingresos.total_ingresos=parseFloat(scope.ingresos.total_ingresos);
-
+                                    parseIngresos();
                                     mensaje('success', 'Aviso.', 'Se guardaron los datos de los ingresos correctamente.');
 
                                 },
@@ -1439,30 +1217,7 @@
                             FamiliaService.actualizarEgresos(scope.egresos).then(
                                 function(response){
                                     scope.egresos=response.data[0];
-                                    scope.egresos.alimentacion_despensa=parseFloat(scope.egresos.alimentacion_despensa);
-                                    scope.egresos.renta=parseFloat(scope.egresos.renta);
-                                    scope.egresos.credito_hipotecario=parseFloat(scope.egresos.credito_hipotecario);
-                                    scope.egresos.colegiaturas=parseFloat(scope.egresos.colegiaturas);
-                                    scope.egresos.otras_colegiaturas=parseFloat(scope.egresos.otras_colegiaturas);
-                                    scope.egresos.clases_particulares=parseFloat(scope.egresos.clases_particulares);
-                                    scope.egresos.agua=parseFloat(scope.egresos.agua);
-                                    scope.egresos.luz=parseFloat(scope.egresos.luz);
-                                    scope.egresos.telefono=parseFloat(scope.egresos.telefono);
-                                    scope.egresos.servicio_domestico=parseFloat(scope.egresos.servicio_domestico);
-                                    scope.egresos.gas=parseFloat(scope.egresos.gas);
-                                    scope.egresos.total_servicios=parseFloat(scope.egresos.total_servicios);
-                                    scope.egresos.gasolina=parseFloat(scope.egresos.gasolina);
-                                    scope.egresos.credito_auto=parseFloat(scope.egresos.credito_auto);
-                                    scope.egresos.pago_tdc_mensual=parseFloat(scope.egresos.pago_tdc_mensual);
-                                    scope.egresos.saldo_tdc=parseFloat(scope.egresos.saldo_tdc);
-                                    scope.egresos.creditos_comerciales=parseFloat(scope.egresos.creditos_comerciales);
-                                    scope.egresos.vestido_calzado=parseFloat(scope.egresos.vestido_calzado);
-                                    scope.egresos.medico_medicinas=parseFloat(scope.egresos.medico_medicinas);
-                                    scope.egresos.diversion_entretenimiento=parseFloat(scope.egresos.diversion_entretenimiento);
-                                    scope.egresos.clubes_deportivos=parseFloat(scope.egresos.clubes_deportivos);
-                                    scope.egresos.seguros=parseFloat(scope.egresos.seguros);
-                                    scope.egresos.vacaciones=parseFloat(scope.egresos.vacaciones);
-                                    scope.egresos.otros2=parseFloat(scope.egresos.otros2);
+                                    parseEgresos();
                                     mensaje('success', 'Aviso.', 'Se actualizaron los datos de los egresos correctamente.');
 
                                 },
@@ -1474,31 +1229,7 @@
                             FamiliaService.guardarEgresos(scope.egresos).then(
                                 function(response){
                                     scope.egresos=response.data[0];
-                                    scope.egresos.alimentacion_despensa=parseFloat(scope.egresos.alimentacion_despensa);
-                                    scope.egresos.renta=parseFloat(scope.egresos.renta);
-                                    scope.egresos.credito_hipotecario=parseFloat(scope.egresos.credito_hipotecario);
-                                    scope.egresos.colegiaturas=parseFloat(scope.egresos.colegiaturas);
-                                    scope.egresos.otras_colegiaturas=parseFloat(scope.egresos.otras_colegiaturas);
-                                    scope.egresos.clases_particulares=parseFloat(scope.egresos.clases_particulares);
-                                    scope.egresos.agua=parseFloat(scope.egresos.agua);
-                                    scope.egresos.luz=parseFloat(scope.egresos.luz);
-                                    scope.egresos.telefono=parseFloat(scope.egresos.telefono);
-                                    scope.egresos.servicio_domestico=parseFloat(scope.egresos.servicio_domestico);
-                                    scope.egresos.gas=parseFloat(scope.egresos.gas);
-                                    scope.egresos.total_servicios=parseFloat(scope.egresos.total_servicios);
-                                    scope.egresos.gasolina=parseFloat(scope.egresos.gasolina);
-                                    scope.egresos.credito_auto=parseFloat(scope.egresos.credito_auto);
-                                    scope.egresos.pago_tdc_mensual=parseFloat(scope.egresos.pago_tdc_mensual);
-                                    scope.egresos.saldo_tdc=parseFloat(scope.egresos.saldo_tdc);
-                                    scope.egresos.creditos_comerciales=parseFloat(scope.egresos.creditos_comerciales);
-                                    scope.egresos.vestido_calzado=parseFloat(scope.egresos.vestido_calzado);
-                                    scope.egresos.medico_medicinas=parseFloat(scope.egresos.medico_medicinas);
-                                    scope.egresos.diversion_entretenimiento=parseFloat(scope.egresos.diversion_entretenimiento);
-                                    scope.egresos.clubes_deportivos=parseFloat(scope.egresos.clubes_deportivos);
-                                    scope.egresos.seguros=parseFloat(scope.egresos.seguros);
-                                    scope.egresos.vacaciones=parseFloat(scope.egresos.vacaciones);
-                                    scope.egresos.otros2=parseFloat(scope.egresos.otros2);
-
+                                    parseEgresos();
                                     mensaje('success', 'Aviso.', 'Se guardaron los datos de los egresos correctamente.');
 
                                 },
@@ -1700,7 +1431,249 @@
             
         }
         
+        /*FUNCIONES COMUNES*/
+        function setSueldo(){
+            scope.ingresos.sueldo_papa=scope.estudio.sueldo_papa;
+            scope.ingresos.sueldo_mama=scope.estudio.sueldo_mama;
+        }
         
+        function calcula(){
+            var suma=0;
+            
+            suma+=scope.ingresos.ingreso_otros_miembros;
+            suma+=scope.ingresos.ingreso_renta;
+            suma+=scope.ingresos.ingreso_honorarios;
+            suma+=scope.ingresos.ingreso_inversiones;
+            suma+=scope.ingresos.ingreso_pensiones;
+            suma+=scope.ingresos.ingreso_ventas;
+            suma+=scope.ingresos.otros_ingresos;
+            scope.ingresos.total_otros_ingresos=suma;
+            
+            scope.ingresos.total_ingresos=scope.ingresos.sueldo_papa+scope.ingresos.sueldo_mama+scope.ingresos.total_otros_ingresos;
+            var n=scope.estudio.dependientes.length+scope.estudio.hijos.length+2;
+            scope.ingresos.ingreso_percapita=scope.ingresos.total_ingresos/n;
+            
+            
+            if(scope.ingresos.ingreso_percapita>15000){
+                scope.ingresos.clasificacion='A';
+            }
+            if(scope.ingresos.ingreso_percapita>8000&&scope.ingresos.ingreso_percapita<14999){
+                scope.ingresos.clasificacion='B';
+            }
+            if(scope.ingresos.ingreso_percapita<8000){
+                scope.ingresos.clasificacion='C';
+            }
+            if(scope.ingresos.ingreso_percapita<8000){
+                scope.ingresos.clasificacion='C-';
+            }
+            
+        }
+        
+        function calculaEgresos(){
+            var renta=0;
+            var hipoteca=0;
+            var cole=0;
+            var otrasCole=0;
+            var creditoAuto=0;
+            
+            for(var i=0; i<scope.estudio.propiedades.length; i++){
+                if(scope.estudio.propiedades[i].status==='Rentada'){
+                    renta+=parseFloat(scope.estudio.propiedades[i].monto_renta);
+                }
+                if(scope.estudio.propiedades[i].status==='Hipotecada'){
+                    hipoteca+=parseFloat(scope.estudio.propiedades[i].monto_renta);
+                }
+            }
+            
+            for(var i=0; i<scope.estudio.hijos.length; i++){
+                cole+=parseFloat(scope.estudio.hijos[i].colegiatura_actual);
+                otrasCole+=parseFloat(scope.estudio.hijos[i].otras_colegiaturas);
+            }
+            
+            for(var i=0; i<scope.estudio.vehiculos.length; i++){
+                creditoAuto+=parseFloat(scope.estudio.vehiculos[i].pago_mensual);
+            }
+            
+            scope.egresos.renta=renta;
+            scope.egresos.credito_hipotecario=hipoteca;
+            scope.egresos.colegiaturas=cole;
+            scope.egresos.otras_colegiaturas=otrasCole;
+            scope.egresos.credito_auto=creditoAuto;
+            scope.calculaEgresosTotal();
+        }
+        
+        function calculaEgresosServicios(){
+            //scope.egresos.total_servicios+=scope.egresos.clases_particulares;
+            scope.egresos.total_servicios=0;
+            scope.egresos.total_servicios+=parseFloat(scope.egresos.agua);
+            scope.egresos.total_servicios+=parseFloat(scope.egresos.luz);
+            scope.egresos.total_servicios+=parseFloat(scope.egresos.telefono);
+            //scope.egresos.total_servicios+=scope.egresos.servicio_domestico;
+            scope.egresos.total_servicios+=parseFloat(scope.egresos.gas);
+        }
+        
+        function calculaEgresosTotal(){
+            scope.egresos.total_egresos=0;
+            scope.egresos.total_egresos+=parseFloat(scope.egresos.alimentacion_despensa);
+            scope.egresos.total_egresos+=parseFloat(scope.egresos.renta);
+            scope.egresos.total_egresos+=parseFloat(scope.egresos.credito_hipotecario);
+            scope.egresos.total_egresos+=parseFloat(scope.egresos.colegiaturas);
+            scope.egresos.total_egresos+=parseFloat(scope.egresos.otras_colegiaturas);
+            scope.egresos.total_egresos+=parseFloat(scope.egresos.clases_particulares);
+            scope.egresos.total_egresos+=parseFloat(scope.egresos.servicio_domestico);
+            scope.egresos.total_egresos+=parseFloat(scope.egresos.otros);
+            scope.egresos.total_egresos+=parseFloat(scope.egresos.gasolina);
+            scope.egresos.total_egresos+=parseFloat(scope.egresos.credito_auto);
+            scope.egresos.total_egresos+=parseFloat(scope.egresos.pago_tdc_mensual);
+            scope.egresos.total_egresos+=parseFloat(scope.egresos.vestido_calzado);
+            scope.egresos.total_egresos+=parseFloat(scope.egresos.medico_medicinas);
+            scope.egresos.total_egresos+=parseFloat(scope.egresos.diversion_entretenimiento);
+            scope.egresos.total_egresos+=parseFloat(scope.egresos.clubes_deportivos);
+            scope.egresos.total_egresos+=parseFloat(scope.egresos.seguros);
+            scope.egresos.total_egresos+=parseFloat(scope.egresos.vacaciones);
+            scope.egresos.total_egresos+=parseFloat(scope.egresos.otros2);
+            scope.egresos.total_egresos+=parseFloat(scope.egresos.total_servicios);
+            
+            scope.egresos.diferencia_egre_ingre=scope.ingresos.total_ingresos-scope.egresos.total_egresos;
+        }
+        
+        function setBool(){
+            if(scope.documentos.carta_no_adeudo==='1'){
+                scope.documentos.carta_no_adeudo=true;
+            }
+            if(scope.documentos.carta_no_adeudo==='0'){
+                scope.documentos.carta_no_adeudo=false;
+            }
+            
+            if(scope.documentos.firma_reglamento==='1'){
+                scope.documentos.firma_reglamento=true;
+            }
+            if(scope.documentos.firma_reglamento==='0'){
+                scope.documentos.firma_reglamento=false;
+            }
+            
+            if(scope.documentos.nomina_carta==='1'){
+                scope.documentos.nomina_carta=true;
+            }
+            if(scope.documentos.nomina_carta==='0'){
+                scope.documentos.nomina_carta=false;
+            }
+            
+            if(scope.documentos.poliza==='1'){
+                scope.documentos.poliza=true;
+            }
+            if(scope.documentos.poliza==='0'){
+                scope.documentos.poliza=false;
+            }
+            
+            if(scope.documentos.estado_cuenta==='1'){
+                scope.documentos.estado_cuenta=true;
+            }
+            if(scope.documentos.estado_cuenta==='0'){
+                scope.documentos.estado_cuenta=false;
+            }
+            
+            if(scope.documentos.recibos_renta==='1'){
+                scope.documentos.recibos_renta=true;
+            }
+            if(scope.documentos.recibos_renta==='0'){
+                scope.documentos.recibos_renta=false;
+            }
+            
+            if(scope.documentos.facturas_hospital==='1'){
+                scope.documentos.facturas_hospital=true;
+            }
+            if(scope.documentos.facturas_hospital==='0'){
+                scope.documentos.facturas_hospital=false;
+            }
+           
+             if(scope.documentos.comprobante_finiquito==='1'){
+                scope.documentos.comprobante_finiquito=true;
+            }
+            if(scope.documentos.comprobante_finiquito==='0'){
+                scope.documentos.comprobante_finiquito=false;
+            }
+            
+            if(scope.documentos.demandas_judiciales==='1'){
+                scope.documentos.demandas_judiciales=true;
+            }
+            if(scope.documentos.demandas_judiciales==='0'){
+                scope.documentos.demandas_judiciales=false;
+            }
+
+            if(scope.documentos.servicios==='1'){
+                scope.documentos.servicios=true;
+            }
+            if(scope.documentos.servicios==='0'){
+                scope.documentos.servicios=false;
+            }
+            
+            if(scope.documentos.pagos_credito_hipo==='1'){
+                scope.documentos.pagos_credito_hipo=true;
+            }
+            if(scope.documentos.pagos_credito_hipo==='0'){
+                scope.documentos.pagos_credito_hipo=false;
+            }
+            
+            if(scope.documentos.pagos_credito_auto==='1'){
+                scope.documentos.pagos_credito_auto=true;
+            }
+            if(scope.documentos.pagos_credito_auto==='0'){
+                scope.documentos.pagos_credito_auto=false;
+            }
+            
+            if(scope.documentos.otros==='1'){
+                scope.documentos.otros=true;
+            }
+            if(scope.documentos.otros==='0'){
+                scope.documentos.otros=false;
+            }
+        }
+        function parseIngresos(){
+            scope.ingresos.ingreso_otros_miembros=parseFloat(scope.ingresos.ingreso_otros_miembros);
+            scope.ingresos.ingreso_renta=parseFloat(scope.ingresos.ingreso_renta);
+            scope.ingresos.ingreso_honorarios=parseFloat(scope.ingresos.ingreso_inversiones);
+            scope.ingresos.ingreso_inversiones=parseFloat(scope.ingresos.ingreso_inversiones);
+            scope.ingresos.ingreso_pensiones=parseFloat(scope.ingresos.ingreso_pensiones);
+            scope.ingresos.ingreso_ventas=parseFloat(scope.ingresos.ingreso_ventas);
+            scope.ingresos.otros_ingresos=parseFloat(scope.ingresos.otros_ingresos);
+            scope.ingresos.total_otros_ingresos=parseFloat(scope.ingresos.total_otros_ingresos);
+            scope.ingresos.sueldo_papa=parseFloat(scope.ingresos.sueldo_papa);
+            scope.ingresos.sueldo_mama=parseFloat(scope.ingresos.sueldo_mama);
+            scope.ingresos.ingreso_percapita=parseFloat(scope.ingresos.ingreso_percapita);
+            scope.ingresos.total_ingresos=parseFloat(scope.ingresos.total_ingresos);
+
+        }
+        
+        function parseEgresos(){
+            scope.egresos.alimentacion_despensa=parseFloat(scope.egresos.alimentacion_despensa);
+            scope.egresos.renta=parseFloat(scope.egresos.renta);
+            scope.egresos.credito_hipotecario=parseFloat(scope.egresos.credito_hipotecario);
+            scope.egresos.colegiaturas=parseFloat(scope.egresos.colegiaturas);
+            scope.egresos.otras_colegiaturas=parseFloat(scope.egresos.otras_colegiaturas);
+            scope.egresos.clases_particulares=parseFloat(scope.egresos.clases_particulares);
+            scope.egresos.agua=parseFloat(scope.egresos.agua);
+            scope.egresos.luz=parseFloat(scope.egresos.luz);
+            scope.egresos.telefono=parseFloat(scope.egresos.telefono);
+            scope.egresos.servicio_domestico=parseFloat(scope.egresos.servicio_domestico);
+            scope.egresos.gas=parseFloat(scope.egresos.gas);
+            scope.egresos.total_servicios=parseFloat(scope.egresos.total_servicios);
+            scope.egresos.gasolina=parseFloat(scope.egresos.gasolina);
+            scope.egresos.credito_auto=parseFloat(scope.egresos.credito_auto);
+            scope.egresos.pago_tdc_mensual=parseFloat(scope.egresos.pago_tdc_mensual);
+            scope.egresos.saldo_tdc=parseFloat(scope.egresos.saldo_tdc);
+            scope.egresos.creditos_comerciales=parseFloat(scope.egresos.creditos_comerciales);
+            scope.egresos.vestido_calzado=parseFloat(scope.egresos.vestido_calzado);
+            scope.egresos.medico_medicinas=parseFloat(scope.egresos.medico_medicinas);
+            scope.egresos.diversion_entretenimiento=parseFloat(scope.egresos.diversion_entretenimiento);
+            scope.egresos.clubes_deportivos=parseFloat(scope.egresos.clubes_deportivos);
+            scope.egresos.seguros=parseFloat(scope.egresos.seguros);
+            scope.egresos.vacaciones=parseFloat(scope.egresos.vacaciones);
+            scope.egresos.otros2=parseFloat(scope.egresos.otros2);
+            scope.egresos.otros=parseFloat(scope.egresos.otros);
+            scope.egresos.total_egresos=parseFloat(scope.egresos.total_egresos);
+            scope.egresos.diferencia_egre_ingre=parseFloat(scope.egresos.diferencia_egre_ingre);
+        }
     };//end controller
 
 })();
