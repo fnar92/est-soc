@@ -59,6 +59,13 @@
                 }      
             })
             
+            .state('/estudios_reporte', { 
+                url: '/estudios/reporte',
+                controller: 'EstudiosReporteController',
+                controllerAs: 'scope',
+                templateUrl: 'app/estudios/views/reporte.tpl.html'
+            })
+            
             .state('/about', { 
                 url: '/about',
                 controller: '',

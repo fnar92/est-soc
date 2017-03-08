@@ -79,6 +79,17 @@ form[role=login] {
 <body cz-shortcut-listen="true">
 	<div class="container" ng-controller="LoginController as ctrlLogin">
 
+            
+            <div ng-if="isLocal">
+                <style>
+                    body {
+	background: snow;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+                </style>
 		<div class="row" id="pwd-container" >
 		<div class="col-md-4">
 		
@@ -88,7 +99,53 @@ form[role=login] {
 		<div ng-show="ctrlLogin.error" class="alert alert-danger">{{ctrlLogin.error}}</div>
 		  <section class="login-form">
 			<form name="form" method="post" role="login" ng-submit="ctrlLogin.login()">
-				<h3 align="center">Estudios socioeconomicos</h3>
+				<h3 align="center">Estudios socioeconomicos (Captura local de estudios)</h3>
+			  <img src="assets/img/logo.png" class="img-responsive" alt="">
+			  
+			  
+			  <input type="text" name="username" id="username" placeholder="Email/Username" required="" class="form-control input-lg" ng-model="ctrlLogin.username">
+		      <ul class="error-list">
+			  <span  ng-show="form.username.$dirty && form.username.$error.required" class="help-block">El usuario es requerido</span>
+			  </ul>
+			  
+			  <input type="password" name="password" id="password" class="form-control input-lg" required="" placeholder="Password" ng-model="ctrlLogin.password">
+			  <ul class="error-list">
+			  <span  ng-show="form.password.$dirty && form.password.$error.required" class="help-block">La contraseña es requerida</span>
+			  </ul>
+			  
+			  <button ng-disabled="form.$invalid || ctrlLogin.dataLoading" type="submit" name="go" class="btn btn-lg btn-primary btn-block">Entrar</button>
+			  <img ng-if="ctrlLogin.dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+			  
+			  <div>
+				<a href="#">Olvide mi contraseña</a>
+			  </div>
+			  
+			</form>
+			
+			<div class="form-links">
+			  <a href="http://www.hrwise.com.mx/est-soc/">www.hrwise.com.mx/est-soc</a>
+			</div>
+		  </section>  
+		  </div>
+		  
+		  <div class="col-md-4"></div>
+		  
+
+	  </div>
+
+	</div>
+            
+            <div ng-if="!isLocal">
+		<div class="row" id="pwd-container" >
+		<div class="col-md-4">
+		
+		</div>
+		
+		<div class="col-md-4">
+		<div ng-show="ctrlLogin.error" class="alert alert-danger">{{ctrlLogin.error}}</div>
+		  <section class="login-form">
+			<form name="form" method="post" role="login" ng-submit="ctrlLogin.login()">
+				<h3 align="center">Estudios socioeconomicos (Sistema Online)</h3>
 			  <img src="assets/img/logo.png" class="img-responsive" alt="">
 			  
 			  
@@ -123,4 +180,6 @@ form[role=login] {
 	  </div>
 
 	</div>
+            
+    </div>
 </body>

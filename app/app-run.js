@@ -14,6 +14,7 @@
         $rootScope.rolUsuario=0;
         $rootScope.institucion={};
         $rootScope.isLocal=true;
+        $rootScope.idEstudioReporte=0;
 		
         if ($localStorage.globals) {
             console.log($localStorage.globals);

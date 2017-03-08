@@ -54,6 +54,7 @@
         scope.verAccion=false;
         scope.banderaActualizar=false;
         
+        scope.verReporte=verReporte;
         /*papa-mama*/
         scope.guardarPapa=guardarPapa;
         scope.guardarMama=guardarMama;
@@ -165,6 +166,11 @@
             id=$rootScope.institucion.id_institucion;
         }
         load();
+        
+        function verReporte(){
+            $rootScope.idEstudioReporte=scope.estudio.id_estudio;
+            window.location.href='#/estudios/reporte';
+        }
         
         function enviarATerminado(){
             var obj={};

@@ -1,0 +1,262 @@
+<style>
+    body{
+        background-color: white;
+        font-size: 12px;
+    }
+    tr{
+        
+    }
+    .centrar{
+        width: 70%; margin: auto;
+    }
+    .centrar2{
+        width: 90%; margin: auto;
+    }
+    .text-center {
+        text-align: center;
+    }
+   
+    .border{
+        border: solid;
+        border-color: black;
+        border-width: 1px;
+        margin: 5px 10px 0px 0px;
+    }
+</style>
+
+<script src="assets/css/print.js"></script>
+<div id="contenido">
+<div class="row text-center"><br></div>
+<div class="row">
+    <p class="text-center centrar" style="color: red; font-weight: bold;">ESTUDIO SOCIOECONÓMICO 2016 - 2017</p>
+</div>
+
+<table class="centrar">
+    <tr style="color: #003399">
+        <td><p>Familia: <strong style="font-style: oblique; text-decoration: underline;">{{scope.estudio.familia}}</strong></p></td>
+        <td><p>Total de hijos: <strong class="border">{{scope.estudio.hijos.length}}</strong></p></td>
+        <td><p>CLAVE: <strong class="border">{{scope.estudio.clave_familia}}</strong></p></td>
+        <td><p>Clasificación: <strong class="border">{{scope.ingresos.clasificacion}}</strong></p></td>
+        <td><p>Compartida: <strong ng-if="scope.estudio.instituciones.length>1" class="border">SI</strong><strong ng-if="scope.estudio.instituciones.length===1" class="border">NO</strong></p></td>
+    </tr>
+</table>
+
+<table class="centrar2">
+    <tr>
+        <td><p><strong>Nombre hij@</strong></p></td>
+        <td><p><strong>Edad</strong></p></td>
+        <td><p><strong>Institución</strong></p></td>
+        <td><p><strong>Grado a cursar</strong></p></td>
+        <td><p><strong>Colegiatura</strong></p></td>
+        <td><p><strong>% Beca actual</strong></p></td>
+        <td><p><strong>Apoyo solicitado</strong></p></td>
+        <td><p><strong>Apoyo sugerido</strong></p></td>
+        <td><p><strong>Beca a sig</strong></p></td>
+    </tr>
+    
+    <tr ng-repeat="hijo in scope.estudio.hijos">
+        <td class="text-center"><p class="border">{{hijo.nombre}} {{hijo.apellido_paterno}} {{hijo.aellido_materno}}</p></td>
+        <td class="text-center"><p class="border">{{hijo.edad}}</p></td>
+        <td class="text-center"><p class="border">{{hijo.institucion}}</p></td>
+        <td class="text-center"><p class="border">{{hijo.nivel_grado_cursar}}</p></td>
+        <td style="text-align: right"><p class="border"><span style="float: left; margin-left: 5px;">$</span> <span style="margin-right: 5px">{{hijo.colegiatura_pasado | number:2}}</span></p></td>
+        <td class="text-center"><p class="border">{{hijo.beca_actual}} %</p></td>
+        <td style="text-align: right"><p class="border"><span style="float: left; margin-left: 5px;">$</span> <span style="margin-right: 5px">{{hijo.apoyo_solicitado | number:2}}</span></p></td>
+        <td style="text-align: right"><p class="border"><span style="float: left; margin-left: 5px;">$</span> <span style="margin-right: 5px">{{hijo.apoyo_sugerido | number:2}}</span></p></td>
+        <td><p class="border"><br></p></td>
+    </tr>
+   
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td style="text-align: right"><p style="background: yellow; margin: 0px 10px 0px 0px;"><span style="float: left; margin-left: 5px;">$</span> <span style="margin-right: 5px">{{scope.suma_col | number:2}}</span></p></td>
+        <td></td>
+        <td style="text-align: right"><p style="background: yellow; margin: 0px 10px 0px 0px;"><span style="float: left; margin-left: 5px;">$</span> <span style="margin-right: 5px">{{scope.suma_apoyo_soli | number:2}}</span></p></td>
+        <td style="text-align: right"><p style="background: yellow; margin: 10px 5px;"><span style="float: left; margin-left: 5px;">$</span> <span style="margin-right: 5px">{{scope.suma_apoyo_suge | number:2}}</span></p></td>
+    </tr>
+</table>
+
+<div class="row">
+    <p class="text-center" style="background: gainsboro; margin: auto">Información económica de la familia</p>
+</div>
+
+
+<table border="0" style="margin: auto; width: 98%">
+   
+    <tr style="font-weight: bold">
+        <td style="width: 8%;"></td>
+        <td style="width: 10%;">Gastos mensuales</td>
+        <td style="width: 25px;"></td>
+        <td style="width: 25px;"></td>
+        <td style="width: 10%;">% del Total de Egresos</td>
+        <td style="width: 25px;"></td>
+        <td style="width: 19%"></td>
+        <td style="width: 25px;"></td>
+        <td>Ingresos mensuales</td>
+    </tr>
+    <tr>
+        <td>Alimentación</td>
+        <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].alimentacion_despensa | number:2}}</span></td>
+        <td style="width: 25px;"></td>
+        <td style="width: 25px;"></td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].alimentacion_despensa/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td></td> 
+        <td style="font-size: 10px; text-align: right; display: block; height: 10px;">
+            <div ng-repeat="papa in scope.estudio.padres">
+                <p ng-if="papa.tipo_persona==='PAPA'">{{papa.nombre}} {{papa.apellido_paterno}} {{papa.apellido_materno}}</p>
+            </div>
+        </td>
+        <td></td>
+        <td>
+            <table class="" style="font-size: 10px; width: 50%; text-align: center;">
+                <tr>
+                    <td class="" style="border: solid;
+        border-color: black;
+        border-width: 1px;">
+                        <div ng-repeat="papa in scope.estudio.padres">
+                            <p ng-if="papa.tipo_persona==='PAPA'">$ {{papa.sueldo_neto}}</p>
+                        </div>
+                    </td>
+                    <td class="" style="border: solid;
+        border-color: black;
+        border-width: 1px;">
+                        <div ng-repeat="papa in scope.estudio.padres">
+                            <p ng-if="papa.tipo_persona==='PAPA'">{{papa.fecha_nacimiento | toJSDate}}</p>
+                        </div>
+                    </td>
+                    <td class="" style="border: solid;
+        border-color: black;
+        border-width: 1px;">
+                        <div ng-repeat="papa in scope.estudio.padres">
+                            <p ng-if="papa.tipo_persona==='PAPA'">{{papa.puesto}}</p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    
+    <tr>
+        <td>Renta</td>
+        <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].renta | number:2}}</span></td>
+        <td style="width: 25px;"></td>
+        <td style="width: 25px;"></td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].renta/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td></td> 
+        <td style="font-size: 10px; text-align: center; background: gainsboro">
+            <span>Papa</span>
+        </td>
+        <td></td>
+        <td style="">
+            <table>
+                <tr>
+                    <td >
+                        <div ng-repeat="papa in scope.estudio.padres">
+                            <p ng-if="papa.tipo_persona==='PAPA'">{{papa.empresa}}</p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            
+        </td>
+    </tr>
+    
+    <tr>
+        <td>Crédito hipotacario</td>
+        <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].credito_hipotecario | number:2}}</span></td>
+        <td style="width: 25px;"></td>
+        <td style="width: 25px;"></td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].credito_hipotecario/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td></td> 
+        <td style="font-size: 10px; text-align: right; display: block; height: 10px;">
+            <div ng-repeat="papa in scope.estudio.padres">
+                <p ng-if="papa.tipo_persona==='MAMA'">{{papa.nombre}} {{papa.apellido_paterno}} {{papa.apellido_materno}}</p>
+            </div>
+        </td>
+        <td></td>
+        <td>
+            <table class="" style="font-size: 10px;  width: 50%; text-align: center;">
+                <tr>
+                    <td class="" style="border: solid;
+        border-color: black;
+        border-width: 1px;">
+                        <div ng-repeat="papa in scope.estudio.padres">
+                            <p ng-if="papa.tipo_persona==='MAMA'">$ {{papa.sueldo_neto}}</p>
+                        </div>
+                    </td>
+                    <td class="" style="border: solid;
+        border-color: black;
+        border-width: 1px;">
+                        <div ng-repeat="papa in scope.estudio.padres">
+                            <p ng-if="papa.tipo_persona==='MAMA'">{{papa.fecha_nacimiento | toJSDate}}</p>
+                        </div>
+                    </td>
+                    <td class="" style="border: solid;
+        border-color: black;
+        border-width: 1px;">
+                        <div ng-repeat="papa in scope.estudio.padres">
+                            <p ng-if="papa.tipo_persona==='MAMA'">{{papa.puesto}}</p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>Colegiaturas</td>
+        <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].colegiaturas | number:2}}</span></td>
+        <td style="width: 25px;"></td>
+        <td style="width: 25px;"></td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].colegiaturas/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td></td> 
+        <td style="font-size: 10px; text-align: center; background: gainsboro">
+            <span>Mama</span>
+        </td>
+        <td></td>
+        <td>
+        <table>
+                <tr>
+                    <td class="">
+                        <div ng-repeat="papa in scope.estudio.padres">
+                            <p ng-if="papa.tipo_persona==='MAMA'">{{papa.empresa}}</p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>Otras colegiaturas</td>
+        <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].otras_colegiaturas | number:2}}</span></td>
+        <td style="width: 25px;"></td>
+        <td style="width: 25px;"></td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].otras_colegiaturas/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td></td> 
+        <td style="font-size: 10px; text-align: right;">
+            <span>Otros</span>
+        </td>
+        <td></td>
+        <td class="" style="border: solid;
+        border-color: black;
+        border-width: 1px;">{{scope.estudio.ingresos[0].total_otros_ingresos | number:2}}</td>
+    </tr>
+    <tr>
+        <td>Clases particulares</td>
+        <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].clases_particulares | number:2}}</span></td>
+        <td style="width: 25px;"></td>
+        <td style="width: 25px;"></td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].clases_particulares/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td></td> 
+        <td></td>
+        <td></td>
+        <td>in</td>
+    </tr>
+    
+</table>
+
+</div>
+
+
+<button onclick="imprime()">Imprimir</button>
