@@ -76,38 +76,57 @@
         */
        
         function pull(){
-            show();
-            RestService.get(Constants.BaseURLBack+'/pull.php', '').then(
-                function(response){
-                    hide();
-                    mensaje('success', 'Importar datos.', 'Los datos se importaron correctamente, se actualizara el sistema, espere...',6000);
-                    setTimeout(function(){window.location.reload(true);}, 6000);
-                },
-                function(error){
-                    hide();
-                    mensaje('error', 'Importar datos.', 'Ocurrio un error al importar los datos desde el servidor.');
-                    console.log('Error pull: '+error);
-                }
+            confirmaMsj(
+                "Confirmación de solicitud",
+                "¿Esta seguro de importrar los datos desde el servidor? Esta acción crea una replica de la base de datos del servidor, si tiene estudios sin finalizar captura NO realice esta acción, primero termine su captura y luego EXPORTE al servidor.",
+                "Si",
+                    function(){
+                        show();
+                        RestService.get(Constants.BaseURLBack+'/pull.php', '').then(
+                            function(response){
+                                hide();
+                                mensaje('success', 'Importar datos.', 'Los datos se importaron correctamente, se actualizara el sistema, espere...',5000);
+                                setTimeout(function(){window.location.reload(true);}, 6000);
+                            },
+                            function(error){
+                                hide();
+                                mensaje('error', 'Importar datos.', 'Ocurrio un error al importar los datos desde el servidor.');
+                                console.log('Error pull: '+error);
+                            }
+                        );
+                    },
+                "No",
+                    function(){}
             );
+            
         }
        
         function push(){
-            show();
-            var promesas=[];
-            promesas.push(RestService.get(Constants.BaseURLBack+'/sync', ''));
-            promesas.push(RestService.get(Constants.BaseURLBack+'/pull.php', ''));
-            
-            $q.all(promesas).then(
-                function(response){
-                    hide();
-                    mensaje('success', 'Exportar datos.', 'Los datos se exportaron correctamente, verifíquelos en el servidor. <br> Se actualizara el sistema, espere...',6000);
-                    setTimeout(function(){window.location.reload(true);}, 6000);
-                }, 
-                function (error){
-                    hide();
-                    mensaje('error', 'Importar datos.', 'Ocurrio un error al importar los datos desde el servidor.');
-                    console.log('Error pull: '+error);
-                }
+            confirmaMsj(
+                "Confirmación de solicitud",
+                "¿Esta seguro de exportrar sus datos al servidor? Esta acción envia al servidor aquellos estudios que ya fueron capturados y/o enviados a revisión.",
+                "Si",
+                    function(){
+                        show();
+                        var promesas=[];
+                        promesas.push(RestService.get(Constants.BaseURLBack+'/sync', ''));
+                        promesas.push(RestService.get(Constants.BaseURLBack+'/pull.php', ''));
+
+                        $q.all(promesas).then(
+                            function(response){
+                                hide();
+                                mensaje('success', 'Exportar datos.', 'Los datos se exportaron correctamente, verifíquelos en el servidor. <br> Se actualizara el sistema, espere...',6000);
+                                setTimeout(function(){window.location.reload(true);}, 5000);
+                            }, 
+                            function (error){
+                                hide();
+                                mensaje('error', 'Importar datos.', 'Ocurrio un error al importar los datos desde el servidor.');
+                                console.log('Error pull: '+error);
+                            }
+                        );
+                    },
+                "No",
+                    function(){}
             );
     
         } 

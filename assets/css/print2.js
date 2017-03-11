@@ -4,4 +4,8 @@
  * and open the template in the editor.
  */
 
-setTimeout(function(){window.print();}, 500);
+setTimeout(function(){
+    //window.print();
+    //window.close();
+}, 500);
+

@@ -15,6 +15,7 @@ class Sync extends CI_Controller {
         foreach ($estudios as $estudio) {
             $idEstudio=$estudio->id_estudio;
             $idFamilia=$estudio->id_familia;
+            $idEstatus=$estudio->id_estatus_estudio;
             
             $return.='#Script para exportar datos de N estudios al servidor';
             $return.= "\n";
@@ -25,7 +26,7 @@ class Sync extends CI_Controller {
             $return.= "\n";
             $papas=$this->estudio_model->getPadreFamilia($idFamilia, $idEstudio);
             foreach ($papas as $papa) {
-                $sql="insert into padre_familia(id_familia, id_estudio, nombre, apellido_paterno, apellido_materno, edad, correo, rfc, celular, profesion, ocupacion,empresa, puesto, giro, dueno, antiguedad, sueldo_neto, tipo_persona) values ('$idFamilia', '$idEstudio', '$papa->nombre','$papa->apellido_paterno', '$papa->apellido_materno','$papa->edad', '$papa->correo', '$papa->rfc', '$papa->celular', '$papa->profesion', '$papa->ocupacion','$papa->empresa', '$papa->puesto', '$papa->giro', '$papa->dueno', '$papa->antiguedad',   '$papa->sueldo_neto',  '$papa->tipo_persona'); \n";
+                $sql="insert into padre_familia(id_familia, id_estudio, nombre, apellido_paterno, apellido_materno, edad, fecha_nacimiento, correo, rfc, celular, profesion, ocupacion,empresa, puesto, giro, dueno, antiguedad, sueldo_neto, tipo_persona) values ('$idFamilia', '$idEstudio', '$papa->nombre','$papa->apellido_paterno', '$papa->apellido_materno', '$papa->edad', '$papa->fecha_nacimiento', '$papa->correo', '$papa->rfc', '$papa->celular', '$papa->profesion', '$papa->ocupacion','$papa->empresa', '$papa->puesto', '$papa->giro', '$papa->dueno', '$papa->antiguedad',   '$papa->sueldo_neto',  '$papa->tipo_persona'); \n";
                 $return.=$sql;
             }
             $return.= "\n";
@@ -129,7 +130,7 @@ class Sync extends CI_Controller {
                 $return.=$sql;
             }
             
-            $return .='update estudio set id_estatus_estudio=6 where id_estudio='.$idEstudio.';';
+            $return .='update estudio set id_estatus_estudio='.$idEstatus.' where id_estudio='.$idEstudio.';';
         }
         //echo $return;
         

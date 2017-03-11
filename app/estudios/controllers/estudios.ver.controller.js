@@ -5,7 +5,7 @@
 	.module('app.estudios')
 	.controller('EstudiosVerController', EstudiosVerController);
     
-    function EstudiosVerController (EstudiosService, ComentarioService, $localStorage, $rootScope, $state, $mdDialog, $mdToast, DialogService, RestService, AuthenticationService, Constants, UserService) {
+    function EstudiosVerController (EstudiosService, ComentarioService, $localStorage, $rootScope, $state, $mdDialog, $mdToast, DialogService, RestService, AuthenticationService, Constants, UserService, $q) {
         /* jshint validthis: true */
         console.log('init estudios ver');
         
@@ -94,6 +94,7 @@
         
         function agendarView(estudio){
             show();
+            scope.entrevista={};
             scope.estudio={};
             scope.estudio=estudio;
             EstudiosService.obtenerDetalleEstudio(scope.estudio.id_estudio, 0).then(
@@ -126,14 +127,37 @@
             obj2.folio_estudio=scope.estudio.folio_estudio;
             obj2.id_familia=scope.estudio.id_familia;
             console.log(obj);
+            
+            var promesas=[];
+            promesas.push(EstudiosService.actualizarEstudio(obj));
+            if(scope.entrevista.comentarios!==undefined||scope.entrevista.comentarios!==""){
+                console.log(scope.entrevista.comentarios);
+                promesas.push(ComentarioService.guardarComentario(obj2));
+            }
             confirmaMsj(
                 "Confirmación de solicitud",
                 "¿Agendar estudio?",
                 "Si",
                     function(){
+                        $q.all(promesas).then(
+                                function(data){
+                                    console.log(data);
+                                    scope.familia={};
+                                    scope.estudio={};
+                                    mensaje('success', 'Aviso.', 'Se agendo el estudio correctamente.');
+                                    scope.buscarEstudios();
+                                    $("#modal_agendar_entrevista").modal('hide');
+                                    $("#modal_agendar").modal('hide');
+                                    },
+                                function(){
+                                    console.log('error prom');
+                                }
+                        );
+                        /*
                         EstudiosService.actualizarEstudio(obj).then(
                             function(response){
-                                ComentarioService.guardarComentario(obj2);
+                                
+                                
                                 scope.familia={};
                                 scope.estudio={};
                                 mensaje('success', 'Aviso.', 'Se agendo el estudio correctamente.');
@@ -144,7 +168,7 @@
                             function(error){
                                 console.log('Error al guardar hijo: '+error);
                             }
-                        );
+                        );*/
                     },
                 "No",
                     function(){}

@@ -23,7 +23,7 @@
         margin: 5px 10px 0px 0px;
     }
 </style>
-
+<button onclick="imprime()">Imprimir</button>
 <script src="assets/css/print.js"></script>
 <div id="contenido">
 <div class="row text-center"><br></div>
@@ -33,11 +33,11 @@
 
 <table class="centrar">
     <tr style="color: #003399">
-        <td><p>Familia: <strong style="font-style: oblique; text-decoration: underline;">{{scope.estudio.familia}}</strong></p></td>
-        <td><p>Total de hijos: <strong class="border">{{scope.estudio.hijos.length}}</strong></p></td>
-        <td><p>CLAVE: <strong class="border">{{scope.estudio.clave_familia}}</strong></p></td>
-        <td><p>Clasificación: <strong class="border">{{scope.ingresos.clasificacion}}</strong></p></td>
-        <td><p>Compartida: <strong ng-if="scope.estudio.instituciones.length>1" class="border">SI</strong><strong ng-if="scope.estudio.instituciones.length===1" class="border">NO</strong></p></td>
+        <td><p><strong>Familia:</strong> <strong style="font-style: oblique; text-decoration: underline; margin: 45px; font-weight: 900;">{{scope.estudio.familia}}</strong></p></td>
+        <td><p><strong>Total de hijos:</strong> <strong class="border" style="width: 25px">{{scope.estudio.hijos.length}}</strong></p></td>
+        <td><p><strong>CLAVE:</strong> <strong class="border">{{scope.estudio.id_familia}}</strong></p></td>
+        <td><p><strong>Clasificación:</strong> <strong class="border">{{scope.ingresos.clasificacion}}</strong></p></td>
+        <td><p><strong>Compartida:</strong> <strong ng-if="scope.estudio.instituciones.length>1" class="border">SI</strong><strong ng-if="scope.estudio.instituciones.length===1" class="border">NO</strong></p></td>
     </tr>
 </table>
 
@@ -83,7 +83,7 @@
 </div>
 
 
-<table border="0" style="margin: auto; width: 98%">
+<table border="0" style="margin: auto; width: 98%;" class="tabla_chica">
    
     <tr style="font-weight: bold">
         <td style="width: 8%;"></td>
@@ -109,33 +109,22 @@
             </div>
         </td>
         <td></td>
-        <td>
-            <table class="" style="font-size: 10px; width: 50%; text-align: center;">
-                <tr>
-                    <td class="" style="border: solid;
-        border-color: black;
-        border-width: 1px;">
-                        <div ng-repeat="papa in scope.estudio.padres">
-                            <p ng-if="papa.tipo_persona==='PAPA'">$ {{papa.sueldo_neto}}</p>
-                        </div>
-                    </td>
-                    <td class="" style="border: solid;
-        border-color: black;
-        border-width: 1px;">
-                        <div ng-repeat="papa in scope.estudio.padres">
-                            <p ng-if="papa.tipo_persona==='PAPA'">{{papa.fecha_nacimiento | toJSDate}}</p>
-                        </div>
-                    </td>
-                    <td class="" style="border: solid;
-        border-color: black;
-        border-width: 1px;">
-                        <div ng-repeat="papa in scope.estudio.padres">
-                            <p ng-if="papa.tipo_persona==='PAPA'">{{papa.puesto}}</p>
-                        </div>
-                    </td>
-                </tr>
-            </table>
+        <td style="display: flex">
+            <div ng-repeat="papa in scope.estudio.padres">
+                <p style="    width: 100px;
+    padding: 0px 10px;
+    text-align: center;" class="border" ng-if="papa.tipo_persona==='PAPA'">$ {{papa.sueldo_neto | number:2}}</p>
+            </div>
+            <div  ng-repeat="papa in scope.estudio.padres" >
+                <p style="padding: 0px 10px;" class="border" ng-if="papa.tipo_persona==='PAPA'">{{papa.fecha_nacimiento | toJSDate}}</p>
+            </div>
+            <div ng-repeat="papa in scope.estudio.padres" >
+                <p style="padding: 0px 10px;" class="border" ng-if="papa.tipo_persona==='PAPA'">{{papa.puesto}}</p>
+            </div>
         </td>
+        <td rowspan="3" style="
+            text-align: center;
+            "><strong>Colegiaturas con pago al 100%</strong></td>
     </tr>
     
     <tr>
@@ -149,17 +138,10 @@
             <span>Papa</span>
         </td>
         <td></td>
-        <td style="">
-            <table>
-                <tr>
-                    <td >
-                        <div ng-repeat="papa in scope.estudio.padres">
-                            <p ng-if="papa.tipo_persona==='PAPA'">{{papa.empresa}}</p>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-            
+        <td >
+            <div ng-repeat="papa in scope.estudio.padres">
+                <p style="margin: 0px;     text-align: right; width: 70%" ng-if="papa.tipo_persona==='PAPA'">{{papa.empresa}}</p>
+            </div>
         </td>
     </tr>
     
@@ -176,32 +158,18 @@
             </div>
         </td>
         <td></td>
-        <td>
-            <table class="" style="font-size: 10px;  width: 50%; text-align: center;">
-                <tr>
-                    <td class="" style="border: solid;
-        border-color: black;
-        border-width: 1px;">
-                        <div ng-repeat="papa in scope.estudio.padres">
-                            <p ng-if="papa.tipo_persona==='MAMA'">$ {{papa.sueldo_neto}}</p>
-                        </div>
-                    </td>
-                    <td class="" style="border: solid;
-        border-color: black;
-        border-width: 1px;">
-                        <div ng-repeat="papa in scope.estudio.padres">
-                            <p ng-if="papa.tipo_persona==='MAMA'">{{papa.fecha_nacimiento | toJSDate}}</p>
-                        </div>
-                    </td>
-                    <td class="" style="border: solid;
-        border-color: black;
-        border-width: 1px;">
-                        <div ng-repeat="papa in scope.estudio.padres">
-                            <p ng-if="papa.tipo_persona==='MAMA'">{{papa.puesto}}</p>
-                        </div>
-                    </td>
-                </tr>
-            </table>
+        <td style="display: flex">
+            <div ng-repeat="papa in scope.estudio.padres">
+                <p style="    width: 100px;
+    padding: 0px 10px;
+    text-align: center;" class="border" ng-if="papa.tipo_persona==='MAMA'">$ {{papa.sueldo_neto | number:2}}</p>
+            </div>
+            <div  ng-repeat="papa in scope.estudio.padres" >
+                <p style="padding: 0px 10px;" class="border" ng-if="papa.tipo_persona==='MAMA'">{{papa.fecha_nacimiento | toJSDate}}</p>
+            </div>
+            <div ng-repeat="papa in scope.estudio.padres" >
+                <p style="padding: 0px 10px;" class="border" ng-if="papa.tipo_persona==='MAMA'">{{papa.puesto}}</p>
+            </div>
         </td>
     </tr>
     <tr>
@@ -215,17 +183,17 @@
             <span>Mama</span>
         </td>
         <td></td>
-        <td>
-        <table>
-                <tr>
-                    <td class="">
-                        <div ng-repeat="papa in scope.estudio.padres">
-                            <p ng-if="papa.tipo_persona==='MAMA'">{{papa.empresa}}</p>
-                        </div>
-                    </td>
-                </tr>
-            </table>
+        <td >
+            <div ng-repeat="papa in scope.estudio.padres">
+                <p  style="margin: 0px; text-align: right; width: 70%" ng-if="papa.tipo_persona==='MAMA'">{{papa.empresa}}</p>
+            </div>
         </td>
+        <td style="
+            text-align: center;
+        "><p style="
+            padding: 0px;
+            margin: 0px; width: 100px; text-align: center; margin: auto;
+            " class="border">$ {{scope.suma_col | number:2}}</p></td>
     </tr>
     <tr>
         <td>Otras colegiaturas</td>
@@ -238,9 +206,9 @@
             <span>Otros</span>
         </td>
         <td></td>
-        <td class="" style="border: solid;
-        border-color: black;
-        border-width: 1px;">{{scope.estudio.ingresos[0].total_otros_ingresos | number:2}}</td>
+        <td >
+            <p  style="width: 100px; text-align: center" class="border">$ {{scope.estudio.ingresos[0].total_otros_ingresos | number:2}}</p>
+        </td>
     </tr>
     <tr>
         <td>Clases particulares</td>
@@ -249,14 +217,275 @@
         <td style="width: 25px;"></td>
         <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].clases_particulares/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
         <td></td> 
+        <td style="font-size: 10px; text-align: right"><strong>Total</strong></td>
+        <td></td>
+        <td><p  style="    width: 100px;
+    text-align: center;" class="border">$ {{scope.estudio.ingresos[0].sueldo_papa+scope.estudio.ingresos[0].sueldo_mama+scope.estudio.ingresos[0].otros_ingresos | number:2}}</p></td>
+    </tr>
+    <tr>
+        <td>Servicios</td>
+        <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].total_servicios | number:2}}</span></td>
+        <td style="width: 25px;"></td>
+        <td style="width: 25px;"></td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].total_servicios/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td></td> 
+    </tr>
+    <tr>
+        <td>Servicio domestico</td>
+        <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].servicio_domestico | number:2}}</span></td>
+        <td style="width: 25px;"></td>
+        <td style="width: 25px;"></td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].servicio_domestico/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td></td> 
         <td></td>
         <td></td>
-        <td>in</td>
+        <td></td>
+        <td rowspan="2"><strong style="text-align: center">% del ingreso destinado a pago de colegiaturas</strong></td>
+    </tr>
+    
+    <tr>
+        <td>Gasolina</td>
+        <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].gasolina | number:2}}</span></td>
+        <td style="width: 25px;"></td>
+        <td style="width: 25px;"></td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].gasolina/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td></td> 
+        <td></td>
+        <td></td>
+        <td><strong style="background: gainsboro">DOCUMENTACION FALTANTE</strong></td>
+    </tr>
+    
+    <tr>
+        <td>Credito automovil</td>
+        <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].credito_auto | number:2}}</span></td>
+        <td style="width: 25px;"></td>
+        <td style="width: 25px;"></td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].credito_auto/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td></td> 
+        <td></td>
+        <td></td>
+        <td style="display: flex">
+            <p style="margin: 0px;" ng-if="!scope.estudio.documentos[0].carta_no_adeudo">-</p>
+            <p style="margin: 0px;" ng-if="scope.estudio.documentos[0].carta_no_adeudo">Carta de no adeudo</p>
+        </td>
+        
+        
+        <td><p style="
+            padding: 0px;
+            margin: 0px; width: 100px; text-align: center; margin: auto;
+            " class="border">{{(scope.suma_col/scope.estudio.ingresos[0].total_ingresos)*100 | number:0}} %</p></td>
+    </tr>
+    
+    <tr>
+        <td>Pago mensual TC</td>
+        <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].pago_tdc_mensual | number:2}}</span></td>
+        <td style="width: 25px;"></td>
+        <td style="width: 25px;"></td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].pago_tdc_mensual/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td></td> 
+        <td></td>
+        <td></td>
+        <td style="display: flex">
+            <p style="margin: 0px;" ng-if="!scope.estudio.documentos[0].firma_reglamento">-</p>
+            <p style="margin: 0px;" ng-if="scope.estudio.documentos[0].firma_reglamento">Firma del reglamento de becas</p>
+        </td>
+    </tr>
+    
+    <tr>
+        <td>Creditos comerciales</td>
+        <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].creditos_comerciales | number:2}}</span></td>
+        <td style="width: 25px;"></td>
+        <td style="width: 25px;"></td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].creditos_comerciales/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td></td> 
+        <td></td>
+        <td></td>
+        <td style="display: flex">
+            <p style="margin: 0px;" ng-if="!scope.estudio.documentos[0].nomina_carta">-</p>
+            <p style="margin: 0px;" ng-if="scope.estudio.documentos[0].nomina_carta">Nómina/Carta contador</p>
+        </td>
+    </tr>
+    
+    <tr>
+        <td>Vestido y calzado</td>
+        <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].vestido_calzado | number:2}}</span></td>
+        <td style="width: 25px;"></td>
+        <td style="width: 25px;"></td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].vestido_calzado/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td></td> 
+        <td></td>
+        <td></td>
+        <td style="display: flex">
+            <p style="margin: 0px;" ng-if="!scope.estudio.documentos[0].poliza">-</p>
+            <p style="margin: 0px;" ng-if="scope.estudio.documentos[0].poliza">Pólizas de seguro</p>
+        </td>
+    </tr>
+    
+    <tr>
+        <td>Médico y medicinas</td>
+        <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].medico_medicinas | number:2}}</span></td>
+        <td style="width: 25px;"></td>
+        <td style="width: 25px;"></td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].medico_medicinas/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td></td> 
+        <td></td>
+        <td></td>
+        <td style="display: flex">
+            <p style="margin: 0px;" ng-if="!scope.estudio.documentos[0].estado_cuenta">-</p>
+            <p style="margin: 0px;" ng-if="scope.estudio.documentos[0].estado_cuenta">Estados de cuenta</p>
+        </td>
+    </tr>
+    
+    <tr>
+        <td>Club deportivo</td>
+        <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].clubes_deportivos | number:2}}</span></td>
+        <td style="width: 25px;"></td>
+        <td style="width: 25px;"></td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].clubes_deportivos/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td></td> 
+        <td></td>
+        <td></td>
+        <td style="display: flex">
+            <p style="margin: 0px;" ng-if="!scope.estudio.documentos[0].recibos_renta">-</p>
+            <p style="margin: 0px;" ng-if="scope.estudio.documentos[0].recibos_renta">Recibo (s) de renta</p>
+        </td>
+    </tr>
+    
+    <tr>
+        <td>Seguros</td>
+        <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].seguros | number:2}}</span></td>
+        <td style="width: 25px;"></td>
+        <td style="width: 25px;"></td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].seguros/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td></td> 
+        <td></td>
+        <td></td>
+        <td style="display: flex">
+            <p style="margin: 0px;" ng-if="!scope.estudio.documentos[0].facturas_hospital">-</p>
+            <p style="margin: 0px;" ng-if="scope.estudio.documentos[0].facturas_hospital">Facturas de hospital</p>
+        </td>
+    </tr>
+    
+    <tr>
+        <td>Vacaciones</td>
+        <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].vacaciones | number:2}}</span></td>
+        <td style="width: 25px;"></td>
+        <td style="width: 25px;"></td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].vacaciones/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td></td> 
+        <td></td>
+        <td></td>
+        <td style="display: flex">
+            <p style="margin: 0px;" ng-if="!scope.estudio.documentos[0].comprobante_finiquito">-</p>
+            <p style="margin: 0px;" ng-if="scope.estudio.documentos[0].comprobante_finiquito">Comprobante de finiquito</p>
+        </td>
+    </tr>
+    
+    <tr>
+        <td>Otros</td>
+        <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].otros2 | number:2}}</span></td>
+        <td style="width: 25px;"></td>
+        <td style="width: 25px;"></td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].otros2/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td></td> 
+        <td></td>
+        <td></td>
+        <td style="display: flex">
+            <p style="margin: 0px;" ng-if="!scope.estudio.documentos[0].demandas_judiciales">-</p>
+            <p style="margin: 0px;" ng-if="scope.estudio.documentos[0].demandas_judiciales">Demandas judiciales</p>
+        </td>
+    </tr>
+    
+    <tr>
+        <td><strong>Total</strong></td>
+        <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].total_egresos | number:2}}</span></td>
+        <td style="width: 25px;"></td>
+        <td style="width: 25px;"></td>
+        <td style="text-align: right;"> <span style=" margin-right: 5px; font-size: 6px">Diferencia Ingresos/Egresos</span></td>
+        <td></td> 
+        <td></td>
+        <td></td>
+        <td style="display: flex">
+            <p style="margin: 0px;" ng-if="!scope.estudio.documentos[0].servicios">-</p>
+            <p style="margin: 0px;" ng-if="scope.estudio.documentos[0].servicios">Servicios</p>
+        </td>
+    </tr>
+    <tr>
+        <td><br></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><p style="text-align: right; margin: auto; margin-right: 5px; background: gainsboro" class="border"> $ {{scope.estudio.egresos[0].diferencia_egre_ingre | number:2}}</p></td>
+        <td></td> 
+        <td></td>
+        <td></td>
+        <td style="display: flex">
+            <p style="margin: 0px;" ng-if="!scope.estudio.documentos[0].pagos_credito_hipo">-</p>
+            <p style="margin: 0px;" ng-if="scope.estudio.documentos[0].pagos_credito_hipo">Pagos de crédito hipotecario</p>
+        </td>
+    </tr>
+    <tr>
+        <td><strong>Saldo actual en TC</strong></td>
+        <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].saldo_tdc | number:2}}</span></td>
+        <td style="width: 25px;"></td>
+        <td style="width: 25px;"></td>
+        <td></td> 
+        <td></td>
+        <td></td>
+        <td></td>
+        <td style="display: flex">
+            <p style="margin: 0px;" ng-if="!scope.estudio.documentos[0].pagos_credito_auto">-</p>
+            <p style="margin: 0px;" ng-if="scope.estudio.documentos[0].pagos_credito_auto">Pagos de crédito automotriz</p>
+        </td>
+    </tr>
+    
+    <tr>
+        <td><br></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        
+         <td style="display: flex">
+            <p style="margin: 0px;" ng-if="!scope.estudio.documentos[0].otros">-</p>
+            <p style="margin: 0px;" ng-if="scope.estudio.documentos[0].otros">Otros</p>
+        </td>
+    </tr>
+    
+    <tr>
+        <td></td>
+        <td><strong style="font-style: oblique; background: gainsboro">NECESIDAD DE BECA</strong></td>
+        <td style="width: 25px;"></td>
+        <td style="width: 25px;"></td>
+        <td class="border" style="font-style: oblique; background: gainsboro;"><strong style=" float: right;margin-right: 13px;">5</strong></td>
+        
+    </tr>
+    
+    <tr>
+        <td><br></td>
+        <td><p style="font-size: 7px; text-align: center">*En una escala del 1 al 10</p></td>
+    </tr>
+    
+    <tr>
+        <td></td>
+        <td><strong style="font-style: oblique; background: gainsboro">CONFIABILIDAD</strong></td>
+        <td style="width: 25px;"></td>
+        <td style="width: 25px;"></td>
+        <td class="border" style="font-style: oblique; background: gainsboro;"><strong style=" float: right;margin-right: 13px;">5</strong></td>
     </tr>
     
 </table>
-
+<br>
+<div class="row">
+    <p style="background: gainsboro;">Observaciones</p>
+</div>
+<div>
+    <ul>
+        <li ng-repeat="comm in scope.estudio.comentarios" ng-if="comm.tipo==='GENERAL'"> <span >{{comm.comentario}}</span></li>
+    </ul>
 </div>
 
-
-<button onclick="imprime()">Imprimir</button>
+</div>

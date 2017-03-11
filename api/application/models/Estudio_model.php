@@ -75,7 +75,7 @@ class Estudio_model extends CI_Model {
                 .'es.institucion_familia, es.institucion_solicito,'
                 .'fam.familia,'
                 .'fam.calle, fam.num_ext, fam.num_int, fam.colonia, fam.localidad, fam.municipio, fam.estado,'
-                .'es.fecha_estudio, es.id_estatus_estudio, es_in.id_institucion, es.id_familia,'
+                .'es.fecha_estudio, es.id_estatus_estudio, es_in.id_institucion, es.id_familia, es.id_usuario_asignado,'
                 .'es_in.id_estudio_institucion, es_in.estatus');
         $this->db->from('estudio es');
         $this->db->join('estudios_instituciones es_in', 'es.id_estudio = es_in.id_estudio');
@@ -105,9 +105,15 @@ class Estudio_model extends CI_Model {
         $array=array();
         foreach ($estudios as $estudio) {
             $estudio->instituciones= $this->getEstudiosFamiliaInstitucion($estudio->id_familia, $estudio->id_institucion,0, $tipoUsuario);
+            $estudio->usuario_asignado= $this->getUsuarioAsignado($estudio->id_usuario_asignado);
             array_push($array, $estudio);
         }
         return $array;
+    }
+    
+    public function getUsuarioAsignado($idUsuario) {
+        $this->db->where('id_usuario', $idUsuario);
+        return $this->db->get('usuario')->result();;
     }
     
     public function getEstudiosFamiliaInstitucion($idFamilia, $idInstitucion, $idEstudio, $tipoUsuario) {

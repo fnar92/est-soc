@@ -41,6 +41,7 @@
                                                 <th class="text-center">Dirección</th>
                                                 <th class="text-center">Fecha</th>
                                                 <th class="text-center">Estatus</th>
+                                                <th ng-show="tipoUsuario==='1'&&rolUsuario==='1'" class="text-center">Usuario asignado</th>
                                                 <th ng-show="tipoUsuario==='1'" class="text-center">Compartido</th>
                                                 <th class="text-center">Opciones</th>
                                             </tr>
@@ -80,6 +81,7 @@
                                                         <span  ng-switch-when="9" class="label label-danger">Cita cancelada</span>
                                                     </div>
                                                 </td>
+                                                <td ng-show="tipoUsuario==='1'&&rolUsuario==='1'" class="text-center">{{estudio.usuario_asignado[0].nombre}}</td>
                                                 <td ng-show="tipoUsuario==='1'" class="text-center">
                                                     <span ng-show="estudio.instituciones.length>1&&estudio.estatus==='1'" class="label label-success">Compartido</span>
                                                     <span ng-show="estudio.instituciones.length===1&&estudio.estatus==='1'" class="label label-primary">No compartido</span>
@@ -326,9 +328,12 @@
             </div>
             <div class="modal-body">
                 <div class="row">
+                    
                         <div class="col-md-3">
                             <div class="form-group label-floating">
+                                <md-datepicker ng-model="ctrl.myDate" md-placeholder="Enter date" md-open-on-focus></md-datepicker>
                                     <label class="control-label">Fecha de entrevista:</label>
+                                    
                                     <input type="date" class="form-control" ng-model="estudios.entrevista.fecha_entrevista">
                             </div>
                         </div>
