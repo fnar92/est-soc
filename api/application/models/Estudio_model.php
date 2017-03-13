@@ -75,7 +75,7 @@ class Estudio_model extends CI_Model {
                 .'es.institucion_familia, es.institucion_solicito,'
                 .'fam.familia,'
                 .'fam.calle, fam.num_ext, fam.num_int, fam.colonia, fam.localidad, fam.municipio, fam.estado,'
-                .'es.fecha_estudio, es.id_estatus_estudio, es_in.id_institucion, es.id_familia, es.id_usuario_asignado,'
+                .'es.fecha_estudio, fecha_entrevista, fecha_reagendar_entrevista, es.id_estatus_estudio, es_in.id_institucion, es.id_familia, es.id_usuario_asignado,'
                 .'es_in.id_estudio_institucion, es_in.estatus');
         $this->db->from('estudio es');
         $this->db->join('estudios_instituciones es_in', 'es.id_estudio = es_in.id_estudio');
@@ -211,10 +211,12 @@ class Estudio_model extends CI_Model {
     public function getHijosFamilia($idFamilia, $idEstudio){
         $this->db->where('id_familia', $idFamilia);
         $this->db->where('id_estudio', $idEstudio);
+        $this->db->order_by('fecha_registro');
         return $this->db->get('hijo_familia')->result();
     }
     
     public function saveHijo($data){
+        $data['fecha_registro']=date('Y-m-d H:i:s');
         $this->db->insert('hijo_familia', $data);
         return $this->getHijosFamilia($data['id_familia'], $data['id_estudio']);
         

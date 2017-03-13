@@ -37,7 +37,7 @@
                                 <div class="card-content table-responsive">
                                     <table class="table table-hover table-striped" cellspacing="0" width="100%">
                                         <thead >
-                                            <tr>
+                                            <tr style="background: gainsboro">
                                                 <th ng-show="tipoUsuario==='1'" class="text-center">ID</th>
                                                 <th ng-show="tipoUsuario==='1'" class="text-center">Clave</th>
                                                 <th class="text-center">Familia</th>
@@ -52,7 +52,7 @@
                                             <tr ng-repeat="familia in estudios.listaFamiliasEncontradas | startFrom:estudios.currentPage * estudios.pageSize | limitTo:estudios.pageSize">
                                                 <td ng-show="tipoUsuario==='1'" class="text-center">{{familia.id_familia}}</td>
                                                 <td ng-show="tipoUsuario==='1'" class="text-center">{{familia.clave_familia}}</td>
-                                                <td class="text-center">{{familia.familia}} </td>
+                                                <td class="text-center"><strong>{{familia.familia}}</strong> </td>
                                                 <td class="text-center">{{familia.clave_institucion}} </td>
                                                 <td class="text-center">
                                                     <span class="small">
@@ -85,7 +85,7 @@
                                                         <span  ng-switch-when="9" class="label label-warning">Cancelo entrevista</span>
                                                     </div>
                                                 </td>
-                                                <td class="text-center">
+                                                <td class="text-center col-md-3 col-sm-3 col-lg-3">
                                                     <div class="switch">
                                                             <button 
                                                                 ng-show="familia.estudio.id_estudio!==undefined&&familia.estudio.tieneEstudio===false&&familia.estudio.id_estatus_estudio!=='7'" 

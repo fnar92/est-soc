@@ -30,28 +30,28 @@
                 <div class="card card-stats">
                     <div class="card-content">
                         <div class="card-content table-responsive">
-                                    <table class="table table-hover" cellspacing="0" width="100%">
+                                    <table class="table table-hover table-striped" cellspacing="0" width="100%">
                                         <thead >
-                                            <tr>
+                                            <tr style="background-color: gainsboro">
                                                 <th class="text-center">FOLIO</th>
                                                 <th class="text-center">Familia</th>
                                                 <!--<th class="text-center">Institución Familia</th>
                                                 <th class="text-center">Institución solicito</th>-->
                                                 <th ng-show="tipoUsuario==='1'" class="text-center">Solicitud (es)</th>
                                                 <th class="text-center">Dirección</th>
-                                                <th class="text-center">Fecha</th>
+                                                <th class="text-center">Fecha solicitud</th>
                                                 <th class="text-center">Estatus</th>
                                                 <th ng-show="tipoUsuario==='1'&&rolUsuario==='1'" class="text-center">Usuario asignado</th>
                                                 <th ng-show="tipoUsuario==='1'" class="text-center">Compartido</th>
-                                                <th class="text-center">Opciones</th>
+                                                <th class="text-center">Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr ng-repeat="estudio in estudios.listaEstudios | startFrom:estudios.currentPage * estudios.pageSize | limitTo:estudios.pageSize">
-                                                <td class="text-center">{{estudio.folio_estudio}}</td>
-                                                <td class="text-center">{{estudio.familia}}</td>
+                                                <td class="text-center"><span  class="label label-success">{{estudio.folio_estudio}}</span></td>
+                                                <td class="text-center"><strong>{{estudio.familia}}</strong></td>
                                                 <td class="text-center" ng-show="tipoUsuario==='1'">
-                                        <p class="small " ng-repeat="ins in estudio.instituciones">{{ins.clave_institucion}} ({{ins.count.total}})</p>
+                                        <p class="small " ng-repeat="ins in estudio.instituciones">{{ins.clave_institucion}} </p>
                                                 </td>
                                                 <!--<td class="text-center">{{estudio.institucion_familia}}</td>
                                                 <td class="text-center">{{estudio.institucion_solicito}} </td>-->
@@ -67,7 +67,7 @@
                                                     {{estudio.estado}}
                                                     </span>
                                                 </td>
-                                                <td class="text-center">{{estudio.fecha_estudio | toJSDate }}</td>
+                                                <td class="text-center"><span  class="label label-default">{{estudio.fecha_estudio | toJSDate }}</span></td>
                                                 <td class="text-center">
                                                     <div ng-show="estudio.estatus==='1'" ng-switch="estudio.id_estatus_estudio">
                                                         <span  ng-switch-when="1"class="label label-info">Recibido</span>
@@ -80,13 +80,19 @@
                                                         <span  ng-switch-when="8" class="label label-danger">Cancelado</span>
                                                         <span  ng-switch-when="9" class="label label-danger">Cita cancelada</span>
                                                     </div>
+                                                    <span  ng-show="tipoUsuario==='1'&&estudio.id_estatus_estudio==='3'" class="label label-info">Fecha entrevista: {{ estudio.fecha_entrevista | toJSDate }}</span>
+                                                    <span  ng-show="tipoUsuario==='1'&&(estudio.id_estatus_estudio==='4'||estudio.id_estatus_estudio==='9')" class="label label-info">Fecha para reagendar: {{ estudio.fecha_reagendar_entrevista | toJSDate }}</span>
                                                 </td>
-                                                <td ng-show="tipoUsuario==='1'&&rolUsuario==='1'" class="text-center">{{estudio.usuario_asignado[0].nombre}}</td>
+                                                <td ng-show="tipoUsuario==='1'&&rolUsuario==='1'" class="text-center">
+                                                    <strong ng-show="estudio.usuario_asignado.length===1">{{estudio.usuario_asignado[0].nombre}}</strong>
+                                                    <strong ng-show="estudio.usuario_asignado.length===0">-</strong>
+                                                    
+                                                </td>
                                                 <td ng-show="tipoUsuario==='1'" class="text-center">
                                                     <span ng-show="estudio.instituciones.length>1&&estudio.estatus==='1'" class="label label-success">Compartido</span>
                                                     <span ng-show="estudio.instituciones.length===1&&estudio.estatus==='1'" class="label label-primary">No compartido</span>
                                                 </td>
-                                                <td class="text-center">
+                                                <td class="text-center col-md-3">
                                                     
                                                     <button
                                                         ng-disabled="estudio.estatus==='2'"
@@ -331,16 +337,14 @@
                     
                         <div class="col-md-3">
                             <div class="form-group label-floating">
-                                <md-datepicker ng-model="ctrl.myDate" md-placeholder="Enter date" md-open-on-focus></md-datepicker>
                                     <label class="control-label">Fecha de entrevista:</label>
-                                    
                                     <input type="date" class="form-control" ng-model="estudios.entrevista.fecha_entrevista">
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <div class="form-group label-floating">
                                     <label class="control-label">Comentarios:</label>
-                                    <textarea class="form-control" ng-model="estudios.entrevista.comentarios"> </textarea>
+                                    <textarea rows="6"  class="form-control" ng-model="estudios.entrevista.comentarios"> </textarea>
                             </div>
                         </div>
                     </div>
@@ -373,10 +377,10 @@
                                     <input type="date" class="form-control" ng-model="estudios.entrevista.fecha_reagendar_entrevista">
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <div class="form-group label-floating">
                                     <label class="control-label">Comentarios:</label>
-                                    <textarea class="form-control" ng-model="estudios.entrevista.comentarios"> </textarea>
+                                    <textarea  rows="6" class="form-control" ng-model="estudios.entrevista.comentarios"> </textarea>
                             </div>
                         </div>
                     </div>
@@ -410,10 +414,10 @@
                                     <input type="date" class="form-control" ng-model="estudios.entrevista.fecha_reagendar_entrevista">
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <div class="form-group label-floating">
                                     <label class="control-label">Motivo:</label>
-                                    <textarea class="form-control" ng-model="estudios.entrevista.comentarios"> </textarea>
+                                    <textarea rows="6" class="form-control" ng-model="estudios.entrevista.comentarios"> </textarea>
                             </div>
                         </div>
                     </div>

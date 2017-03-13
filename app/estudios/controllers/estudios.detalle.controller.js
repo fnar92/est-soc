@@ -246,6 +246,12 @@
             );
         }
         
+        function fecha(f){
+            return f;
+            var x=f.split('-');
+            console.log(f+' -> '+x[2]+'/'+x[1]+'/'+x[0]);
+            return x[2]+'/'+x[1]+'/'+x[0];
+        }
         function load(){
             EstudiosService.obtenerDetalleEstudio(EstudiosService.idEstudioSeleccionado, id).then(
                 function(response){
@@ -258,7 +264,9 @@
                     if(response.data.documentos.length>0){
                         scope.documentos=scope.estudio.documentos[0];
                     }
-
+                    
+                    scope.estudio.fecha_nacimiento_papa=fecha(scope.estudio.fecha_nacimiento_papa);
+                    scope.estudio.fecha_nacimiento_mama=fecha(scope.estudio.fecha_nacimiento_mama);
                     if(scope.estudio.padres.length>0){
 
                         for(var i=0; i<scope.estudio.padres.length; i++){
@@ -267,7 +275,8 @@
                                 scope.estudio.nombre_papa=scope.estudio.padres[i].nombre;
                                 scope.estudio.apellido_paterno_papa=scope.estudio.padres[i].apellido_paterno;
                                 scope.estudio.apellido_materno_papa=scope.estudio.padres[i].apellido_materno;
-                                scope.estudio.edad_papa=scope.estudio.padres[i].edad;
+                                //scope.estudio.edad_papa=scope.estudio.padres[i].edad;
+                                scope.estudio.fecha_nacimiento_papa=fecha(scope.estudio.padres[i].fecha_nacimiento);
                                 scope.estudio.correo_papa=scope.estudio.padres[i].correo;
                                 scope.estudio.rfc_papa=scope.estudio.padres[i].rfc;
                                 scope.estudio.celular_papa=scope.estudio.padres[i].celular;
@@ -285,7 +294,8 @@
                                 scope.estudio.nombre_mama=scope.estudio.padres[i].nombre;
                                 scope.estudio.apellido_paterno_mama=scope.estudio.padres[i].apellido_paterno;
                                 scope.estudio.apellido_materno_mama=scope.estudio.padres[i].apellido_materno;
-                                scope.estudio.edad_mama=scope.estudio.padres[i].edad;
+                                //scope.estudio.edad_mama=scope.estudio.padres[i].edad;
+                                scope.estudio.fecha_nacimiento_mama=fecha(scope.estudio.padres[i].fecha_nacimiento);
                                 scope.estudio.correo_mama=scope.estudio.padres[i].correo;
                                 scope.estudio.rfc_mama=scope.estudio.padres[i].rfc;
                                 scope.estudio.celular_mama=scope.estudio.padres[i].celular;
@@ -343,12 +353,18 @@
         function verActualizarHijo(hijo){
             scope.banderaActualizar=true;
             scope.hijo=hijo;
+            scope.hijo.colegiatura_pasado=parseFloat(scope.hijo.colegiatura_pasado);
+            scope.hijo.colegiatura_actual=parseFloat(scope.hijo.colegiatura_actual);
+            scope.hijo.apoyo_solicitado=parseFloat(scope.hijo.apoyo_solicitado);
             console.log("fecha: "+scope.hijo.fecha_nacimiento);
             $("#modal_agregar_hijo").modal('show');
         }
         
         function agregarHijo(idFamilia){
             scope.hijo={};
+            scope.hijo.colegiatura_pasado=parseFloat('0');
+            scope.hijo.colegiatura_actual=parseFloat('0');
+            scope.hijo.apoyo_solicitado=parseFloat('0');
             scope.banderaActualizar=false;
             scope.hijo.id_familia=idFamilia;
             $("#modal_agregar_hijo").modal('show');
@@ -662,6 +678,7 @@
                 obj.dueno=scope.estudio.dueno_papa;
                 obj.antiguedad=scope.estudio.antiguedad_papa;
                 obj.sueldo_neto=scope.estudio.sueldo_papa;
+                obj.fecha_nacimiento=scope.estudio.fecha_nacimiento_papa;
 
                 console.log(obj);
                 confirmaMsj(
@@ -746,6 +763,7 @@
                 obj.antiguedad=scope.estudio.antiguedad_papa;
                 obj.sueldo_neto=scope.estudio.sueldo_papa;
                 obj.tipo_persona='PAPA';
+                obj.fecha_nacimiento=scope.estudio.fecha_nacimiento_papa;
                 console.log(obj);
                 confirmaMsj(
                     "Confirmación de solicitud",
@@ -835,7 +853,7 @@
                 obj.dueno=scope.estudio.dueno_mama;
                 obj.antiguedad=scope.estudio.antiguedad_mama;
                 obj.sueldo_neto=scope.estudio.sueldo_mama;
-
+                obj.fecha_nacimiento=scope.estudio.fecha_nacimiento_mama;
                 console.log(obj);
                 confirmaMsj(
                     "Confirmación de solicitud",
@@ -919,6 +937,7 @@
                 obj.antiguedad=scope.estudio.antiguedad_mama;
                 obj.sueldo_neto=scope.estudio.sueldo_mama;
                 obj.tipo_persona='MAMA';
+                obj.fecha_nacimiento=scope.estudio.fecha_nacimiento_mama;
                 console.log(obj);
                 confirmaMsj(
                     "Confirmación de solicitud",
@@ -991,6 +1010,9 @@
         function verActualizarVehiculo(vehiculo){
             scope.banderaActualizar=true;
             scope.vehiculo=vehiculo;
+            scope.vehiculo.valor_comercial_actual=parseFloat(scope.vehiculo.valor_comercial_actual);
+            scope.vehiculo.cantidad_adeuda=parseFloat(scope.vehiculo.cantidad_adeuda);
+            scope.vehiculo.pago_mensual=parseFloat( scope.vehiculo.pago_mensual);
             $("#modal_agregar_vehiculo").modal('show');
         }
         
@@ -998,6 +1020,9 @@
             scope.vehiculo={};
             scope.banderaActualizar=false;
             scope.vehiculo.id_familia=idFamilia;
+            scope.vehiculo.valor_comercial_actual=parseFloat('0');
+            scope.vehiculo.cantidad_adeuda=parseFloat('0');
+            scope.vehiculo.pago_mensual=parseFloat('0');
             $("#modal_agregar_vehiculo").modal('show');
         }
         
@@ -1214,6 +1239,10 @@
         
         function guardarEgresos(){
             console.log(scope.egresos);
+            calcula();
+            calculaEgresos();
+            calculaEgresosServicios();
+            calculaEgresosTotal();
             scope.egresos.id_estudio=scope.estudio.id_estudio;
             scope.egresos.folio_estudio=scope.estudio.folio_estudio;
             scope.egresos.id_familia=scope.estudio.id_familia;
@@ -1506,7 +1535,7 @@
             scope.egresos.renta=renta;
             scope.egresos.credito_hipotecario=hipoteca;
             scope.egresos.colegiaturas=cole;
-            scope.egresos.otras_colegiaturas=otrasCole;
+            //scope.egresos.otras_colegiaturas=otrasCole;
             scope.egresos.credito_auto=creditoAuto;
             scope.calculaEgresosTotal();
         }

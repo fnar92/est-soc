@@ -343,10 +343,11 @@
                         </div>
                         
                         <div class="row">
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <div class="form-group ">
-                                        <label class="control-label">Edad: </label>
-                                        <input type="text" class="form-control" ng-model="control.estudio.edad_papa" ng-change="control.estudio.edad_papa=control.estudio.edad_papa.toUpperCase();">
+                                        <label class="control-label">Fecha de nacimiento: </label>
+                                        <md-datepicker ng-model="control.estudio.fecha_nacimiento_papa" md-placeholder="Enter date" md-open-on-focus></md-datepicker>
+                                        <!--<input type="date" class="form-control" ng-model="control.estudio.fecha_nacimiento_papa" value="{{control.estudio.fecha_nacimiento_papa}}" >-->
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -488,10 +489,10 @@
                     </div>
                     
                      <div class="row">
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <div class="form-group ">
-                                    <label class="control-label">Edad: </label>
-                                    <input type="text" class="form-control" ng-model="control.estudio.edad_mama" ng-change="control.estudio.edad_mama=control.estudio.edad_mama.toUpperCase();">
+                                    <label class="control-label">Fecha de nacimiento: </label>
+                                    <input type="date" class="form-control" ng-model="control.estudio.fecha_nacimiento_mama" value="{{control.estudio.fecha_nacimiento_mama}}">
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -567,7 +568,7 @@
                     <div class="table-responsive">          
                         <table class="table">
                             <thead>
-                              <tr>
+                                <tr style="background: gainsboro">
                                 <th ng-show="dev" class="text-center">ID</th>
                                 <th class="text-center">Nombre</th>
                                 <th class="text-center">Apellido paterno</th>
@@ -599,7 +600,7 @@
                     <div class="table-responsive">          
                         <table class="table">
                             <thead>
-                              <tr>
+                              <tr style="background: gainsboro">
                                 <th ng-show="dev" class="text-center">ID</th>
                                 <th class="text-center">Nombre</th>
                                 <th class="text-center">Apellido paterno</th>
@@ -633,7 +634,7 @@
                     <div class="table-responsive">          
                         <table class="table">
                             <thead>
-                              <tr>
+                              <tr style="background: gainsboro">
                                 <th ng-show="dev" class="text-center">ID</th>
                                 <th class="text-center">Tipo</th>
                                 <th class="text-center">Comentario</th>
@@ -684,7 +685,7 @@
                     <div class="table-responsive">          
                         <table class="table">
                             <thead>
-                              <tr>
+                              <tr style="background: gainsboro">
                                 <th  ng-show="dev" class="text-center">ID</th>
                                 <th class="text-center">Propietario</th>
                                 <th class="text-center">Marca</th>
@@ -720,7 +721,7 @@
                     <div class="table-responsive">          
                         <table class="table">
                             <thead>
-                              <tr>
+                              <tr style="background: gainsboro">
                                 <th ng-show="dev" class="text-center">ID</th>
                                 <th class="text-center">Status</th>
                                 <th class="text-center">Opciones</th>
@@ -885,7 +886,7 @@
                         <div class="col-md-4">
                             <div class="form-group ">
                                     <label class="control-label">Otras colegiaturas:</label>
-                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.otras_colegiaturas" disabled="" ng-change="control.calculaEgresosTotal()">
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.otras_colegiaturas" >
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -1214,7 +1215,7 @@
                     <div class="table-responsive">          
                         <table class="table">
                             <thead>
-                              <tr>
+                              <tr style="background: gainsboro">
                                 <th ng-show="dev" class="text-center">ID</th>
                                 <th class="text-center">Comentario</th>
                                 <th class="text-center">Opciones</th>
@@ -1362,14 +1363,14 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group ">
-                                <label class="control-label">Colegiatura sin descuentos (Ciclo anterior):</label>
-                                <input type="text" class="form-control" ng-model="control.hijo.colegiatura_pasado">
+                                <label class="control-label">Colegiatura sin descuentos (Próximo ciclo):</label>
+                                <input type="number" min="0" class="form-control" ng-model="control.hijo.colegiatura_pasado">
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group ">
                                 <label class="control-label">Pago de colegiatura actual:</label>
-                                <input type="text" class="form-control" ng-model="control.hijo.colegiatura_actual">
+                                <input type="number" min="0" class="form-control" ng-model="control.hijo.colegiatura_actual">
                         </div>
                     </div>
                 </div>
@@ -1377,7 +1378,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group ">
-                                <label class="control-label">Beca actual:</label>
+                                <label class="control-label">Beca actual % (Solo número):</label>
                                 <input type="text" class="form-control" ng-model="control.hijo.beca_actual" >
                         </div>
                     </div>
@@ -1390,7 +1391,7 @@
                     <div class="col-md-3">
                         <div class="form-group ">
                                 <label class="control-label">Apoyo solicitado:</label>
-                                <input type="text" class="form-control" ng-model="control.hijo.apoyo_solicitado" >
+                                <input type="number" min="0" class="form-control" ng-model="control.hijo.apoyo_solicitado" >
                         </div>
                     </div>
                 </div>
@@ -1402,22 +1403,28 @@
                                 <input type="text" class="form-control" ng-model="control.hijo.status" >
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <!--<div class="col-md-4">
                         <div class="form-group ">
                                 <label class="control-label">Otras colegiaturas:</label>
                                 <input type="text" class="form-control" ng-model="control.hijo.otras_colegiaturas" >
                         </div>
+                    </div>-->
+                    <div class="col-md-6">
+                        <div class="form-group ">
+                                <label class="control-label">Comentarios:</label>
+                                <textarea rows="5" class="form-control" ng-model="control.hijo.comentarios"></textarea>
+                        </div>
                     </div>
                 </div>
 
-                <div class="row">
+                <!--<div class="row">
                     <div class="col-md-5">
                         <div class="form-group ">
                                 <label class="control-label">Comentarios:</label>
                                 <textarea rows="2" class="form-control" ng-model="control.hijo.comentarios"></textarea>
                         </div>
                     </div>
-                </div>
+                </div>-->
             </div>
             <div class="row">
               <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
@@ -1650,6 +1657,7 @@
                                 <option value="Daimler/Chrysler">Daimler/Chrysler</option>
                                 <option value="Ford">Ford</option>
                                 <option value="Hyundai">Hyundai</option>
+                                <option value="Honda">Honda</option>
                                 <option value="KIA">KIA</option>
                                 <option value="Land Rover">Land Rover</option>
                                 <option value="Mazda">Mazda</option>
@@ -1685,7 +1693,7 @@
                     <div class="col-md-3">
                         <div class="form-group ">
                             <label class="control-label">Valor comercial actual </label>
-                            <input type="text" class="form-control" ng-model="control.vehiculo.valor_comercial_actual">
+                            <input type="number" min="0" class="form-control" ng-model="control.vehiculo.valor_comercial_actual">
                         </div>
                     </div>
                 </div>
@@ -1694,13 +1702,13 @@
                     <div class="col-md-3">
                         <div class="form-group ">
                             <label class="control-label">Cantidad que adeuda:</label>
-                            <input type="text" class="form-control" ng-model="control.vehiculo.cantidad_adeuda">
+                            <input type="number" min="0" class="form-control" ng-model="control.vehiculo.cantidad_adeuda">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group ">
                             <label class="control-label">Pago mensual:</label>
-                            <input type="text" class="form-control" ng-model="control.vehiculo.pago_mensual">
+                            <input type="number" min="0" class="form-control" ng-model="control.vehiculo.pago_mensual">
                         </div>
                     </div>
                     <!--<div class="col-md-3">
