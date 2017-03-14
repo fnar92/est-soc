@@ -3,11 +3,11 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header" data-background-color="green">
-                    <h1 class="title">
-                        <strong ng-show="tipoUsuario==='1'">Estudios socioeconomicos (HRWise)(Captura)</strong>
-                        <strong ng-show="tipoUsuario==='2'">Estudios socioeconomicos ({{dash.institucion.nombre_institucion}})</strong>
-                    </h1>
+                <div class="card-header" data-background-color="blue">
+                    <h4 class="title">Bienvenido <strong>{{dash.user.nombre}} {{dash.user.apellido_paterno}} {{dash.user.apellido_materno}}</strong></h4>
+                    <p class="category">Estudios socioeconomicos escolares</p>
+                    <h5 ng-show="tipoUsuario=='1'"> HRWise (<span ng-show="rolUsuario==1">Administrador</span><span ng-show="rolUsuario==2">Captura</span>)</h5>
+                    <h5 ng-show="tipoUsuario=='2'"> {{dash.institucion.nombre_institucion}} - {{dash.institucion.clave_institucion}}  (<span ng-show="rolUsuario==1">Administrador</span><span ng-show="rolUsuario==2">Captura</span>)</h5>
                 </div>
             </div>
             
@@ -35,13 +35,18 @@
                             <h2  class="title">
                                 Asignado:
                                 <span class="label label-info" ng-show="control.estudio.id_usuario_asignado==='0'">Por asignar</span>
-                                <span class="label label-success" ng-show="control.estudio.id_usuario_asignado!=='0'">
+                                <span class="label label-success" ng-show="tipoUsuario==='2'&&control.estudio.id_usuario_asignado!=='0'">
                                     Asignado
+                                </span>
+                                <span class="label label-info" ng-show="tipoUsuario==='1'&&control.estudio.id_usuario_asignado!=='0'">
+                                    Asignado a {{control.estudio.usuario_asignado[0].nombre}}
                                 </span>
                             </h2>
                             
-                            <button ng-show="tipoUsuario==='1'&&rolUsuario==='1'&&control.estudio.id_usuario_asignado==='0'" type="button" class="btn btn-warning btn-xs" ng-click="control.asignarShow()">Asignar</button>
-                            <button ng-show="tipoUsuario==='1'&&rolUsuario==='1'&&control.estudio.id_usuario_asignado!=='0'" type="button" class="btn btn-warning btn-xs" ng-click="control.asignarShow()">Reasignar</button>
+                            <button ng-disabled="control.estudio.id_estatus_estudio==='7'||
+                                    control.estudio.id_estatus_estudio==='6'||control.estudio.id_estatus_estudio==='5'" ng-show="tipoUsuario==='1'&&rolUsuario==='1'&&control.estudio.id_usuario_asignado==='0'" type="button" class="btn btn-warning btn-xs" ng-click="control.asignarShow()">Asignar</button>
+                            <button ng-disabled="control.estudio.id_estatus_estudio==='7'||
+                                    control.estudio.id_estatus_estudio==='6'||control.estudio.id_estatus_estudio==='5'" ng-show="tipoUsuario==='1'&&rolUsuario==='1'&&control.estudio.id_usuario_asignado!=='0'" type="button" class="btn btn-warning btn-xs" ng-click="control.asignarShow()">Reasignar</button>
                         </div>
                     
                     <div class="card-footer">
@@ -62,21 +67,21 @@
                             <button 
                                 ng-show="tipoUsuario==='1'&&rolUsuario==='1'&&control.estudio.id_usuario_asignado!=='0'" 
                                 type="button" class="btn btn-primary btn-xs" 
-                                ng-click="control.enviarATerminado()">Enviar estudio terminado</button>
+                                ng-click="control.enviarATerminado()" ng-disabled="control.estudio.id_estatus_estudio!=='6'">Enviar estudio terminado</button>
                         </div>
                     </div>
                     
                 </div>
              </div>
             
-            <div class="col-md-4">
+            <div class="col-md-7">
                 <div class="card">
                     <div ng-show="tipoUsuario==='1'">
                         <div class="card-content">
                             <h2 class="title">Solicitud (es): 
                                 <div ng-repeat="ins in control.estudio.instituciones">
-                                    <strong ng-show="tipoUsuario=='2'&&dash.institucion.clave_institucion==ins.clave_institucion">{{ins.clave_institucion}} ({{ins.count.total}})</strong>
-                                    <strong ng-show="tipoUsuario=='1'">{{ins.clave_institucion}} ({{ins.count.total}})</strong>
+                                    <strong ng-show="tipoUsuario=='2'&&dash.institucion.clave_institucion==ins.clave_institucion">{{ins.clave_institucion}} </strong>
+                                    <strong ng-show="tipoUsuario=='1'">{{ins.clave_institucion}} </strong>
                                 </div>
                             </h2>
                             
@@ -428,7 +433,10 @@
                     <div ng-show="tipoUsuario==='1'" class="row text-left">
                         <button 
                             type="button" class="btn btn-primary btn-xs" 
-                            ng-click="control.guardarPapa()">Guardar datos</button>
+                            ng-click="control.guardarPapa()" 
+                            ng-disabled="(tipoUsuario==='1'&&rolUsuario==='2'&&control.estudio.id_estatus_estudio==='6')
+                            ||control.estudio.id_estatus_estudio==='7'"
+                            >Guardar datos</button>
                     </div>
                     
                 </div>
@@ -557,13 +565,15 @@
                     <div ng-show="tipoUsuario==='1'" class="row text-left">
                         <button 
                             type="button" class="btn btn-primary btn-xs" 
-                            ng-click="control.guardarMama()">Guardar datos</button>
+                            ng-click="control.guardarMama()" ng-disabled="(tipoUsuario==='1'&&rolUsuario==='2'&&control.estudio.id_estatus_estudio==='6')
+                            ||control.estudio.id_estatus_estudio==='7'">Guardar datos</button>
                     </div>
                 </div>
                 
                 <div class="bhoechie-tab-content">
                     <h4 class="text-left">Datos hijos</h4>
-                    <div class="text-right"><button type="button" class="btn btn-xs btn-success" ng-click="control.agregarHijo(control.estudio.id_familia)">Agregar hijo</button></div>
+                    <div class="text-right"><button type="button" class="btn btn-xs btn-success" ng-click="control.agregarHijo(control.estudio.id_familia)" ng-disabled="(tipoUsuario==='1'&&rolUsuario==='2'&&control.estudio.id_estatus_estudio==='6')
+                            ||control.estudio.id_estatus_estudio==='7'">Agregar hijo</button></div>
                     
                     <div class="table-responsive">          
                         <table class="table">
@@ -586,7 +596,8 @@
                                 <td class="text-center">{{hijo.edad}}</td>
                                 <td class="text-center">
                                     <button type="button" class="btn btn-primary btn-xs" ng-click="control.verActualizarHijo(hijo)">Ver/Actualizar</button>
-                                    <button type="button" class="btn btn-danger btn-xs" ng-click="control.eliminarHijo(hijo)">Eliminar</button>
+                                    <button type="button" class="btn btn-danger btn-xs" ng-click="control.eliminarHijo(hijo)" ng-disabled="(tipoUsuario==='1'&&rolUsuario==='2'&&control.estudio.id_estatus_estudio==='6')
+                            ||control.estudio.id_estatus_estudio==='7'">Eliminar</button>
                                 </td>
                               </tr>
                             </tbody>
@@ -595,7 +606,8 @@
                 </div>
                 <div class="bhoechie-tab-content">
                    <h4 class="text-left">Dependientes económicos</h4>
-                    <div class="text-right"><button type="button" class="btn btn-xs btn-success" ng-click="control.agregarDependiente(control.estudio.id_familia)">Agregar dependiente</button></div>
+                    <div class="text-right"><button type="button" class="btn btn-xs btn-success" ng-click="control.agregarDependiente(control.estudio.id_familia)" ng-disabled="(tipoUsuario==='1'&&rolUsuario==='2'&&control.estudio.id_estatus_estudio==='6')
+                            ||control.estudio.id_estatus_estudio==='7'">Agregar dependiente</button></div>
                     
                     <div class="table-responsive">          
                         <table class="table">
@@ -620,7 +632,8 @@
                                 <td class="text-center">{{dependiente.parentesco}}</td>
                                 <td class="text-center">
                                     <button type="button" class="btn btn-primary btn-xs" ng-click="control.verActualizarDependiente(dependiente)">Ver/Actualizar</button>
-                                    <button type="button" class="btn btn-danger btn-xs" ng-click="control.eliminarDependiente(dependiente)">Eliminar</button>
+                                    <button type="button" class="btn btn-danger btn-xs" ng-click="control.eliminarDependiente(dependiente)" ng-disabled="(tipoUsuario==='1'&&rolUsuario==='2'&&control.estudio.id_estatus_estudio==='6')
+                            ||control.estudio.id_estatus_estudio==='7'">Eliminar</button>
                                 </td>
                               </tr>
                             </tbody>
@@ -629,7 +642,8 @@
                 </div>
                 <div class="bhoechie-tab-content">
                    <h4 class="text-left">Motivos por los que solicita la beca</h4>
-                    <div class="text-right"><button type="button" class="btn  btn-xs btn-success" ng-click="control.agregarMotivo(control.estudio.id_familia)">Agregar motivo</button></div>
+                    <div class="text-right"><button type="button" class="btn  btn-xs btn-success" ng-click="control.agregarMotivo(control.estudio.id_familia)" ng-disabled="(tipoUsuario==='1'&&rolUsuario==='2'&&control.estudio.id_estatus_estudio==='6')
+                            ||control.estudio.id_estatus_estudio==='7'"> Agregar motivo</button></div>
                     
                     <div class="table-responsive">          
                         <table class="table">
@@ -671,7 +685,8 @@
                                 </td>
                                 <td class="text-center">
                                     <button type="button" class="btn btn-primary btn-xs" ng-click="control.verActualizarMotivo(motivo)">Ver/Actualizar</button>
-                                    <button type="button" class="btn btn-danger btn-xs" ng-click="control.eliminarMotivo(motivo)">Eliminar</button>
+                                    <button type="button" class="btn btn-danger btn-xs" ng-click="control.eliminarMotivo(motivo)" ng-disabled="(tipoUsuario==='1'&&rolUsuario==='2'&&control.estudio.id_estatus_estudio==='6')
+                            ||control.estudio.id_estatus_estudio==='7'">Eliminar</button>
                                 </td>
                               </tr>
                             </tbody>
@@ -680,7 +695,8 @@
                 </div>
                 <div class="bhoechie-tab-content">
                     <h4 class="text-left">Vehiculos</h4>
-                    <div class="text-right"><button type="button" class="btn btn-xs btn-success" ng-click="control.agregarVehiculo(control.estudio.id_familia)">Agregar vehiculo</button></div>
+                    <div class="text-right"><button type="button" class="btn btn-xs btn-success" ng-click="control.agregarVehiculo(control.estudio.id_familia)" ng-disabled="(tipoUsuario==='1'&&rolUsuario==='2'&&control.estudio.id_estatus_estudio==='6')
+                            ||control.estudio.id_estatus_estudio==='7'">Agregar vehiculo</button></div>
                     
                     <div class="table-responsive">          
                         <table class="table">
@@ -707,7 +723,8 @@
                                 </td>
                                 <td class="text-center">
                                     <button type="button" class="btn btn-primary btn-xs" ng-click="control.verActualizarVehiculo(vehiculo)">Ver/Actualizar</button>
-                                    <button type="button" class="btn btn-danger btn-xs" ng-click="control.eliminarVehiculo(vehiculo)">Eliminar</button>
+                                    <button type="button" class="btn btn-danger btn-xs" ng-click="control.eliminarVehiculo(vehiculo)" ng-disabled="(tipoUsuario==='1'&&rolUsuario==='2'&&control.estudio.id_estatus_estudio==='6')
+                            ||control.estudio.id_estatus_estudio==='7'">Eliminar</button>
                                 </td>
                               </tr>
                             </tbody>
@@ -716,7 +733,8 @@
                 </div>
                 <div class="bhoechie-tab-content">
                     <h4 class="text-left">Propiedades</h4>
-                    <div class="text-right"><button type="button" class="btn btn-success btn-xs" ng-click="control.agregarPropiedad(control.estudio.id_familia)">Agregar propiedad</button></div>
+                    <div class="text-right"><button type="button" class="btn btn-success btn-xs" ng-click="control.agregarPropiedad(control.estudio.id_familia)" ng-disabled="(tipoUsuario==='1'&&rolUsuario==='2'&&control.estudio.id_estatus_estudio==='6')
+                            ||control.estudio.id_estatus_estudio==='7'">Agregar propiedad</button></div>
                     
                     <div class="table-responsive">          
                         <table class="table">
@@ -734,7 +752,8 @@
                                     {{propiedad.status}}
                                 <td class="text-center">
                                     <button type="button" class="btn btn-primary btn-xs" ng-click="control.verActualizarPropiedad(propiedad)">Ver/Actualizar</button>
-                                    <button type="button" class="btn btn-danger btn-xs" ng-click="control.eliminarPropiedad(propiedad)">Eliminar</button>
+                                    <button type="button" class="btn btn-danger btn-xs" ng-click="control.eliminarPropiedad(propiedad)" ng-disabled="(tipoUsuario==='1'&&rolUsuario==='2'&&control.estudio.id_estatus_estudio==='6')
+                            ||control.estudio.id_estatus_estudio==='7'">Eliminar</button>
                                 </td>
                               </tr>
                             </tbody>
@@ -852,7 +871,8 @@
                     <div class="row text-left">
                         <button 
                             type="button" class="btn btn-primary btn-xs" 
-                            ng-click="control.guardarIngresos()">Guardar datos</button>
+                            ng-click="control.guardarIngresos()" ng-disabled="(tipoUsuario==='1'&&rolUsuario==='2'&&control.estudio.id_estatus_estudio==='6')
+                            ||control.estudio.id_estatus_estudio==='7'">Guardar datos</button>
                     </div>
                 </div>
                 <div class="bhoechie-tab-content">
@@ -1050,7 +1070,8 @@
                     <div class="row text-left">
                         <button 
                             type="button" class="btn btn-primary btn-xs" 
-                            ng-click="control.guardarEgresos()">Guardar datos</button>
+                            ng-click="control.guardarEgresos()" ng-disabled="(tipoUsuario==='1'&&rolUsuario==='2'&&control.estudio.id_estatus_estudio==='6')
+                            ||control.estudio.id_estatus_estudio==='7'">Guardar datos</button>
                     </div>
                 </div>
                 <div class="bhoechie-tab-content">
@@ -1160,7 +1181,8 @@
                     <div class="row text-left">
                         <button 
                             type="button" class="btn btn-primary btn-xs" 
-                            ng-click="control.guardarDocumentos()">Guardar datos</button>
+                            ng-click="control.guardarDocumentos()" ng-disabled="(tipoUsuario==='1'&&rolUsuario==='2'&&control.estudio.id_estatus_estudio==='6')
+                            ||control.estudio.id_estatus_estudio==='7'">Guardar datos</button>
                     </div>
                 </div>
                 <div class="bhoechie-tab-content">
@@ -1205,12 +1227,14 @@
                     <div class="row text-left">
                         <button 
                             type="button" class="btn btn-primary btn-xs" 
-                            ng-click="control.guardarEvaluacion()">Guardar datos</button>
+                            ng-click="control.guardarEvaluacion()" ng-disabled="(tipoUsuario==='1'&&rolUsuario==='2'&&control.estudio.id_estatus_estudio==='6')
+                            ||control.estudio.id_estatus_estudio==='7'">Guardar datos</button>
                     </div>
                 </div>
                 <div class="bhoechie-tab-content">
                     <h4 class="text-left">Comentarios</h4>
-                    <div class="text-right"><button type="button" class="btn btn-xs btn-success" ng-click="control.agregarComentario(control.estudio.id_familia)">Agregar comentario</button></div>
+                    <div class="text-right"><button type="button" class="btn btn-xs btn-success" ng-click="control.agregarComentario(control.estudio.id_familia)" ng-disabled="(tipoUsuario==='1'&&rolUsuario==='2'&&control.estudio.id_estatus_estudio==='6')
+                            ||control.estudio.id_estatus_estudio==='7'">Agregar comentario</button></div>
                     
                     <div class="table-responsive">          
                         <table class="table">
@@ -1228,7 +1252,8 @@
                                     {{comentario.comentario}} ({{comentario.tipo}})
                                 <td class="text-center">
                                     <button type="button" class="btn btn-primary btn-xs" ng-click="control.verActualizarComentario(comentario)">Ver/Actualizar</button>
-                                    <button type="button" class="btn btn-danger btn-xs" ng-click="control.eliminarComentario(comentario)">Eliminar</button>
+                                    <button type="button" class="btn btn-danger btn-xs" ng-click="control.eliminarComentario(comentario)" ng-disabled="(tipoUsuario==='1'&&rolUsuario==='2'&&control.estudio.id_estatus_estudio==='6')
+                            ||control.estudio.id_estatus_estudio==='7'">Eliminar</button>
                                 </td>
                               </tr>
                             </tbody>
@@ -1428,7 +1453,8 @@
             </div>
             <div class="row">
               <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-              <button type="button" class="btn btn-primary " ng-click="control.guardarHijo()">Guardar hijo</button>
+              <button type="button" class="btn btn-primary " ng-click="control.guardarHijo()" ng-disabled="(tipoUsuario==='1'&&rolUsuario==='2'&&control.estudio.id_estatus_estudio==='6')
+                            ||control.estudio.id_estatus_estudio==='7'">Guardar hijo</button>
 
             </div>
         </div>
@@ -1515,7 +1541,8 @@
             </div>
             <div class="row">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary " ng-click="control.guardarDependiente()">Guardar dependiente</button>
+                <button type="button" class="btn btn-primary " ng-click="control.guardarDependiente()" ng-disabled="(tipoUsuario==='1'&&rolUsuario==='2'&&control.estudio.id_estatus_estudio==='6')
+                            ||control.estudio.id_estatus_estudio==='7'">Guardar dependiente</button>
             </div>
         </div>
     </div>
@@ -1573,7 +1600,8 @@
 
             <div class="row">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary " ng-click="control.guardarMotivo()">Guardar motivo</button>
+                <button type="button" class="btn btn-primary " ng-click="control.guardarMotivo()" ng-disabled="(tipoUsuario==='1'&&rolUsuario==='2'&&control.estudio.id_estatus_estudio==='6')
+                            ||control.estudio.id_estatus_estudio==='7'">Guardar motivo</button>
             </div>
         </div>
     </div>
@@ -1723,7 +1751,8 @@
 
             <div class="row">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary " ng-click="control.guardarVehiculo()">Guardar vehiculo</button>
+                <button type="button" class="btn btn-primary " ng-click="control.guardarVehiculo()" ng-disabled="(tipoUsuario==='1'&&rolUsuario==='2'&&control.estudio.id_estatus_estudio==='6')
+                            ||control.estudio.id_estatus_estudio==='7'">Guardar vehiculo</button>
             </div>
         </div>
     </div>
@@ -1808,7 +1837,8 @@
 
             <div class="row">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary " ng-click="control.guardarPropiedad()">Guardar propiedad</button>
+                <button type="button" class="btn btn-primary " ng-click="control.guardarPropiedad()" ng-disabled="(tipoUsuario==='1'&&rolUsuario==='2'&&control.estudio.id_estatus_estudio==='6')
+                            ||control.estudio.id_estatus_estudio==='7'">Guardar propiedad</button>
             </div>
         </div>
     </div>
@@ -1839,7 +1869,8 @@
 
             <div class="row">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary " ng-click="control.guardarComentario()">Guardar comentario</button>
+                <button type="button" class="btn btn-primary " ng-click="control.guardarComentario()" ng-disabled="(tipoUsuario==='1'&&rolUsuario==='2'&&control.estudio.id_estatus_estudio==='6')
+                            ||control.estudio.id_estatus_estudio==='7'">Guardar comentario</button>
             </div>
         </div>
     </div>

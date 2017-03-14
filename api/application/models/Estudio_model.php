@@ -205,6 +205,7 @@ class Estudio_model extends CI_Model {
         $estudio->evaluacion=$this->getEvaluacionFamilia($estudio->id_familia, $estudio->id_estudio);
         $estudio->comentarios=$this->getComentarioesFamilia($estudio->id_familia, $estudio->id_estudio);
         $estudio->padres=$this->getPadreFamilia($estudio->id_familia, $estudio->id_estudio);
+        $estudio->usuario_asignado= $this->getUsuarioAsignado($estudio->id_usuario_asignado);
         return $estudio;
     }
     /*hijos*/
