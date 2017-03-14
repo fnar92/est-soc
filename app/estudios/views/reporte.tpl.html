@@ -101,7 +101,7 @@
         <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].alimentacion_despensa | number:2}}</span></td>
         <td style="width: 25px;"></td>
         <td style="width: 25px;"></td>
-        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].alimentacion_despensa/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].alimentacion_despensa/scope.total_2)*100 | number: 0}} %</span> </td>
         <td></td> 
         <td style="font-size: 10px; text-align: right; display: block; height: 10px;">
             <div ng-repeat="papa in scope.estudio.padres">
@@ -132,7 +132,7 @@
         <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].renta | number:2}}</span></td>
         <td style="width: 25px;"></td>
         <td style="width: 25px;"></td>
-        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].renta/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].renta/scope.total_2)*100 | number: 0}} %</span> </td>
         <td></td> 
         <td style="font-size: 10px; text-align: center; background: gainsboro">
             <span>Papa</span>
@@ -140,7 +140,7 @@
         <td></td>
         <td >
             <div ng-repeat="papa in scope.estudio.padres">
-                <p style="margin: 0px;     text-align: right; width: 70%" ng-if="papa.tipo_persona==='PAPA'">{{papa.empresa}}</p>
+                <p style="margin: 0px;     text-align: right; width: 85%" ng-if="papa.tipo_persona==='PAPA'">{{papa.empresa}}</p>
             </div>
         </td>
     </tr>
@@ -150,7 +150,7 @@
         <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].credito_hipotecario | number:2}}</span></td>
         <td style="width: 25px;"></td>
         <td style="width: 25px;"></td>
-        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].credito_hipotecario/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].credito_hipotecario/scope.total_2)*100 | number: 0}} %</span> </td>
         <td></td> 
         <td style="font-size: 10px; text-align: right; display: block; height: 10px;">
             <div ng-repeat="papa in scope.estudio.padres">
@@ -177,7 +177,7 @@
         <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].colegiaturas | number:2}}</span></td>
         <td style="width: 25px;"></td>
         <td style="width: 25px;"></td>
-        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].colegiaturas/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].colegiaturas/scope.total_2)*100 | number: 0}} % </span> </td>
         <td></td> 
         <td style="font-size: 10px; text-align: center; background: gainsboro">
             <span>Mama</span>
@@ -200,14 +200,14 @@
         <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].otras_colegiaturas | number:2}}</span></td>
         <td style="width: 25px;"></td>
         <td style="width: 25px;"></td>
-        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].otras_colegiaturas/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].otras_colegiaturas/scope.total_2)*100 | number: 0}} %</span> </td>
         <td></td> 
         <td style="font-size: 10px; text-align: right;">
             <span>Otros</span>
         </td>
         <td></td>
         <td >
-            <p  style="width: 100px; text-align: center" class="border">$ {{scope.estudio.ingresos[0].total_otros_ingresos | number:2}}</p>
+            <p  style="width: 120px; text-align: center" class="border">$ {{scope.estudio.ingresos[0].total_otros_ingresos | number:2}}</p>
         </td>
     </tr>
     <tr>
@@ -215,11 +215,11 @@
         <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].clases_particulares | number:2}}</span></td>
         <td style="width: 25px;"></td>
         <td style="width: 25px;"></td>
-        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].clases_particulares/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].clases_particulares/scope.total_2)*100 | number: 0}} %</span></td>
         <td></td> 
         <td style="font-size: 10px; text-align: right"><strong>Total</strong></td>
         <td></td>
-        <td><p  style="    width: 100px;
+        <td><p  style="    width: 120px;
     text-align: center;" class="border">$ {{scope.estudio.ingresos[0].sueldo_papa+scope.estudio.ingresos[0].sueldo_mama+scope.estudio.ingresos[0].otros_ingresos | number:2}}</p></td>
     </tr>
     <tr>
@@ -227,7 +227,7 @@
         <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].total_servicios | number:2}}</span></td>
         <td style="width: 25px;"></td>
         <td style="width: 25px;"></td>
-        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].total_servicios/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].total_servicios/scope.total_2)*100 | number: 0}} %</span> </td>
         <td></td> 
     </tr>
     <tr>
@@ -235,7 +235,7 @@
         <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].servicio_domestico | number:2}}</span></td>
         <td style="width: 25px;"></td>
         <td style="width: 25px;"></td>
-        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].servicio_domestico/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].servicio_domestico/scope.total_2)*100 | number: 0}} %</span> </td>
         <td></td> 
         <td></td>
         <td></td>
@@ -248,7 +248,7 @@
         <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].gasolina | number:2}}</span></td>
         <td style="width: 25px;"></td>
         <td style="width: 25px;"></td>
-        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].gasolina/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].gasolina/scope.total_2)*100 | number: 0}} %</span>  </td>
         <td></td> 
         <td></td>
         <td></td>
@@ -260,7 +260,7 @@
         <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].credito_auto | number:2}}</span></td>
         <td style="width: 25px;"></td>
         <td style="width: 25px;"></td>
-        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].credito_auto/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].credito_auto/scope.total_2)*100 | number: 0}} %</span></td>
         <td></td> 
         <td></td>
         <td></td>
@@ -270,9 +270,9 @@
         </td>
         
         
-        <td><p style="
+        <td ><p style="
             padding: 0px;
-            margin: 0px; width: 100px; text-align: center; margin: auto;
+            margin: 0px; width: 100px; text-align: center; margin: auto; background: gainsboro
             " class="border">{{(scope.suma_col/scope.estudio.ingresos[0].total_ingresos)*100 | number:0}} %</p></td>
     </tr>
     
@@ -281,7 +281,7 @@
         <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].pago_tdc_mensual | number:2}}</span></td>
         <td style="width: 25px;"></td>
         <td style="width: 25px;"></td>
-        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].pago_tdc_mensual/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].pago_tdc_mensual/scope.total_2)*100 | number: 0}} %</span> </td>
         <td></td> 
         <td></td>
         <td></td>
@@ -296,7 +296,7 @@
         <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].creditos_comerciales | number:2}}</span></td>
         <td style="width: 25px;"></td>
         <td style="width: 25px;"></td>
-        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].creditos_comerciales/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].creditos_comerciales/scope.total_2)*100 | number: 0}} %</span>  </td>
         <td></td> 
         <td></td>
         <td></td>
@@ -311,7 +311,7 @@
         <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].vestido_calzado | number:2}}</span></td>
         <td style="width: 25px;"></td>
         <td style="width: 25px;"></td>
-        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].vestido_calzado/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].vestido_calzado/scope.total_2)*100 | number: 0}} %</span></td>
         <td></td> 
         <td></td>
         <td></td>
@@ -326,7 +326,7 @@
         <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].medico_medicinas | number:2}}</span></td>
         <td style="width: 25px;"></td>
         <td style="width: 25px;"></td>
-        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].medico_medicinas/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].medico_medicinas/scope.total_2)*100 | number: 0}} %</span> </td>
         <td></td> 
         <td></td>
         <td></td>
@@ -341,7 +341,7 @@
         <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].clubes_deportivos | number:2}}</span></td>
         <td style="width: 25px;"></td>
         <td style="width: 25px;"></td>
-        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].clubes_deportivos/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].clubes_deportivos/scope.total_2)*100 | number: 0}} %</span> </td>
         <td></td> 
         <td></td>
         <td></td>
@@ -356,7 +356,7 @@
         <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].seguros | number:2}}</span></td>
         <td style="width: 25px;"></td>
         <td style="width: 25px;"></td>
-        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].seguros/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].seguros/scope.total_2)*100 | number: 0}} %</span> </td>
         <td></td> 
         <td></td>
         <td></td>
@@ -371,7 +371,7 @@
         <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].vacaciones | number:2}}</span></td>
         <td style="width: 25px;"></td>
         <td style="width: 25px;"></td>
-        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].vacaciones/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].vacaciones/scope.total_2)*100 | number: 0}} %</span> </td>
         <td></td> 
         <td></td>
         <td></td>
@@ -386,7 +386,7 @@
         <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].otros2 | number:2}}</span></td>
         <td style="width: 25px;"></td>
         <td style="width: 25px;"></td>
-        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].otros2/scope.estudio.egresos[0].total_egresos)*100 | number: 2}}</span> % </td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].otros2/scope.total_2)*100 | number: 0}} %</span> </td>
         <td></td> 
         <td></td>
         <td></td>
@@ -398,7 +398,7 @@
     
     <tr>
         <td><strong>Total</strong></td>
-        <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].total_egresos | number:2}}</span></td>
+        <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.total_2 | number:2}}</span></td>
         <td style="width: 25px;"></td>
         <td style="width: 25px;"></td>
         <td style="text-align: right;"> <span style=" margin-right: 5px; font-size: 6px">Diferencia Ingresos/Egresos</span></td>
@@ -415,7 +415,7 @@
         <td></td>
         <td></td>
         <td></td>
-        <td><p style="text-align: right; margin: auto; margin-right: 5px; background: gainsboro" class="border"> $ {{scope.estudio.egresos[0].diferencia_egre_ingre | number:2}}</p></td>
+        <td><p style="text-align: right; margin: auto; margin-right: 5px; background: gainsboro" class="border"> $ {{scope.diferencia_2 | number:2}}</p></td>
         <td></td> 
         <td></td>
         <td></td>
@@ -460,7 +460,7 @@
         <td><strong style="font-style: oblique; background: gainsboro">NECESIDAD DE BECA</strong></td>
         <td style="width: 25px;"></td>
         <td style="width: 25px;"></td>
-        <td class="border" style="font-style: oblique; background: gainsboro;"><strong style=" float: right;margin-right: 13px;">5</strong></td>
+        <td class="border" style="font-style: oblique; background: gainsboro;"><strong style=" float: right;margin-right: 13px;">{{ scope.necesidad | number: 2}}</strong></td>
         
     </tr>
     
@@ -474,7 +474,14 @@
         <td><strong style="font-style: oblique; background: gainsboro">CONFIABILIDAD</strong></td>
         <td style="width: 25px;"></td>
         <td style="width: 25px;"></td>
-        <td class="border" style="font-style: oblique; background: gainsboro;"><strong style=" float: right;margin-right: 13px;">5</strong></td>
+        <td class="border" style="font-style: oblique; background: gainsboro;"><strong style=" float: right;margin-right: 13px;">{{ scope.confiabilidad | number:2}}</strong></td>
+        <td></td>
+        <td><strong style="font-style: oblique; background: gainsboro;     float: right;
+    margin-right: 25px;
+    padding-right: 5px;">CALIF. GLOBAL</strong></td>
+        <td class="border" style="font-style: oblique; background: gainsboro;"><strong style=" float: right;margin-right: 13px;">{{scope.calif_globlal | number:2}}</strong></td>
+        
+    
     </tr>
     
 </table>

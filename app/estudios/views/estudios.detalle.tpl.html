@@ -346,8 +346,8 @@
                             <div class="col-md-3">
                                 <div class="form-group ">
                                         <label class="control-label">Fecha de nacimiento: </label>
-                                        <md-datepicker ng-model="control.estudio.fecha_nacimiento_papa" md-placeholder="Enter date" md-open-on-focus></md-datepicker>
-                                        <!--<input type="date" class="form-control" ng-model="control.estudio.fecha_nacimiento_papa" value="{{control.estudio.fecha_nacimiento_papa}}" >-->
+                                        <!--<md-datepicker ng-model="control.estudio.fecha_nacimiento_papa" md-placeholder="Enter date" md-open-on-focus></md-datepicker>-->
+                                        <input type="date" class="form-control" ng-model="control.estudio.fecha_nacimiento_papa" >
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -492,7 +492,7 @@
                         <div class="col-md-3">
                             <div class="form-group ">
                                     <label class="control-label">Fecha de nacimiento: </label>
-                                    <input type="date" class="form-control" ng-model="control.estudio.fecha_nacimiento_mama" value="{{control.estudio.fecha_nacimiento_mama}}">
+                                    <input type="date" class="form-control" ng-model="control.estudio.fecha_nacimiento_mama">
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -886,7 +886,7 @@
                         <div class="col-md-4">
                             <div class="form-group ">
                                     <label class="control-label">Otras colegiaturas:</label>
-                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.otras_colegiaturas" >
+                                    <input type="number" min="0" class="form-control" ng-model="control.egresos.otras_colegiaturas" ng-change="control.calculaEgresos()" >
                             </div>
                         </div>
                         <div class="col-md-4">

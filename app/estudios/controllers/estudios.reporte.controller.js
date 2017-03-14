@@ -60,6 +60,23 @@
         scope.load=false;
         scope.verAccion=false;
         scope.banderaActualizar=false;
+        scope.total_2=0;
+        scope.diferencia_2=0;
+        scope.necesidad=0;
+        scope.confiabilidad=0;
+        
+        scope.porcentaje=0;
+        scope.factor1=0;
+        scope.factor2=0;
+        scope.factor3=0;
+        
+        scope.factor1_1=0;
+        scope.factor2_2=0;
+        scope.factor3_3=0;
+        
+        scope.suma_docs=0;
+        
+        scope.resta_porcentaje=0;
         
         
         hide();
@@ -136,19 +153,24 @@
         
         
         function load(){
-            EstudiosService.obtenerDetalleEstudio(EstudiosService.idEstudioSeleccionado, id).then(
-                function(response){
-                    scope.estudio=response.data;
+            
+            var promesas=[];
+            promesas.push(EstudiosService.obtenerDetalleEstudio(EstudiosService.idEstudioSeleccionado, id));
+            $q.all(promesas)
+            .then(
+                function(response1){
+                    var response=response1[0].data;
+                                console.log(response);
+                    scope.estudio=response;
                     
-                    sumaCol();
-                    if(response.data.evaluacion.length>0){
+                     if(response.evaluacion.length>0){
                         scope.evaluacion=scope.estudio.evaluacion[0];
                     }
 
-                    if(response.data.documentos.length>0){
+                    if(response.documentos.length>0){
                         scope.documentos=scope.estudio.documentos[0];
                     }
-
+                    
                     if(scope.estudio.padres.length>0){
 
                         for(var i=0; i<scope.estudio.padres.length; i++){
@@ -199,18 +221,18 @@
                     scope.ingresos.sueldo_mama=scope.estudio.sueldo_mama;
 
 
-
-                    if(response.data.ingresos.length>0){
-                        scope.ingresos=response.data.ingresos[0];
+                    sumaCol();
+                    if(response.ingresos.length>0){
+                        scope.ingresos=response.ingresos[0];
                         parseIngresos();
                         calcula();
                     }
 
-                    if(response.data.egresos.length>0){
-                        scope.egresos=response.data.egresos[0];
+                    if(response.egresos.length>0){
+                        scope.egresos=response.egresos[0];
                         parseEgresos();
                     }
-                    if(response.data.documentos.length>0){
+                    if(response.documentos.length>0){
                         setBool();		
                     }
                     calculaEgresos();
@@ -279,7 +301,7 @@
             
             for(var i=0; i<scope.estudio.hijos.length; i++){
                 cole+=parseFloat(scope.estudio.hijos[i].colegiatura_actual);
-                otrasCole+=parseFloat(scope.estudio.hijos[i].otras_colegiaturas);
+                //otrasCole+=parseFloat(scope.estudio.hijos[i].otras_colegiaturas);
             }
             
             for(var i=0; i<scope.estudio.vehiculos.length; i++){
@@ -289,7 +311,7 @@
             scope.egresos.renta=renta;
             scope.egresos.credito_hipotecario=hipoteca;
             scope.egresos.colegiaturas=cole;
-            scope.egresos.otras_colegiaturas=otrasCole;
+            //scope.egresos.otras_colegiaturas=otrasCole;
             scope.egresos.credito_auto=creditoAuto;
             scope.calculaEgresosTotal();
         }
@@ -327,98 +349,247 @@
             scope.egresos.total_egresos+=parseFloat(scope.egresos.total_servicios);
             
             scope.egresos.diferencia_egre_ingre=scope.ingresos.total_ingresos-scope.egresos.total_egresos;
+            scope.total_2=0;
+            scope.total_2+=parseFloat(scope.egresos.alimentacion_despensa);
+            scope.total_2+=parseFloat(scope.egresos.renta);
+            scope.total_2+=parseFloat(scope.egresos.credito_hipotecario);
+            scope.total_2+=parseFloat(scope.egresos.colegiaturas);
+            scope.total_2+=parseFloat(scope.egresos.otras_colegiaturas);
+            scope.total_2+=parseFloat(scope.egresos.clases_particulares);
+            scope.total_2+=parseFloat(scope.egresos.total_servicios);
+            scope.total_2+=parseFloat(scope.egresos.servicio_domestico);
+            scope.total_2+=parseFloat(scope.egresos.gasolina);
+            scope.total_2+=parseFloat(scope.egresos.credito_auto);
+            scope.total_2+=parseFloat(scope.egresos.pago_tdc_mensual);
+            scope.total_2+=parseFloat(scope.egresos.vestido_calzado);
+            scope.total_2+=parseFloat(scope.egresos.medico_medicinas);
+            //scope.total_2+=parseFloat(scope.egresos.diversion_entretenimiento);
+            scope.total_2+=parseFloat(scope.egresos.clubes_deportivos);
+            scope.total_2+=parseFloat(scope.egresos.seguros);
+            scope.total_2+=parseFloat(scope.egresos.vacaciones);
+            scope.total_2+=parseFloat(scope.egresos.otros2);
+            
+            scope.diferencia_2=scope.ingresos.total_ingresos-scope.total_2;
+            
+            scope.porcentaje=(scope.suma_col/scope.estudio.ingresos[0].total_ingresos)*100;
+            if(scope.porcentaje>=33){
+                scope.factor1=3.33;
+            }else{
+                if(scope.porcentaje<=10){
+                    scope.factor1=1.11;
+                }else{
+                    scope.factor1=2.22;
+                }
+            }
+            console.log('Factor1: '+scope.factor1);
+            
+            if(scope.ingresos.clasificacion==='C'){
+                scope.factor2=3.33;
+            }else{
+                if(scope.ingresos.clasificacion==='A'){
+                    scope.factor2=1.11;
+                }else{
+                    scope.factor2=2.22;
+                }
+            }
+            
+            console.log('Factor2: '+scope.factor2);
+            
+            if(scope.estudio.hijos.length>=5){
+                scope.factor3=3.33;
+            }else{
+                if(scope.ingresos.clasificacion<=2){
+                    scope.factor3=1.11;
+                }else{
+                    scope.factor3=2.22;
+                }
+            }
+            
+            console.log('Factor3: '+scope.factor3);
+            
+            scope.necesidad=scope.factor1+scope.factor2+scope.factor3;
+            console.log('Necesidad: '+scope.necesidad);
+            
+            if(scope.evaluacion.apreciacion==='NADA CONFIABLE'){
+                scope.factor1_1=0;
+            }else{
+                if(scope.evaluacion.apreciacion==='POCO CONFIABLE'){
+                    scope.factor1_1=2.22;
+                }else{
+                    scope.factor1_1=3.33;
+                }
+            }
+            
+            console.log('factor 1_1: '+scope.factor1_1);
+            
+            
+            if(scope.evaluacion.discrepancia==='MENOR'){
+                scope.factor2_2=3.33;
+            }else{
+                if(scope.evaluacion.discrepancia==='GRAVE'){
+                    scope.factor2_2=1.11;
+                }else{
+                    scope.factor2_2=0;
+                }
+            }
+            console.log('factor 2_2: '+scope.factor2_2);
+            scope.factor3_3=(scope.suma_docs*3.3)/13;
+            console.log('factor 3_3: '+scope.factor3_3);
+            
+            scope.confiabilidad=scope.factor1_1+scope.factor2_2+scope.factor3_3;
+         
+            scope.calif_globlal=(scope.necesidad*.8)+(scope.confiabilidad*.2);
+            
+            scope.resta_porcentaje=(scope.suma_col/scope.estudio.ingresos[0].total_ingresos);
+            scope.resta_porcentaje-=.20;
+            //scope.resta_porcentaje=Math.ceil(scope.resta_porcentaje);;
+            console.log('resta porcen: '+scope.resta_porcentaje);
+            
+            console.log('ingre: '+scope.estudio.ingresos[0].total_ingresos);
+            scope.factorN=scope.estudio.ingresos[0].total_ingresos*scope.resta_porcentaje;
+            scope.factorN=Math.ceil(scope.factorN);
+            console.log('total n: '+scope.factorN);
+            scope.suma_apoyo_suge=0;
+            for (var i = 0; i < scope.estudio.hijos.length; i++) {
+                var x=scope.estudio.hijos[i].colegiatura_pasado;
+                var y=x/scope.suma_col;
+                scope.estudio.hijos[i].apoyo_sugerido=scope.factorN*y;
+                scope.suma_apoyo_suge+=scope.estudio.hijos[i].apoyo_sugerido;
+            }
+            
+            
         }
         
         function setBool(){
+            scope.suma_docs=0;
             if(scope.documentos.carta_no_adeudo==='1'){
-                scope.documentos.carta_no_adeudo=true;
+               scope.documentos.carta_no_adeudo=true;
             }
+            
             if(scope.documentos.carta_no_adeudo==='0'){
                 scope.documentos.carta_no_adeudo=false;
+                scope.suma_docs+=1.01;
+                console.log('sumo 1');
             }
             
             if(scope.documentos.firma_reglamento==='1'){
                 scope.documentos.firma_reglamento=true;
+                
             }
             if(scope.documentos.firma_reglamento==='0'){
                 scope.documentos.firma_reglamento=false;
+                scope.suma_docs+=1.01;
+                console.log('sumo 2');
             }
             
             if(scope.documentos.nomina_carta==='1'){
                 scope.documentos.nomina_carta=true;
+                
             }
             if(scope.documentos.nomina_carta==='0'){
                 scope.documentos.nomina_carta=false;
+                scope.suma_docs+=1.01;
+                console.log('sumo 3');
             }
             
             if(scope.documentos.poliza==='1'){
                 scope.documentos.poliza=true;
+                
             }
             if(scope.documentos.poliza==='0'){
                 scope.documentos.poliza=false;
+                scope.suma_docs+=1.01;
+                console.log('sumo 4');
             }
             
             if(scope.documentos.estado_cuenta==='1'){
                 scope.documentos.estado_cuenta=true;
+                
             }
             if(scope.documentos.estado_cuenta==='0'){
                 scope.documentos.estado_cuenta=false;
+                scope.suma_docs+=1.01;
+                console.log('sumo 5');
             }
             
             if(scope.documentos.recibos_renta==='1'){
                 scope.documentos.recibos_renta=true;
+                
             }
             if(scope.documentos.recibos_renta==='0'){
                 scope.documentos.recibos_renta=false;
+                //scope.suma_docs+=1.01;
+                console.log('sumo 6');
             }
             
             if(scope.documentos.facturas_hospital==='1'){
                 scope.documentos.facturas_hospital=true;
+                
             }
             if(scope.documentos.facturas_hospital==='0'){
                 scope.documentos.facturas_hospital=false;
+                scope.suma_docs+=1.01;
+                console.log('sumo 7');
             }
            
              if(scope.documentos.comprobante_finiquito==='1'){
                 scope.documentos.comprobante_finiquito=true;
+                
             }
             if(scope.documentos.comprobante_finiquito==='0'){
                 scope.documentos.comprobante_finiquito=false;
+                scope.suma_docs+=1.01;
+                console.log('sumo 8');
             }
             
             if(scope.documentos.demandas_judiciales==='1'){
                 scope.documentos.demandas_judiciales=true;
+                
             }
             if(scope.documentos.demandas_judiciales==='0'){
                 scope.documentos.demandas_judiciales=false;
+                //scope.suma_docs+=1.01;
+                console.log('sumo 9');
             }
 
             if(scope.documentos.servicios==='1'){
                 scope.documentos.servicios=true;
+                
             }
             if(scope.documentos.servicios==='0'){
                 scope.documentos.servicios=false;
+                scope.suma_docs+=1.01;
+                console.log('sumo 10');
             }
             
             if(scope.documentos.pagos_credito_hipo==='1'){
                 scope.documentos.pagos_credito_hipo=true;
+                
             }
             if(scope.documentos.pagos_credito_hipo==='0'){
                 scope.documentos.pagos_credito_hipo=false;
+                scope.suma_docs+=1.01;
+                console.log('sumo 11');
             }
             
             if(scope.documentos.pagos_credito_auto==='1'){
                 scope.documentos.pagos_credito_auto=true;
+                
             }
             if(scope.documentos.pagos_credito_auto==='0'){
                 scope.documentos.pagos_credito_auto=false;
+                scope.suma_docs+=1.01;
+                console.log('sumo 12');
             }
             
             if(scope.documentos.otros==='1'){
                 scope.documentos.otros=true;
+                
             }
             if(scope.documentos.otros==='0'){
                 scope.documentos.otros=false;
+                scope.suma_docs+=1.01;
+                console.log('sumo 13');
             }
         }
         function parseIngresos(){
@@ -438,6 +609,7 @@
         }
         
         function parseEgresos(){
+            console.log(scope.egresos);
             scope.egresos.alimentacion_despensa=parseFloat(scope.egresos.alimentacion_despensa);
             scope.egresos.renta=parseFloat(scope.egresos.renta);
             scope.egresos.credito_hipotecario=parseFloat(scope.egresos.credito_hipotecario);
