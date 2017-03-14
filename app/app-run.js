@@ -13,7 +13,7 @@
         $rootScope.tipoUsuario=0;
         $rootScope.rolUsuario=0;
         $rootScope.institucion={};
-        $rootScope.isLocal=true;
+        $rootScope.isLocal=false;
         $rootScope.idEstudioReporte=0;
 		
         if ($localStorage.globals) {

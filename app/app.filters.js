@@ -21,7 +21,7 @@ angular.module('app').filter('nospace', function () {
     };
 }).filter('toJSDate', function(){
     return function (dateString) {
-        if(dateString===undefined)return;
+        if(dateString===undefined||dateString===null)return;
         var y=dateString.split(' ');
         if(y[1]!==undefined){
             var x=y[0].split('-');
