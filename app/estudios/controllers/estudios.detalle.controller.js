@@ -27,9 +27,9 @@
         AuthenticationService.isAuth();
         
         var scope = this;  
-        if(EstudiosService.idEstudioSeleccionado===0){
+        /*if(EstudiosService.idEstudioSeleccionado===0){
             EstudiosService.idEstudioSeleccionado=1;
-        }
+        }*/
         if(EstudiosService.idEstudioSeleccionado===0){
             error();
         }

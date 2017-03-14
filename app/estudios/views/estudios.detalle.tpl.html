@@ -32,7 +32,7 @@
                             </h2>
                             
                             <!--<h2 class="title">Asigado: <strong>{{control.estudio.id_asignado}}</strong></h2>-->
-                            <h2  class="title">
+                            <h2  class="title" ng-show="!control.estudio.id_estatus_estudio==='7'">
                                 Asignado:
                                 <span class="label label-info" ng-show="control.estudio.id_usuario_asignado==='0'">Por asignar</span>
                                 <span class="label label-success" ng-show="tipoUsuario==='2'&&control.estudio.id_usuario_asignado!=='0'">
@@ -108,7 +108,7 @@
                     
                     <div ng-show="tipoUsuario==='2'">
                         <div class="card-content">
-                            <button class="btn btn-xs btn-primary" ng-disabled="control.estudio.id_estatus_estudio!=='7'">Ver reporte</button>
+                            <button class="btn btn-xs btn-primary" ng-disabled="control.estudio.id_estatus_estudio!=='7'" ng-click="control.verReporte()">Ver reporte</button>
                             
                         </div>
                         <div class="card-footer">
