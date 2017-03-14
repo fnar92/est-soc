@@ -43,6 +43,11 @@
                                 </span>
                             </h2>
                             
+                            <h2  class="title">
+                                Fecha de entrevista:
+                                <span class="label label-default" ng-show="control.estudio.id_estatus_estudio==='7'">{{control.estudio.fecha_entrevista | toJSDate}}</span>
+                               
+                            </h2>
                             <button ng-disabled="control.estudio.id_estatus_estudio==='7'||
                                     control.estudio.id_estatus_estudio==='6'||control.estudio.id_estatus_estudio==='5'" ng-show="tipoUsuario==='1'&&rolUsuario==='1'&&control.estudio.id_usuario_asignado==='0'" type="button" class="btn btn-warning btn-xs" ng-click="control.asignarShow()">Asignar</button>
                             <button ng-disabled="control.estudio.id_estatus_estudio==='7'||

@@ -80,6 +80,7 @@
                                                         <span  ng-switch-when="8" class="label label-danger">Cancelado</span>
                                                         <span  ng-switch-when="9" class="label label-danger">Cita cancelada</span>
                                                     </div>
+                                                    <span class="label label-success" ng-show="estudio.id_estatus_estudio==='7'">Fecha entrevista: {{estudio.fecha_entrevista | toJSDate}}</span>
                                                     <span  ng-show="tipoUsuario==='1'&&estudio.id_estatus_estudio==='3'" class="label label-info">Fecha entrevista: {{ estudio.fecha_entrevista | toJSDate }}</span>
                                                     <span  ng-show="tipoUsuario==='1'&&(estudio.id_estatus_estudio==='4'||estudio.id_estatus_estudio==='9')" class="label label-info">Fecha para reagendar: {{ estudio.fecha_reagendar_entrevista | toJSDate }}</span>
                                                 </td>
@@ -121,7 +122,7 @@
                                                     </button>
                                                     <button ng-show="tipoUsuario==='2'&&estudio.estatus==='1'&&(estudio.id_estatus_estudio!=='7')"  class="btn btn-xs btn-danger" name="seleccionar_familia" ng-click="estudios.cancelarEstudio(estudio)">Cancelar</button>
                                                     <div ng-show="estudio.estatus==='2'" class="label label-danger">Cancelado</div>
-                                                </td>
+                                                    </td>
                                             </tr>
                                         </tbody>
                                     </table>
