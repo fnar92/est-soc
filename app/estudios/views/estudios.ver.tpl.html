@@ -1,0 +1,437 @@
+<script> </script>
+<div class="container-fluid" ng-controller="EstudiosVerController as estudios">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header" data-background-color="orange">
+                    <h1 class="title">
+                        <strong ng-show="tipoUsuario==='1'">Estudios socioeconomicos (HRWise)</strong>
+                        <strong ng-show="tipoUsuario==='2'">Estudios socioeconomicos ({{dash.institucion.nombre_institucion}})</strong>
+                    </h1>
+                </div>
+            </div>
+             <button onclick="location.href='#/estudios/crear'" ng-show="tipoUsuario==='2'" type="button" class="btn btn-primary">Nuevo estudio</button>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="card card-stats">
+                    <div class="card-content">
+                        <div class="">
+                            <form class="text-left">
+                                <label class="control-label">Buscar familia:</label>
+                                <input type="text" class="" ng-model="estudios.filtroFamilia" ng-change="estudios.filtroFamilia=estudios.filtroFamilia.toUpperCase();">
+                                <button type="submit" class="btn btn-success" ng-disabled="estudios.load" ng-click="estudios.buscarEstudios()">Buscar...</button>
+                                <img style="width: 15px" ng-if="estudios.load" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="card card-stats">
+                    <div class="card-content">
+                        <div class="card-content table-responsive">
+                                    <table class="table table-hover table-striped" cellspacing="0" width="100%">
+                                        <thead >
+                                            <tr style="background-color: gainsboro">
+                                                <th class="text-center">FOLIO</th>
+                                                <th class="text-center">Familia</th>
+                                                <!--<th class="text-center">Institución Familia</th>
+                                                <th class="text-center">Institución solicito</th>-->
+                                                <th ng-show="tipoUsuario==='1'" class="text-center">Solicitud (es)</th>
+                                                <th class="text-center">Dirección</th>
+                                                <th class="text-center">Fecha solicitud</th>
+                                                <th class="text-center">Estatus</th>
+                                                <th ng-show="tipoUsuario==='1'&&rolUsuario==='1'" class="text-center">Usuario asignado</th>
+                                                <th ng-show="tipoUsuario==='1'" class="text-center">Compartido</th>
+                                                <th class="text-center">Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="estudio in estudios.listaEstudios | startFrom:estudios.currentPage * estudios.pageSize | limitTo:estudios.pageSize">
+                                                <td class="text-center"><span  class="label label-success">{{estudio.folio_estudio}}</span></td>
+                                                <td class="text-center"><strong>{{estudio.familia}}</strong></td>
+                                                <td class="text-center" ng-show="tipoUsuario==='1'">
+                                        <p class="small " ng-repeat="ins in estudio.instituciones">{{ins.clave_institucion}} </p>
+                                                </td>
+                                                <!--<td class="text-center">{{estudio.institucion_familia}}</td>
+                                                <td class="text-center">{{estudio.institucion_solicito}} </td>-->
+                                                <td class="text-center">
+                                                    <span class="small">
+                                                    {{estudio.calle}}, 
+                                                    {{estudio.num_ext}}, 
+                                                    {{estudio.num_int}},
+                                                    {{estudio.num_int}},
+                                                    {{estudio.colonia}},
+                                                    {{estudio.localidad}},
+                                                    {{estudio.municipio}},
+                                                    {{estudio.estado}}
+                                                    </span>
+                                                </td>
+                                                <td class="text-center"><span  class="label label-default">{{estudio.fecha_estudio | toJSDate }}</span></td>
+                                                <td class="text-center">
+                                                    <div ng-show="estudio.estatus==='1'" ng-switch="estudio.id_estatus_estudio">
+                                                        <span  ng-switch-when="1"class="label label-info">Recibido</span>
+                                                        <span  ng-switch-when="2" class="label label-warning">Asignado</span>
+                                                        <span  ng-switch-when="3" class="label label-default">Angendado</span>
+                                                        <span  ng-switch-when="4" class="label label-primary">Reagendado</span>
+                                                        <span  ng-switch-when="5" class="label label-success">Capturado</span>
+                                                        <span  ng-switch-when="6" class="label label-danger">En revisión</span>
+                                                        <span  ng-switch-when="7" class="label label-primary">Terminado</span>
+                                                        <span  ng-switch-when="8" class="label label-danger">Cancelado</span>
+                                                        <span  ng-switch-when="9" class="label label-danger">Cita cancelada</span>
+                                                    </div>
+                                                    <span class="label label-success" ng-show="estudio.id_estatus_estudio==='7'">Fecha entrevista: {{estudio.fecha_entrevista | toJSDate}}</span>
+                                                    <span  ng-show="tipoUsuario==='1'&&estudio.id_estatus_estudio==='3'" class="label label-info">Fecha entrevista: {{ estudio.fecha_entrevista | toJSDate }}</span>
+                                                    <span  ng-show="tipoUsuario==='1'&&(estudio.id_estatus_estudio==='4'||estudio.id_estatus_estudio==='9')" class="label label-info">Fecha para reagendar: {{ estudio.fecha_reagendar_entrevista | toJSDate }}</span>
+                                                </td>
+                                                <td ng-show="tipoUsuario==='1'&&rolUsuario==='1'" class="text-center">
+                                                    <strong ng-show="estudio.usuario_asignado.length===1">{{estudio.usuario_asignado[0].nombre}}</strong>
+                                                    <strong ng-show="estudio.usuario_asignado.length===0">-</strong>
+                                                    
+                                                </td>
+                                                <td ng-show="tipoUsuario==='1'" class="text-center">
+                                                    <span ng-show="estudio.instituciones.length>1&&estudio.estatus==='1'" class="label label-success">Compartido</span>
+                                                    <span ng-show="estudio.instituciones.length===1&&estudio.estatus==='1'" class="label label-primary">No compartido</span>
+                                                </td>
+                                                <td class="text-center col-md-3">
+                                                    
+                                                    <button
+                                                        ng-disabled="estudio.estatus==='2'"
+                                                        ng-show="tipoUsuario==='1'&&rolUsuario==='2'&&(estudio.id_estatus_estudio==='2'||estudio.id_estatus_estudio==='4'||estudio.id_estatus_estudio==='9')" 
+                                                        type="button" class="btn btn-info btn-xs" 
+                                                        ng-click="estudios.agendarView(estudio)">Agendar</button>
+                                                    
+                                                    <button 
+                                                        ng-show="tipoUsuario==='1'&&rolUsuario==='2'&&(estudio.id_estatus_estudio==='3'||estudio.id_estatus_estudio==='5'
+                                                                    ||estudio.id_estatus_estudio==='6'||estudio.id_estatus_estudio==='7')" 
+                                                            type="button" class="btn btn-primary btn-xs"
+                                                            ng-click="estudios.verDetalle(estudio.id_estudio)">Estudio captura</button>
+                                                    
+                                                    
+                                                    <button 
+                                                        ng-show="tipoUsuario==='2'||(tipoUsuario==='1'&&rolUsuario==='1')" type="button" class="btn btn-primary btn-xs" ng-click="estudios.verDetalle(estudio.id_estudio)">
+                                                        <div ng-show="tipoUsuario==='2'">Ver estudio</div>
+                                                        <div ng-show="tipoUsuario==='1'">Estudio captura</div>
+                                                    </button >
+                                                    
+                                                    <button 
+                                                        ng-show="estudio.id_estatus_estudio==='3'&&(tipoUsuario==='1'&&rolUsuario==='2')" 
+                                                        type="button" class="btn btn-warning btn-xs" 
+                                                        ng-click="estudios.cancelarCita(estudio)">
+                                                        Cancelar cita
+                                                    </button>
+                                                    <button ng-show="tipoUsuario==='2'&&estudio.estatus==='1'&&(estudio.id_estatus_estudio!=='7')"  class="btn btn-xs btn-danger" name="seleccionar_familia" ng-click="estudios.cancelarEstudio(estudio)">Cancelar</button>
+                                                    <div ng-show="estudio.estatus==='2'" class="label label-danger">Cancelado</div>
+                                                    </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="form-group p-t-20 text-right" ng-show="estudios.listaEstudios.length > 0">
+                                    <div>
+                                        <ul class="pager">
+                                            <li>
+                                                <button type="button" class="btn btn-xs btn-default btn-flat-border pull-left" ng-disabled="estudios.currentPage === 0" ng-click="estudios.currentPage=estudios.currentPage-1">Anterior</button>
+                                                <button type="button" class="btn btn-xs btn-default btn-flat-border pull-right" ng-disabled="estudios.currentPage >= estudios.listaEstudios.length / estudios.pageSize - 1" ng-click="estudios.currentPage=estudios.currentPage+1">Siguiente</button>
+                                            </li>
+                                            <li>
+                                                <div class="col-md-3 col-md-push-2 col-xs-3 col-xs-push-2 col-lg-push-3 text-center">
+                                                    <div class="col-sm-6 text-center">
+                                                        <span class="pager-number">{{estudios.currentPage + 1}}</span>
+                                                        <span class="pager-number"> de </span>
+                                                        <span class="pager-number">{{estudios.numberOfPages()}}</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+<!-- modal_dependiente -->
+<div class="modal fade ativa-scroll" id="modal_agendar" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content pagination-centered text-center">
+            <div class="modal-header">
+                <button type="button" class="close cros_close_modal" data-dismiss="modal">&times;</button>
+                <h5>Agendar estudio</h5>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Familia:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.familia" ng-change="estudios.familia.familia=estudios.familia.familia.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Institución:</label>
+                                    <input type="text" class="form-control" value="{{estudios.familia.clave_institucion}}" ng-model="estudios.estudio.clave_institucion" disabled>
+                            </div>
+                        </div>
+                    </div>
+                <h4 class="text-left">Domicilio:</h4>
+                    
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Calle:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.calle" ng-change="estudios.familia.calle=estudios.familia.calle.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Número exterior:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.num_ext">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Número interior:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.num_int">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group label-floating">
+                                        <label class="control-label">Colonia:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.colonia" ng-change="estudios.familia.colonia=estudios.familia.colonia.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Localidad:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.localidad" ng-change="estudios.familia.localidad=estudios.familia.localidad.toUpperCase();">
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group label-floating">
+                                        <label class="control-label">Municipio:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.municipio" ng-change="estudios.familia.colonia=estudios.familia.colonia.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Estado:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.estado" ng-change="estudios.familia.localidad=estudios.familia.localidad.toUpperCase();">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Telefono casa:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.telefono_casa" ng-change="estudios.familia.localidad=estudios.familia.localidad.toUpperCase();">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h4 class="text-left">Datos padres:</h4>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Nombre papa:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.nombre_papa" ng-change="estudios.familia.nombre_papa=estudios.familia.nombre_papa.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Apellido paterno:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.apellido_paterno_papa" ng-change="estudios.familia.apellido_paterno_papa=estudios.familia.apellido_paterno_papa.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Apellido materno:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.apellido_materno_papa" ng-change="estudios.familia.apellido_materno_papa=estudios.familia.apellido_materno_papa.toUpperCase();">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">RFC:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.rfc_papa" ng-change="estudios.familia.rfc_papa=estudios.familia.rfc_papa.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Celular:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.celular_papa" ng-change="estudios.familia.celular_papa=estudios.familia.celular_papa.toUpperCase();">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Nombre mama:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.nombre_mama" ng-change="estudios.familia.nombre_mama=estudios.familia.nombre_mama.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Apellido paterno:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.apellido_paterno_mama" ng-change="estudios.familia.apellido_paterno_mama=estudios.familia.apellido_paterno_mama.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Apellido materno:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.apellido_materno_mama" ng-change="estudios.familia.apellido_materno_mama=estudios.familia.apellido_materno_mama.toUpperCase();">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">RFC:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.rfc_mama" ng-change="estudios.familia.rfc_mama=estudios.familia.rfc_mama.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Celular:</label>
+                                    <input type="text" class="form-control" ng-model="estudios.familia.celular_mama" ng-change="estudios.familia.celular_mama=estudios.familia.celular_mama.toUpperCase();">
+                            </div>
+                        </div>
+                    </div>
+            
+            
+                    <div class="clearfix"></div>
+            </div>
+
+            <div class="row">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary " ng-click="estudios.agendarEstudio()">Si agendado</button>
+                <button type="button" class="btn btn-warning " ng-click="estudios.reagendarEstudio()">Reagendar para despúes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal_dependiente -->
+<div class="modal fade ativa-scroll" id="modal_agendar_entrevista" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content pagination-centered text-center">
+            <div class="modal-header">
+                <button type="button" class="close cros_close_modal" data-dismiss="modal">&times;</button>
+                <h5>Datos entrevista:</h5>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Fecha de entrevista:</label>
+                                    <input type="date" class="form-control" ng-model="estudios.entrevista.fecha_entrevista">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Comentarios:</label>
+                                    <textarea rows="6"  class="form-control" ng-model="estudios.entrevista.comentarios"> </textarea>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="clearfix"></div>
+            </div>
+
+            <div class="row">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary " ng-click="estudios.agendarSave()">Agendar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal_dependiente -->
+<div class="modal fade ativa-scroll" id="modal_reagendar_entrevista" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content pagination-centered text-center">
+            <div class="modal-header">
+                <button type="button" class="close cros_close_modal" data-dismiss="modal">&times;</button>
+                <h5>Datos entrevista (reagendar):</h5>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Fecha para reagendar:</label>
+                                    <input type="date" class="form-control" ng-model="estudios.entrevista.fecha_reagendar_entrevista">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Comentarios:</label>
+                                    <textarea  rows="6" class="form-control" ng-model="estudios.entrevista.comentarios"> </textarea>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="clearfix"></div>
+            </div>
+
+            <div class="row">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary " ng-click="estudios.reagendarEstudioSave()">Reagendar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- modal_dependiente -->
+<div class="modal fade ativa-scroll" id="modal_cancelar_entrevista" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content pagination-centered text-center">
+            <div class="modal-header">
+                <button type="button" class="close cros_close_modal" data-dismiss="modal">&times;</button>
+                <h5>Cancelar entrevista:</h5>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Fecha para reagendar:</label>
+                                    <input type="date" class="form-control" ng-model="estudios.entrevista.fecha_reagendar_entrevista">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group label-floating">
+                                    <label class="control-label">Motivo:</label>
+                                    <textarea rows="6" class="form-control" ng-model="estudios.entrevista.comentarios"> </textarea>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="clearfix"></div>
+            </div>
+
+            <div class="row">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary " ng-click="estudios.cancelarCitaSave()">Cancelar entrevista</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>

@@ -1,0 +1,27 @@
+<script> </script>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header" data-background-color="blue">
+                    <h4 class="title">Bienvenido <strong>{{dash.user.nombre}} {{dash.user.apellido_paterno}} {{dash.user.apellido_materno}}</strong></h4>
+                    <p class="category">Estudios socioeconomicos escolares</p>
+                    <h3 ng-show="tipoUsuario=='1'"> HRWise (<span ng-show="rolUsuario==1">Administrador</span><span ng-show="rolUsuario==2">Captura</span>)</h3>
+                    <h3 ng-show="tipoUsuario=='2'"> {{dash.institucion.nombre_institucion}} - {{dash.institucion.clave_institucion}}  (<span ng-show="rolUsuario==1">Administrador</span><span ng-show="rolUsuario==2">Captura</span>)</h3>
+                </div>
+                <div class="card-content">
+                    <div id="typography">
+                        <div class="row">
+                            <h4>Navega en las diferentes opciones del menú lateral izquierdo.</h4>
+                        </div>
+                        
+                        <div class="row">
+                               <button ng-show="isLocal" type="button" class="btn btn-xs btn-primary" ng-click="dash.pull()">Importar desde servidor</button>
+                               <button ng-show="isLocal" type="button" class="btn btn-xs btn-warning" ng-click="dash.push()">Exportar a servidor</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

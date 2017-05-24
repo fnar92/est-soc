@@ -1,0 +1,28 @@
+body{
+        background-color: white;
+        font-size: 12px;
+        font-family: Roboto,Helvetica Neue,sans-serif;
+    }
+    
+    .centrar{
+        width: 70%; margin: auto;
+    }
+    .centrar2{
+        width: 90%; margin: auto;
+    }
+    .text-center {
+        text-align: center;
+    }
+   
+    .border{
+        border: solid;
+        border-color: black;
+        border-width: 1px;
+        margin: 0px 10px 0px 0px;
+    }
+    .tabla_chica{
+        font-size: 8px;
+    }
+    p{
+        margin: 0px;
+    }
