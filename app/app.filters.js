@@ -27,12 +27,12 @@ angular.module('app').filter('nospace', function () {
             var x=y[0].split('-');
             var xx=y[1].split(':');
             //return x[2]+'/'+x[1]+'/'+x[0]+' '+xx[0]+':'+xx[1]
-            console.log("fecha: "+x[2]+'/'+x[1]+'/'+x[0]);;
+            //console.log("fecha: "+x[2]+'/'+x[1]+'/'+x[0]);;
             return x[2]+'/'+x[1]+'/'+x[0];
         }else{
             var x=dateString.split('-');
             
-            console.log("fecha: "+x[2]+'/'+x[1]+'/'+x[0]);
+            //console.log("fecha: "+x[2]+'/'+x[1]+'/'+x[0]);
             return x[2]+'/'+x[1]+'/'+x[0];
         }
     };

@@ -4,8 +4,8 @@
     angular
         .module('app')
         .constant('Constants', {
-            BaseURLBack : 'http://localhost/est-soc/api',
-            BaseURLFront : 'http://localhost/est-soc/#/'
+            BaseURLBack : 'http://mx-fn.local:8087/est-soc/api',
+            BaseURLFront : 'http://mx-fn.local:8087/est-soc/#/'
         });
         
 })();
