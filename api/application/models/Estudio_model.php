@@ -68,11 +68,23 @@ class Estudio_model extends CI_Model {
         return array('status'=>$this->db->update('estudio', $data));
     }
     
-    public function getEstudios($tipoUsuario, $rolUsuario, $idUsuario, $idInstitucion, $filterFamilia) {
+    //public function getEstudios($tipoUsuario, $rolUsuario, $idUsuario, $idInstitucion, $filterFamilia) {
+    public function getEstudios($params) {
+        $tipoUsuario=$params['tipoUsuario']; 
+        $rolUsuario=$params['rolUsuario'];
+        $idUsuario=$params['idUsuario'];
+        $idInstitucion=$params['idInstitucion'];
+        if(isset($params['filtroFamilia'])){
+            $filterFamilia=$params['filtroFamilia'];
+        }
+        $ciclos=array();
+        $ciclos=$params['ciclos'];
+        
+        
         
         $this->db->select(
                  'es.id_estudio, es.folio_estudio,'
-                .'es.institucion_familia, es.institucion_solicito,'
+                .'es.institucion_familia, es.institucion_solicito, es.ciclo_escolar,'
                 .'fam.familia,'
                 .'fam.calle, fam.num_ext, fam.num_int, fam.colonia, fam.localidad, fam.municipio, fam.estado,'
                 .'es.fecha_estudio, fecha_entrevista, fecha_reagendar_entrevista, es.id_estatus_estudio, es_in.id_institucion, es.id_familia, es.id_usuario_asignado,'
@@ -89,7 +101,9 @@ class Estudio_model extends CI_Model {
             $this->db->where('es_in.id_institucion', $idInstitucion);
         }
         
-        
+        if(isset($params['cicloEscolar'])){
+            $this->db->where('es.ciclo_escolar', $params['cicloEscolar']);
+        }
         
         if($filterFamilia!='all'){
             $this->db->like('fam.familia', $filterFamilia);
@@ -100,6 +114,11 @@ class Estudio_model extends CI_Model {
         }
         
         $this->db->where('es_in.estatus', 1);
+        
+        if(count($ciclos)>0){
+            $this->db->where_in('ciclo_escolar', $ciclos);
+        }
+        
         $this->db->order_by('es.id_estudio');
         $estudios=$this->db->get()->result();
         $array=array();
@@ -441,6 +460,14 @@ class Estudio_model extends CI_Model {
     
     public function getCicloEscolar() {
         $this->db->where('status', 1);
+        return $this->db->get('cat_ciclo_escolar')->result(); 
+    }
+    
+    public function getEstatusCat() {
+        return $this->db->get('cat_estatus_estudios')->result(); 
+    }
+    
+    public function getCicloEscolarCat() {
         return $this->db->get('cat_ciclo_escolar')->result(); 
     }
     

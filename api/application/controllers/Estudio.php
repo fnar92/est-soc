@@ -69,8 +69,11 @@ class Estudio extends CI_Controller {
         echo json_encode($this->estudio_model->updateEstudio($data));
     }
     
-    public function getEstudios($tipoUsuario, $rolUsuario, $idUsuario, $idInstitucion, $familia) {
-        echo json_encode($this->estudio_model->getEstudios($tipoUsuario, $rolUsuario, $idUsuario, $idInstitucion, $familia));
+    //public function getEstudios($tipoUsuario, $rolUsuario, $idUsuario, $idInstitucion, $familia) {
+    public function getEstudios() {
+       $data = json_decode(file_get_contents('php://input'),true);
+        //echo json_encode($this->estudio_model->getEstudios($tipoUsuario, $rolUsuario, $idUsuario, $idInstitucion, $familia));
+       echo json_encode($this->estudio_model->getEstudios($data));
     }
     
     public function getEstudioDetalle($idEstudio, $idInstitucion) {
@@ -216,9 +219,16 @@ class Estudio extends CI_Controller {
         echo json_encode($this->estudio_model->updateEvaluacion($data));
     }
     
-     public function getCicloEscolar() {
-        $data = json_decode(file_get_contents('php://input'),true);
+    public function getCicloEscolar() {
         echo json_encode($this->estudio_model->getCicloEscolar());
+    }
+    
+    public function getEstatusCat() {
+        echo json_encode($this->estudio_model->getEstatusCat());
+    }
+    
+    public function getCicloEscolarCat() {
+        echo json_encode($this->estudio_model->getCicloEscolarCat());
     }
     
     /*comentarios*/

@@ -59,7 +59,7 @@ function backup_tables($host,$user,$pass,$name,$tables = '*')
 	fwrite($handle,$return);
 	fclose($handle);
         
-        $mysql_host = "hrwise.local";
+        $mysql_host ="mx-fn.local";
         $mysql_database = "estudios_soc";
         $mysql_user = "root";
         $mysql_password = "";

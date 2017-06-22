@@ -19,6 +19,8 @@
         service.actualizarEstudio=actualizarEstudio;
         service.cancelarEstudioInstitucion=cancelarEstudioInstitucion;
         service.obtenerCicloEscolar=obtenerCicloEscolar;
+        service.obtenerCicloEscolarCat=obtenerCicloEscolarCat;
+        service.obtenerEstatusCat=obtenerEstatusCat;
         return service;
         
         function cancelarEstudioInstitucion(idCancelacion){
@@ -64,12 +66,18 @@
             return RestService.post(url,'',data);
         }
         
-        function obtenerEstudios(tipoUsuario, rolUsuario, idUsuario, idInstitucion, filterFamilia){
-            if(filterFamilia===undefined|| filterFamilia===''){
-                filterFamilia='all';
+        //function obtenerEstudios(tipoUsuario, rolUsuario, idUsuario, idInstitucion, filterFamilia){
+        function obtenerEstudios(params){
+            if(params.filtroFamilia===undefined|| params.filtroFamilia===''){
+                params.filtroFamilia='all';
             }
-            var url=Constants.BaseURLBack+'/estudio/getEstudios/'+tipoUsuario+'/'+rolUsuario+'/'+idUsuario+'/'+idInstitucion+'/'+filterFamilia;
-            return RestService.get(url,'');
+            if(params.idInstitucion===undefined|| params.idInstitucion===''){
+                params.idInstitucion='0';
+            }
+            console.log(JSON.stringify(params));
+            //var url=Constants.BaseURLBack+'/estudio/getEstudios/'+tipoUsuario+'/'+rolUsuario+'/'+idUsuario+'/'+idInstitucion+'/'+filterFamilia;
+            var url=Constants.BaseURLBack+'/estudio/getEstudios';
+            return RestService.post(url,'', params);
         }
         
         function obtenerDetalleEstudio(idEstudio, idInstitucion){
@@ -82,6 +90,15 @@
             return RestService.get(url,'');
         }
         
+        function obtenerCicloEscolarCat(){
+            var url=Constants.BaseURLBack+'/estudio/getCicloEscolarCat';
+            return RestService.get(url,'');
+        }
+        
+        function obtenerEstatusCat(){
+            var url=Constants.BaseURLBack+'/estudio/getEstatusCat';
+            return RestService.get(url,'');
+        }
         
     }
 
