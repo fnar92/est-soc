@@ -1,12 +1,17 @@
-<script> </script>
+<style>
+    .flota{
+        float: right;
+    margin-left: 35px;
+    }
+</style>
 <div class="container-fluid" ng-controller="EstudiosVerController as estudios">
     <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header" data-background-color="orange">
                     <h1 class="title">
-                        <strong ng-show="tipoUsuario==='1'">Estudios socioeconomicos (HRWise)</strong>
-                        <strong ng-show="tipoUsuario==='2'">Estudios socioeconomicos ({{dash.institucion.nombre_institucion}})</strong>
+                        <strong ng-show="tipoUsuario==='1'">Estudios socioeconomicos HRWise</strong>
+                        <strong ng-show="tipoUsuario==='2'">Estudios socioeconomicos - {{dash.institucion.nombre_institucion}}</strong>
                     </h1>
                 </div>
             </div>
@@ -20,7 +25,47 @@
                                 <input type="text" class="" ng-model="estudios.filtroFamilia" ng-change="estudios.filtroFamilia=estudios.filtroFamilia.toUpperCase();">
                                 <button type="submit" class="btn btn-success" ng-disabled="estudios.load" ng-click="estudios.buscarEstudios()">Buscar...</button>
                                 <img style="width: 15px" ng-if="estudios.load" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+                                
                             </form>
+                        </div>
+                    </div>
+                    <div class="card-content text-left">
+                        Filtrar por ciclo escolar:
+                        <ul >
+                                <li class="flota" ng-repeat="ciclo in estudios.listaCiclos">
+                                    <input type="checkbox" ng-model="ciclo.selected"
+                                        ng-true-value="'{{ciclo.ciclo_escolar}}'" ng-false-value="''"
+                                        id="'{{ciclo.ciclo_escolar}}'" />{{ciclo.ciclo_escolar}}
+                                </li>
+                                </ul>
+                    </div>
+                    <div class="card-content text-left">
+                        Ciclo escolar activo: <strong>{{estudios.cicloEscolar.ciclo_escolar}}</strong>
+                    </div>
+                </div>
+               
+            </div>
+             
+             <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="">
+                    <div class="card-content">
+                        <div class="text-center">
+                        <p>Ciclo escolar:
+                            <select ng-model="estudios.busqueda.ciclo_escolar" ng-change="estudios.cambiaFiltro()">
+                            <option value="">-</option>
+                            <option ng-repeat="ciclo in estudios.listaCiclos" value="{{ciclo.ciclo_escolar}}">{{ciclo.ciclo_escolar}}</option>
+                        </select>
+                            Usuario:
+                        <select ng-model="estudios.busqueda.id_usuario_asignado" ng-change="estudios.cambiaFiltro()">
+                            <option value="">-</option>
+                            <option ng-repeat="usuario in estudios.listaEmpleados" value="{{usuario.id_usuario}}">{{usuario.nombre}}</option>
+                        </select>
+                            Estatus:
+                        <select ng-model="estudios.busqueda.id_estatus_estudio" ng-change="estudios.cambiaFiltro()">
+                            <option value="">-</option>
+                            <option ng-repeat="es in estudios.listaEstatus" value="{{es.id_estatus}}">{{es.nombre}}</option>
+                        </select>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -29,7 +74,11 @@
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="card card-stats">
                     <div class="card-content">
-                        <div class="card-content table-responsive">
+                        <div class="col-md-12 text-center" ng-if="estudios.listaEstudiosMostrar.length === 0">
+                            <h3>Aviso.</h3> 
+                            <h5>No se encontraron estudios que coincidan con los criterios de búsqueda seleccionados.</h5>
+                        </div>
+                        <div class="card-content table-responsive" ng-if="estudios.listaEstudiosMostrar.length > 0">
                                     <table class="table table-hover table-striped" cellspacing="0" width="100%">
                                         <thead >
                                             <tr style="background-color: gainsboro">
@@ -47,7 +96,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr ng-repeat="estudio in estudios.listaEstudios | startFrom:estudios.currentPage * estudios.pageSize | limitTo:estudios.pageSize">
+                                            <tr ng-repeat="estudio in estudios.listaEstudiosMostrar | startFrom:estudios.currentPage * estudios.pageSize | limitTo:estudios.pageSize">
                                                 <td class="text-center"><span  class="label label-success">{{estudio.folio_estudio}}</span></td>
                                                 <td class="text-center"><strong>{{estudio.familia}}</strong></td>
                                                 <td class="text-center" ng-show="tipoUsuario==='1'">
@@ -129,19 +178,13 @@
                                 </div>
                                 <div class="form-group p-t-20 text-right" ng-show="estudios.listaEstudios.length > 0">
                                     <div>
-                                        <ul class="pager">
+                                        <ul class="pager" ng-if="estudios.listaEstudiosMostrar.length > 0">
                                             <li>
                                                 <button type="button" class="btn btn-xs btn-default btn-flat-border pull-left" ng-disabled="estudios.currentPage === 0" ng-click="estudios.currentPage=estudios.currentPage-1">Anterior</button>
-                                                <button type="button" class="btn btn-xs btn-default btn-flat-border pull-right" ng-disabled="estudios.currentPage >= estudios.listaEstudios.length / estudios.pageSize - 1" ng-click="estudios.currentPage=estudios.currentPage+1">Siguiente</button>
+                                                <button type="button" class="btn btn-xs btn-default btn-flat-border pull-right" ng-disabled="estudios.currentPage >= estudios.listaEstudiosMostrar.length / estudios.pageSize - 1" ng-click="estudios.currentPage=estudios.currentPage+1">Siguiente</button>
                                             </li>
                                             <li>
-                                                <div class="col-md-3 col-md-push-2 col-xs-3 col-xs-push-2 col-lg-push-3 text-center">
-                                                    <div class="col-sm-6 text-center">
-                                                        <span class="pager-number">{{estudios.currentPage + 1}}</span>
-                                                        <span class="pager-number"> de </span>
-                                                        <span class="pager-number">{{estudios.numberOfPages()}}</span>
-                                                    </div>
-                                                </div>
+                                                <span class="pager-number">{{estudios.currentPage + 1}} de {{estudios.numberOfPages()}}</span>
                                             </li>
                                         </ul>
                                     </div>
