@@ -34,10 +34,10 @@
 <table class="centrar">
     <tr style="color: #003399">
         <td><p><strong>Familia:</strong> <strong style="font-style: oblique; text-decoration: underline; margin: 45px; font-weight: 900;">{{scope.estudio.familia}}</strong></p></td>
-        <td><p><strong>Total de hijos:</strong> <strong class="border" style="width: 25px">{{scope.estudio.hijos.length}}</strong></p></td>
-        <td><p><strong>CLAVE:</strong> <strong class="border">{{scope.estudio.id_familia}}</strong></p></td>
-        <td><p><strong>Clasificación:</strong> <strong class="border">{{scope.ingresos.clasificacion}}</strong></p></td>
-        <td><p><strong>Compartida:</strong> <strong ng-if="scope.estudio.instituciones.length>1" class="border">SI</strong><strong ng-if="scope.estudio.instituciones.length===1" class="border">NO</strong></p></td>
+        <td><p><strong>Total de hijos:</strong> <strong class="border" style="width: 25px; padding: 2px;">{{scope.estudio.hijos.length}}</strong></p></td>
+        <td><p><strong>CLAVE:</strong> <strong class="border" style="width: 25px; padding: 2px;">{{scope.estudio.id_familia}}</strong></p></td>
+        <td><p><strong>Clasificación:</strong> <strong class="border" style="width: 25px; padding: 2px;">{{scope.ingresos.clasificacion}}</strong></p></td>
+        <td><p><strong>Compartida:</strong> <strong  style="width: 25px; padding: 2px;" ng-if="scope.estudio.instituciones.length>1" class="border">SI</strong><strong style="width: 25px; padding: 2px;" ng-if="scope.estudio.instituciones.length===1" class="border">NO</strong></p></td>
     </tr>
 </table>
 
@@ -55,7 +55,7 @@
     </tr>
     
     <tr ng-repeat="hijo in scope.estudio.hijos">
-        <td class="text-center"><p class="border">{{hijo.nombre}} {{hijo.apellido_paterno}} {{hijo.aellido_materno}}</p></td>
+        <td class="text-center"><p class="border">{{hijo.nombre}}</p></td>
         <td class="text-center"><p class="border">{{hijo.edad}}</p></td>
         <td class="text-center"><p class="border">{{hijo.institucion}}</p></td>
         <td class="text-center"><p class="border">{{hijo.nivel_grado_cursar}}</p></td>
@@ -220,7 +220,7 @@
         <td style="font-size: 10px; text-align: right"><strong>Total</strong></td>
         <td></td>
         <td><p  style="    width: 120px;
-    text-align: center;" class="border">$ {{scope.estudio.ingresos[0].sueldo_papa+scope.estudio.ingresos[0].sueldo_mama+scope.estudio.ingresos[0].otros_ingresos | number:2}}</p></td>
+    text-align: center;" class="border">$ {{scope.estudio.ingresos[0].total_ingresos | number:2}}</p></td>
     </tr>
     <tr>
         <td>Servicios</td>

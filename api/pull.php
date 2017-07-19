@@ -59,7 +59,7 @@ function backup_tables($host,$user,$pass,$name,$tables = '*')
 	fwrite($handle,$return);
 	fclose($handle);
         
-        $mysql_host ="mx-fn.local";
+        $mysql_host ="fnar.com";
         $mysql_database = "estudios_soc";
         $mysql_user = "root";
         $mysql_password = "";

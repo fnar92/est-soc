@@ -27,9 +27,9 @@
         AuthenticationService.isAuth();
         
         var scope = this;  
-        /*if(EstudiosService.idEstudioSeleccionado===0){
-            EstudiosService.idEstudioSeleccionado=1;
-        }*/
+        if(EstudiosService.idEstudioSeleccionado===0){
+            EstudiosService.idEstudioSeleccionado=62;
+        }
         if(EstudiosService.idEstudioSeleccionado===0){
             error();
         }
@@ -1536,7 +1536,7 @@
             if(scope.ingresos.ingreso_percapita<8000){
                 scope.ingresos.clasificacion='C-';
             }
-            
+            console.log('Calculo ingresos');
         }
         
         function calculaEgresos(){
@@ -1579,6 +1579,7 @@
             scope.egresos.total_servicios+=parseFloat(scope.egresos.luz);
             scope.egresos.total_servicios+=parseFloat(scope.egresos.telefono);
             //scope.egresos.total_servicios+=scope.egresos.servicio_domestico;
+            scope.egresos.total_servicios+=scope.egresos.otros;
             scope.egresos.total_servicios+=parseFloat(scope.egresos.gas);
         }
         
@@ -1591,7 +1592,8 @@
             scope.egresos.total_egresos+=parseFloat(scope.egresos.otras_colegiaturas);
             scope.egresos.total_egresos+=parseFloat(scope.egresos.clases_particulares);
             scope.egresos.total_egresos+=parseFloat(scope.egresos.servicio_domestico);
-            scope.egresos.total_egresos+=parseFloat(scope.egresos.otros);
+            scope.egresos.total_egresos+=parseFloat(scope.egresos.total_servicios);
+            //scope.egresos.total_egresos+=parseFloat(scope.egresos.otros);
             scope.egresos.total_egresos+=parseFloat(scope.egresos.gasolina);
             scope.egresos.total_egresos+=parseFloat(scope.egresos.credito_auto);
             scope.egresos.total_egresos+=parseFloat(scope.egresos.pago_tdc_mensual);
@@ -1602,7 +1604,7 @@
             scope.egresos.total_egresos+=parseFloat(scope.egresos.seguros);
             scope.egresos.total_egresos+=parseFloat(scope.egresos.vacaciones);
             scope.egresos.total_egresos+=parseFloat(scope.egresos.otros2);
-            scope.egresos.total_egresos+=parseFloat(scope.egresos.total_servicios);
+            
             
             scope.egresos.diferencia_egre_ingre=scope.ingresos.total_ingresos-scope.egresos.total_egresos;
         }

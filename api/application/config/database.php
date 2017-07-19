@@ -75,7 +75,7 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'mx-fn.local',
+	'hostname' => 'fnar.com',
 	'username' => 'root',
 	'password' => '',
 	'database' => 'estudios_soc',

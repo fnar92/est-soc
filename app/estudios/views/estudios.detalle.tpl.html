@@ -599,10 +599,16 @@
                                 <td class="text-center">{{hijo.apellido_paterno}}</td>
                                 <td class="text-center">{{hijo.apellido_materno}}</td>
                                 <td class="text-center">{{hijo.edad}}</td>
-                                <td class="text-center">
-                                    <button type="button" class="btn btn-primary btn-xs" ng-click="control.verActualizarHijo(hijo)">Ver/Actualizar</button>
-                                    <button type="button" class="btn btn-danger btn-xs" ng-click="control.eliminarHijo(hijo)" ng-disabled="(tipoUsuario==='1'&&rolUsuario==='2'&&control.estudio.id_estatus_estudio==='6')
-                            ||control.estudio.id_estatus_estudio==='7'">Eliminar</button>
+                                <td class="text-center col-lg-2">
+                                    <div class="row">
+                                        <div class="col-sm-1">
+                                            <a href="javascript:void(0)" title="Ver detalle" ng-click="control.verActualizarHijo(hijo)"><span class="glyphicon glyphicon-eye-open"></span></a>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <a href="javascript:void(0)" title="Eliminar" ng-click="control.eliminarHijo(hijo)" ng-disabled="(tipoUsuario==='1'&&rolUsuario==='2'&&control.estudio.id_estatus_estudio==='6')
+                                                        ||control.estudio.id_estatus_estudio==='7'"><span class="glyphicon glyphicon-trash" style="color: red"></span></a>
+                                        </div>
+                                    </div>
                                 </td>
                               </tr>
                             </tbody>
@@ -727,9 +733,15 @@
                                     <p class="small">{{vehiculo.anio}}</p>
                                 </td>
                                 <td class="text-center">
-                                    <button type="button" class="btn btn-primary btn-xs" ng-click="control.verActualizarVehiculo(vehiculo)">Ver/Actualizar</button>
-                                    <button type="button" class="btn btn-danger btn-xs" ng-click="control.eliminarVehiculo(vehiculo)" ng-disabled="(tipoUsuario==='1'&&rolUsuario==='2'&&control.estudio.id_estatus_estudio==='6')
-                            ||control.estudio.id_estatus_estudio==='7'">Eliminar</button>
+                                    <div class="row centrar" >
+                                        <div class="col-sm-2">
+                                            <a href="javascript:void(0)" title="Ver detalle" ng-click="control.verActualizarVehiculo(vehiculo)"><span class="glyphicon glyphicon-eye-open"></span></a>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <a href="javascript:void(0)" title="Eliminar" ng-click="control.eliminarVehiculo(vehiculo)" ng-disabled="(tipoUsuario==='1'&&rolUsuario==='2'&&control.estudio.id_estatus_estudio==='6')
+                                                        ||control.estudio.id_estatus_estudio==='7'"><span class="glyphicon glyphicon-trash" style="color: red"></span></a>
+                                        </div>
+                                    </div>
                                 </td>
                               </tr>
                             </tbody>
@@ -1379,16 +1391,7 @@
                     <div class="col-md-4">
                         <div class="form-group ">
                                 <label class="control-label">Institución a la que solicita beca:</label>
-                                <select class="form-control" ng-model="control.hijo.institucion">
-                                      <option value="">-</option>
-                                      <option value="CET">CET</option>
-                                      <option value="KH">KH</option>
-                                      <option value="KP">KP</option>
-                                      <option value="VKN">VKN</option>
-                                      <option value="VKS">VKS</option>
-                                      <option value="CEE">CEE</option>
-                                      <option value="NICET">NICET</option>
-                                    </select>
+                                <input type="text" class="form-control" ng-model="control.hijo.institucion">
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -1742,6 +1745,13 @@
                         <div class="form-group ">
                             <label class="control-label">Pago mensual:</label>
                             <input type="number" min="0" class="form-control" ng-model="control.vehiculo.pago_mensual">
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <div class="form-group ">
+                            <label class="control-label">Usuario:</label>
+                            <input type="text" class="form-control" ng-model="control.vehiculo.usuario">
                         </div>
                     </div>
                     <!--<div class="col-md-3">
