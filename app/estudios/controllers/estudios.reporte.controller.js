@@ -29,7 +29,7 @@
         var scope = this;  
         
         if(EstudiosService.idEstudioSeleccionado===0){
-            EstudiosService.idEstudioSeleccionado=62;
+            EstudiosService.idEstudioSeleccionado=1;
         }
         if(EstudiosService.idEstudioSeleccionado===0){
             error();
@@ -363,10 +363,10 @@
             scope.total_2+=parseFloat(scope.egresos.pago_tdc_mensual);
             scope.total_2+=parseFloat(scope.egresos.vestido_calzado);
             scope.total_2+=parseFloat(scope.egresos.medico_medicinas);
-            //scope.total_2+=parseFloat(scope.egresos.diversion_entretenimiento);
+            scope.total_2+=parseFloat(scope.egresos.diversion_entretenimiento);
             scope.total_2+=parseFloat(scope.egresos.clubes_deportivos);
             scope.total_2+=parseFloat(scope.egresos.seguros);
-            scope.total_2+=parseFloat(scope.egresos.vacaciones);
+            //scope.total_2+=parseFloat(scope.egresos.vacaciones);
             scope.total_2+=parseFloat(scope.egresos.otros2);
             
             scope.diferencia_2=scope.ingresos.total_ingresos-scope.total_2;
@@ -412,24 +412,24 @@
             
             if(scope.evaluacion.apreciacion==='NADA CONFIABLE'){
                 scope.factor1_1=0;
-            }else{
+            }
                 if(scope.evaluacion.apreciacion==='POCO CONFIABLE'){
                     scope.factor1_1=2.22;
                 }else{
                     scope.factor1_1=3.33;
                 }
-            }
+            
             
             console.log('factor 1_1: '+scope.factor1_1);
+            console.log(scope.evaluacion.discrepancia);
             
-            
-            if(scope.evaluacion.discrepancia==='MENOR'){
+            if(scope.evaluacion.discrepancia==='NINGUNA'){
                 scope.factor2_2=3.33;
             }else{
                 if(scope.evaluacion.discrepancia==='GRAVE'){
                     scope.factor2_2=1.11;
                 }else{
-                    scope.factor2_2=0;
+                    scope.factor2_2=2.22;
                 }
             }
             console.log('factor 2_2: '+scope.factor2_2);
@@ -518,7 +518,7 @@
             }
             if(scope.documentos.recibos_renta==='0'){
                 scope.documentos.recibos_renta=false;
-                //scope.suma_docs+=1.01;
+                scope.suma_docs+=1.01;
                 console.log('sumo 6');
             }
             
@@ -564,7 +564,7 @@
             
             if(scope.documentos.pagos_credito_hipo==='1'){
                 scope.documentos.pagos_credito_hipo=true;
-                
+                scope.suma_docs+=1.01;
             }
             if(scope.documentos.pagos_credito_hipo==='0'){
                 scope.documentos.pagos_credito_hipo=false;
@@ -574,7 +574,7 @@
             
             if(scope.documentos.pagos_credito_auto==='1'){
                 scope.documentos.pagos_credito_auto=true;
-                
+                //scope.suma_docs+=1.01;
             }
             if(scope.documentos.pagos_credito_auto==='0'){
                 scope.documentos.pagos_credito_auto=false;
@@ -584,7 +584,6 @@
             
             if(scope.documentos.otros==='1'){
                 scope.documentos.otros=true;
-                
             }
             if(scope.documentos.otros==='0'){
                 scope.documentos.otros=false;

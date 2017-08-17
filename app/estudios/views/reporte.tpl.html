@@ -24,6 +24,7 @@
     }
 </style>
 <button class="btn btn-xs btn-success" onclick="imprime()">Imprimir</button>
+<button class="btn btn-xs btn-default" onclick="window.history.back();">Regresar</button>
 <script src="assets/css/print.js"></script>
 <div id="contenido">
 <div class="row text-center"><br></div>
@@ -368,10 +369,10 @@
     
     <tr>
         <td>Vacaciones</td>
-        <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].vacaciones | number:2}}</span></td>
+        <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.estudio.egresos[0].diversion_entretenimiento | number:2}}</span></td>
         <td style="width: 25px;"></td>
         <td style="width: 25px;"></td>
-        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].vacaciones/scope.total_2)*100 | number: 0}} %</span> </td>
+        <td style="text-align: right;" class="border"> <span style=" margin-right: 5px">{{(scope.estudio.egresos[0].diversion_entretenimiento/scope.total_2)*100 | number: 0}} %</span> </td>
         <td></td> 
         <td></td>
         <td></td>
@@ -398,7 +399,7 @@
     
     <tr>
         <td><strong>Total</strong></td>
-        <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <span style=" margin-right: 5px">{{scope.total_2 | number:2}}</span></td>
+        <td style="text-align: right;" class="border"><span style="float: left; margin-left: 5px;">$</span> <strong><span style="margin-right: 5px">{{scope.total_2 | number:2}}</span></strong></td>
         <td style="width: 25px;"></td>
         <td style="width: 25px;"></td>
         <td style="text-align: right;"> <span style=" margin-right: 5px; font-size: 6px">Diferencia Ingresos/Egresos</span></td>
@@ -489,7 +490,7 @@
 <div class="row">
     <p style="background: gainsboro;">Observaciones</p>
 </div>
-<div>
+<div style="font-size: 11px">
     <ul>
         <li ng-repeat="comm in scope.estudio.comentarios"> <span >{{comm.comentario}}</span></li>
     </ul>

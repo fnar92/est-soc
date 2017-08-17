@@ -97,13 +97,6 @@
                         <div class="card-content">
                             <button class="btn btn-xs btn-success" ng-click="control.verReporte()">Ver reporte</button>
                         </div>
-                        <div class="card-footer">
-                                <div class="stats">
-                                    <ul ng-repeat="comentario in control.estudio.comentarios">
-                                        <li><p class="small">{{comentario.comentario}} ({{comentario.tipo}})</p></li>
-                                    </ul>     
-                                </div>
-                        </div>
                     </div>
                     
                     <div ng-show="tipoUsuario==='2'">
@@ -170,7 +163,7 @@
                     <h4 class="title">Comentarios generales</h4>
                 </a>
                   <a href="#" ng-show="tipoUsuario==='1'" class="list-group-item text-center">
-                    <h4 class="title">Totales</h4>
+                    <h4 class="title">Commentarios finales</h4>
                 </a>
               </div>
             </div>
@@ -601,13 +594,10 @@
                                 <td class="text-center">{{hijo.edad}}</td>
                                 <td class="text-center col-lg-2">
                                     <div class="row">
-                                        <div class="col-sm-1">
-                                            <a href="javascript:void(0)" title="Ver detalle" ng-click="control.verActualizarHijo(hijo)"><span class="glyphicon glyphicon-eye-open"></span></a>
-                                        </div>
-                                        <div class="col-sm-1">
-                                            <a href="javascript:void(0)" title="Eliminar" ng-click="control.eliminarHijo(hijo)" ng-disabled="(tipoUsuario==='1'&&rolUsuario==='2'&&control.estudio.id_estatus_estudio==='6')
-                                                        ||control.estudio.id_estatus_estudio==='7'"><span class="glyphicon glyphicon-trash" style="color: red"></span></a>
-                                        </div>
+                                        
+                                        <button type="button" class="btn btn-primary btn-xs" ng-click="control.verActualizarHijo(hijo)"><span class="glyphicon glyphicon-eye-open"></span></button>
+                                    <button type="button" class="btn btn-danger btn-xs" ng-click="control.eliminarHijo(hijo)" ng-disabled="(tipoUsuario==='1'&&rolUsuario==='2'&&control.estudio.id_estatus_estudio==='6')
+                            ||control.estudio.id_estatus_estudio==='7'"><span class="glyphicon glyphicon-trash"></span></button>
                                     </div>
                                 </td>
                               </tr>
@@ -1278,7 +1268,15 @@
                     </div>
                 </div>
                 <div class="bhoechie-tab-content">
-                    <h2>Totales</h2>
+                    <h2>Comentarios finales</h2>
+                    
+                        <div class="card-footer">
+                                <div class="stats">
+                                    <ul ng-repeat="comentario in control.estudio.comentarios">
+                                        <li><p class="small">{{comentario.comentario}} ({{comentario.tipo}})</p></li>
+                                    </ul>     
+                                </div>
+                        </div>
                 </div>
             </div>
         </div>
