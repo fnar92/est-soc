@@ -27,11 +27,15 @@
         show();
         
         scope.agregarUsuario=agregarUsuario;
-        
-        
+        scope.verActualizarUsuario=verActualizarUsuario;
+        scope.guardarUsuario=guardarUsuario;
+        scope.eliminarUsuario=eliminarUsuario;
+        scope.cancelar=cancelar;
         
         scope.usuarios=[];
         scope.usuario={};
+        scope.nuevoUsuario=true;
+        scope.updateUsuario=false;
         
         
         
@@ -44,13 +48,44 @@
                 console.log('Error al obtener los usuarios'+error);
                 hide();
                 error();
-                
             }
         );
 
         function agregarUsuario(){
+            scope.nuevoUsuario=true;
+            scope.updateUsuario=false;
+            console.log('click en add');
+            console.log(scope.nuevoUsuario+' '+scope.updateUsuario);
             $("#modal_agregar_usuario").modal('show');
         }
+        
+        function verActualizarUsuario(usuario){
+            scope.nuevoUsuario=false;
+            scope.updateUsuario=true;
+            scope.usuario=usuario;
+            console.log(scope.usuario);
+            console.log('click en update');
+            console.log(scope.nuevoUsuario+' '+scope.updateUsuario);
+            $("#modal_agregar_usuario").modal('show');
+        }
+        
+        function guardarUsuario(){
+            alert();
+            console.log(scope.usuario);
+        }
+        
+        function eliminarUsuario(usuario){
+            
+            
+        }
+        
+        function cancelar(){
+            scope.usuario={};
+            scope.nuevoUsuario=true;
+            scope.updateUsuario=false;
+            $("#modal_agregar_usuario").modal('hide');
+        }
+        
         
     };//end controller
 
