@@ -14,12 +14,14 @@
             'app.home', 
             'app.dashboard',
             'app.estudios',
+            'app.admin',
             'app.utils'
         ]);
 		
         angular.module('app.authentication', []);
         angular.module('app.dashboard', []);
         angular.module('app.estudios', []);
+        angular.module('app.admin', []);
         angular.module('app.home', ['ngMaterial']);
         angular.module('app.utils', []);
 		

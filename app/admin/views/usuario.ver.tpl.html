@@ -1,0 +1,142 @@
+
+<div class="container-fluid" ng-controller="UsuarioController as scope">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header" data-background-color="blue">
+                    <h4 >Usuarios</h4>
+                    <p class="category">En esta sección podrás administrar tus usuarios, crear usuarios, otorgar permisos, eliminar usuarios etc...</p>
+                </div>
+                
+                <div class="card-content">
+                    <button type="button" class="btn btn-success" ng-click="scope.agregarUsuario()">Crear usuario</button>
+                </div>
+                
+                <div class="card-content table-responsive">
+                    <table class="table">
+                        <thead class="text-primary">
+                            <th class="text-center">Nombre</th>
+                            <th class="text-center">Email</th>
+                            <th class="text-center">Rol</th>
+                            <th class="text-center">Opciones</th>
+                        </thead>
+                        <tbody>
+                            <tr class="text-center" ng-repeat="u in scope.usuarios">
+                                <td>{{u.nombre}} {{u.apellido_paterno}} {{u.apellido_materno}}</td>
+                                <td>{{u.email}}</td>
+                                <td> 
+                                    <span ng-if="u.rol==='1'" class="label label-success">{{u.rol | tipoAdmin }}</span>
+                                    <span ng-if="u.rol==='2'" class="label label-info">{{u.rol | tipoAdmin }}</span>
+                                </td>
+                                <td>
+                                    
+                                    <button type="button" class="btn btn-primary btn-sm" ng-click="scope.actualizarUsuario(u)">
+                                        <span class="glyphicon glyphicon-eye-open"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-sm" ng-click="scope.eliminarUsuario(u)">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </button>
+                                    
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+
+</div>
+
+
+
+<!-- modal_comentario-->
+<div class="modal fade ativa-scroll" id="modal_agregar_usuario" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content pagination-centered text-center">
+            <div class="modal-body">
+                
+                <div class="row">
+	                    <div class="col-md-12">
+	                        <div class="card">
+	                            <div class="card-header" data-background-color="orange">
+                                        <button type="button" class="close cros_close_modal" data-dismiss="modal">&times;</button>
+	                                <h4>Agregar nuevo usuario</h4>
+                                        <p class="category">Completa la información</p>
+	                            </div>
+                                    <hr>
+	                            <div class="card-content">
+	                                <form>
+	                                    <div class="row">
+	                                        <div class="col-md-4">
+                                                    <div class="form-group label-floating">
+                                                            <label class="control-label">Nombre:</label>
+                                                            <input type="text" class="form-control" >
+                                                    </div>
+	                                        </div>
+	                                        <div class="col-md-4">
+                                                    <div class="form-group label-floating">
+                                                            <label class="control-label">Apellido paterno:</label>
+                                                            <input type="text" class="form-control" >
+                                                    </div>
+	                                        </div>
+                                                
+                                                <div class="col-md-4">
+                                                    <div class="form-group label-floating">
+                                                            <label class="control-label">Apellido materno:</label>
+                                                            <input type="text" class="form-control" >
+                                                    </div>
+	                                        </div>
+	                                    </div>
+
+	                                    <div class="row">
+	                                        <div class="col-md-4">
+                                                    <div class="form-group label-floating">
+                                                            <label class="control-label">Username: </label>
+                                                            <input type="text" class="form-control" >
+                                                    </div>
+	                                        </div>
+	                                        <div class="col-md-6">
+                                                    <div class="form-group label-floating">
+                                                            <label class="control-label">Email:</label>
+                                                            <input type="text" class="form-control" >
+                                                    </div>
+	                                        </div>
+	                                    </div>
+
+                                            <div class="row">
+	                                        <div class="col-md-4">
+                                                    <div class="form-group ">
+                                                            <label class="control-label">Tipo de usuario: </label>
+                                                            <md-radio-group  ng-model="scope.usuario.rol">
+
+                                                                <md-radio-button value="1" class="md-primary">Administrador</md-radio-button>
+                                                                <md-radio-button value="2">Usuario</md-radio-button>
+
+                                                            </md-radio-group>
+                                                    </div>
+	                                        </div>
+	                                    </div>
+                                            <div class="row">
+                                            <span>* Asegurese de verificar los datos capturados, ya que el sistema notificara al nuevo usuario atravez de un correo 
+                                                electrónico en el cual también estaran contenidos los datos de acceso al sistema.</span>
+                                            </div>
+                                            
+                                            <button type="button" class="btn btn-primary pull-right">Guardar usuario</button>
+                                            <button type="button" class="btn btn-default pull-right">Cancelar</button>
+	                                    <div class="clearfix"></div>
+	                                </form>
+	                            </div>
+	                        </div>
+	                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>

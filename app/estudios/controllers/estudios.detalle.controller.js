@@ -22,7 +22,7 @@
         DialogService, RestService, AuthenticationService, Constants, UserService, $q) {
         /* jshint validthis: true */
         console.log('init estudios ver detalle');
-        
+        show();
         //Check session
         AuthenticationService.isAuth();
         

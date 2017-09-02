@@ -9,10 +9,10 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header" data-background-color="orange">
-                    <h1 class="title">
+                    <h4>
                         <strong ng-show="tipoUsuario==='1'">Estudios socioeconomicos HRWise</strong>
                         <strong ng-show="tipoUsuario==='2'">Estudios socioeconomicos - {{dash.institucion.nombre_institucion}}</strong>
-                    </h1>
+                    </h4>
                 </div>
             </div>
              <button onclick="location.href='#/estudios/crear'" ng-show="tipoUsuario==='2'" type="button" class="btn btn-primary">Nuevo estudio</button>
@@ -21,7 +21,7 @@
                     <div class="card-content">
                         <div class="">
                             <form class="text-left">
-                                <label class="control-label">Buscar familia:</label>
+                                <label class="control-label">Buscar estudios:</label>
                                 <input type="text" class="" ng-model="estudios.filtroFamilia" ng-change="estudios.filtroFamilia=estudios.filtroFamilia.toUpperCase();">
                                 <button type="submit" class="btn btn-success" ng-disabled="estudios.load" ng-click="estudios.buscarEstudios()">Buscar...</button>
                                 <img style="width: 15px" ng-if="estudios.load" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />

@@ -43,6 +43,18 @@
 	                    </a>
 	                </li>
                         
+                        <li class="" ng-show="rolUsuario==='1'">
+	                    <a href="#/admin/index">
+	                        <p>Administración</p>
+	                    </a>
+	                </li>
+                        <li class="dropdown">
+                              <ul class="dropdown-menu">
+                                    <li><a href="javascript:void(0)">Mis datos</a></li>
+                                    <li><a href="javascript:void(0)" ng-click="dash.logout()">Salir</a></li>
+                              </ul>
+                        </li>
+                        
                         <li class="">
                             <a href="javascript:void(0)" ng-click="dash.logout()">
 	                        <p>Salir</p>

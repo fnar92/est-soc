@@ -43,7 +43,16 @@ angular.module('app').filter('nospace', function () {
                 return '<span class="label label-danger">Solicitado</span>';
         }
     };
-});;
+}).filter('tipoAdmin', function(){
+    return function (tipo) {
+        switch (tipo){
+            case '1':
+                return 'Administrador';
+            case '2':
+                return 'Captiura';
+        }
+    };
+});
 angular
         .module('app')
         .filter('startFrom', 

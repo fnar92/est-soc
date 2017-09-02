@@ -66,6 +66,24 @@
                 templateUrl: 'app/estudios/views/reporte.tpl.html'
             })
             
+            .state('/app.admin', { 
+                url: '/admin/index',
+                views: {
+                    'page': { 
+                        templateUrl: 'app/admin/views/admin.tpl.html'
+                    }
+                }      
+            })
+            
+            .state('/app.admin_usuario', { 
+                url: '/admin/usuario/ver',
+                views: {
+                    'page': { 
+                        templateUrl: 'app/admin/views/usuario.ver.tpl.html'
+                    }
+                }      
+            })
+            
             .state('/about', { 
                 url: '/about',
                 controller: '',
