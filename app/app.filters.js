@@ -49,7 +49,7 @@ angular.module('app').filter('nospace', function () {
             case '1':
                 return 'Administrador';
             case '2':
-                return 'Captiura';
+                return 'Usuario';
         }
     };
 });

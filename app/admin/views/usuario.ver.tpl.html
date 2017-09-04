@@ -33,7 +33,7 @@
                                     <button type="button" class="btn btn-primary btn-sm" ng-click="obj.verActualizarUsuario(u)">
                                         <span class="glyphicon glyphicon-eye-open"></span>
                                     </button>
-                                    <button type="button" class="btn btn-danger btn-sm" ng-click="obj.eliminarUsuario(u)">
+                                    <button type="button" class="btn btn-danger btn-sm" ng-disabled="u.id_usuario===idUser" ng-click="obj.eliminarUsuario(u)">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </button>
                                     
@@ -50,94 +50,96 @@
         
     </div>
 
-</div>
 
 
 
-<!-- modal_comentario-->
-<div class="modal fade ativa-scroll" id="modal_agregar_usuario" role="dialog">
-    <div class="modal-dialog modal-lg">
-        <!-- Modal content-->
-        <div class="modal-content pagination-centered text-center">
-            <div class="modal-body">
-                
-                <div class="row">
-	                    <div class="col-md-12">
-	                        <div class="card">
-	                            <div class="card-header" data-background-color="orange">
-                                        <button type="button" class="close cros_close_modal" data-dismiss="modal">&times;</button>
-	                                <h4 ng-show="obj.nuevoUsuario">Agregar nuevo usuario</h4>
-                                        <h4 ng-show="obj.updateUsuario">Actualizar información de: {{ obj.usuario.nombre}}</h4>
-                                        <p class="category">Completa la información</p>
-	                            </div>
-                                    <hr>
-	                            <div class="card-content">
-	                                <form>
-	                                    <div class="row">
-	                                        <div class="col-md-4">
-                                                    <div class="form-group label-floating">
-                                                            <label class="control-label">Nombre:</label>
-                                                            <input type="text" class="form-control" ng-model="obj.usuario.nombre">
+
+    <!-- modal_comentario-->
+    <div class="modal fade ativa-scroll" id="modal_agregar_usuario" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content pagination-centered text-center">
+                <div class="modal-body">
+
+                    <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header" data-background-color="orange">
+                                            <button type="button" class="close cros_close_modal" data-dismiss="modal">&times;</button>
+                                            <h4 ng-show="obj.nuevoUsuario">Agregar nuevo usuario</h4>
+                                            <h4 ng-show="obj.updateUsuario">Actualizar información de: {{ obj.usuario.nombre}}</h4>
+                                            <p class="category">Completa la información</p>
+                                        </div>
+                                        <hr>
+                                        <div class="card-content">
+                                            <form>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group label-floating">
+                                                                <label class="control-label">Nombre:</label>
+                                                                <input type="text" class="form-control" ng-model="obj.usuario.nombre">
+                                                        </div>
                                                     </div>
-	                                        </div>
-	                                        <div class="col-md-4">
-                                                    <div class="form-group label-floating">
-                                                            <label class="control-label">Apellido paterno:</label>
-                                                            <input type="text" class="form-control" ng-model="obj.usuario.apellido_paterno">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group label-floating">
+                                                                <label class="control-label">Apellido paterno:</label>
+                                                                <input type="text" class="form-control" ng-model="obj.usuario.apellido_paterno">
+                                                        </div>
                                                     </div>
-	                                        </div>
-                                                
-                                                <div class="col-md-4">
-                                                    <div class="form-group label-floating">
-                                                            <label class="control-label">Apellido materno:</label>
-                                                            <input type="text" class="form-control" ng-model="obj.usuario.apellido_materno" >
-                                                    </div>
-	                                        </div>
-	                                    </div>
 
-	                                    <div class="row">
-	                                        <div class="col-md-4">
-                                                    <div class="form-group label-floating">
-                                                            <label class="control-label">Username: </label>
-                                                            <input type="text" class="form-control" ng-model="obj.usuario.username" ng-disabled="obj.updateUsuario">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group label-floating">
+                                                                <label class="control-label">Apellido materno:</label>
+                                                                <input type="text" class="form-control" ng-model="obj.usuario.apellido_materno" >
+                                                        </div>
                                                     </div>
-	                                        </div>
-	                                        <div class="col-md-6">
-                                                    <div class="form-group label-floating">
-                                                            <label class="control-label">Email:</label>
-                                                            <input type="text" class="form-control" ng-model="obj.usuario.email">
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group label-floating">
+                                                                <label class="control-label">Username: </label>
+                                                                <input type="text" class="form-control" ng-model="obj.usuario.username" ng-disabled="obj.updateUsuario">
+                                                        </div>
                                                     </div>
-	                                        </div>
-	                                    </div>
-
-                                            <div class="row">
-	                                        <div class="col-md-4">
-                                                    <div class="form-group ">
-                                                            <label class="control-label">Tipo de usuario: </label>
-                                                            <md-radio-group  ng-model="obj.usuario.rol">
-
-                                                                <md-radio-button value="1" class="md-primary">Administrador</md-radio-button>
-                                                                <md-radio-button value="2">Usuario</md-radio-button>
-
-                                                            </md-radio-group>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group label-floating">
+                                                                <label class="control-label">Email:</label>
+                                                                <input type="text" class="form-control" ng-model="obj.usuario.email">
+                                                        </div>
                                                     </div>
-	                                        </div>
-	                                    </div>
-                                            <div class="row">
-                                            <span>* Asegurese de verificar los datos capturados, ya que el sistema notificara al nuevo usuario atravez de un correo 
-                                                electrónico en el cual también estaran contenidos los datos de acceso al sistema.</span>
-                                            </div>
-                                            
-                                            <button type="button" class="btn btn-primary pull-right" ng-click="obj.guardarUsuario()">Guardar usuario</button>
-                                            <button type="button" class="btn btn-default pull-right" ng-click="obj.cancelar()">Cancelar</button>
-	                                    <div class="clearfix"></div>
-	                                </form>
-	                            </div>
-	                        </div>
-	                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group ">
+                                                                <label class="control-label">Tipo de usuario: </label>
+                                                                <md-radio-group  ng-model="obj.usuario.rol">
+
+                                                                    <md-radio-button value="1" class="md-primary">Administrador</md-radio-button>
+                                                                    <md-radio-button value="2">Usuario</md-radio-button>
+
+                                                                </md-radio-group>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                <span>* Asegurese de verificar los datos capturados, ya que el sistema notificara al nuevo usuario atravez de un correo 
+                                                    electrónico en el cual también estaran contenidos los datos de acceso al sistema.</span>
+                                                </div>
+
+                                                <button type="button" class="btn btn-primary pull-right" ng-click="obj.guardarUsuario()">Guardar usuario</button>
+                                                <button type="button" class="btn btn-default pull-right" ng-click="obj.cancelar()">Cancelar</button>
+                                                <div class="clearfix"></div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                    </div>
+
                 </div>
-                
             </div>
         </div>
     </div>
+
 </div>

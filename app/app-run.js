@@ -15,12 +15,14 @@
         $rootScope.institucion={};
         $rootScope.isLocal=false;
         $rootScope.idEstudioReporte=0;
+        $rootScope.idUser=0;
 		
         if ($localStorage.globals) {
             console.log($localStorage.globals);
             $rootScope.isAuth=true;
             $rootScope.tipoUsuario=$localStorage.globals.type;
             $rootScope.rolUsuario=$localStorage.globals.role;
+            $rootScope.idUser=$localStorage.globals.id;
             $http.defaults.headers.common['Authorization'] = 'Basic ' + $localStorage.globals.authdata;
         }
         

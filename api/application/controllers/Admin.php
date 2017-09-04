@@ -11,4 +11,18 @@ class Admin extends CI_Controller {
         echo json_encode($this->admin_model->getUserList($tipoUsuario, $idInstitucion));
     }
     
+    public function addUser() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->admin_model->addUser($data));
+    }
+    
+    public function updateUser() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->admin_model->updateUser($data));
+    }
+    
+    public function deleteUser() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->admin_model->deleteUser($data));
+    }
 }
