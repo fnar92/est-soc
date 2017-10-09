@@ -16,7 +16,11 @@
             
         </div>
         
-        <button type="button" class="btn btn-primary" onclick="location.href='#/admin/usuario/ver'">Usuarios</button>
+        <button type="button" class="btn btn-primary" onclick="location.href='#/admin/usuario/ver'">Administración de usuarios</button>
+        <button type="button" class="btn btn-primary" ng-if="tipoUsuario==='1'" onclick="location.href='#/admin/institucion/ver'">Administración de instituciones</button>
+    
+        <button type="button" class="btn btn-primary" ng-if="tipoUsuario==='1'" onclick="location.href='#/admin/fam/ver'">Administración de familias</button>
+        <button type="button" class="btn btn-primary" ng-if="tipoUsuario==='1'" onclick="location.href='#/admin/cat/ver'">Administración de ciclo escolar</button>
     </div>
 
 </div>

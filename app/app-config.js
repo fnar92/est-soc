@@ -84,6 +84,42 @@
                 }      
             })
             
+            .state('/app.admin_institucion', { 
+                url: '/admin/institucion/ver',
+                views: {
+                    'page': { 
+                        templateUrl: 'app/admin/views/institucion.ver.tpl.html'
+                    }
+                }      
+            })
+            
+            .state('/app.user_info', { 
+                url: '/user/info',
+                views: {
+                    'page': { 
+                        templateUrl: 'app/user/views/user.info.tpl.html'
+                    }
+                }      
+            })
+            
+            .state('/app.admin_famlias', { 
+                url: '/admin/fam/ver',
+                views: {
+                    'page': { 
+                        templateUrl: 'app/admin/views/fam.ver.tpl.html'
+                    }
+                }      
+            })
+            
+            .state('/app.admin_catciclos', { 
+                url: '/admin/cat/ver',
+                views: {
+                    'page': { 
+                        templateUrl: 'app/admin/views/cat.ver.tpl.html'
+                    }
+                }      
+            })
+            
             .state('/about', { 
                 url: '/about',
                 controller: '',

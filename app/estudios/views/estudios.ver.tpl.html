@@ -15,7 +15,8 @@
                     </h4>
                 </div>
             </div>
-             <button onclick="location.href='#/estudios/crear'" ng-show="tipoUsuario==='2'" type="button" class="btn btn-primary">Nuevo estudio</button>
+            <button onclick="location.href='#/estudios/crear'" ng-show="tipoUsuario==='2'" type="button" class="btn btn-primary" ng-disabled="estudios.noValidCiclo">Solicitar nuevo estudio</button>
+            <div ng-if="estudios.noValidCiclo">No existe ciclo escolar activo o vigente. Consulte a los administradores de Est-Soc.</div>
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="card card-stats">
                     <div class="card-content">
@@ -41,6 +42,7 @@
                     </div>
                     <div class="card-content text-left">
                         Ciclo escolar activo: <strong>{{estudios.cicloEscolar.ciclo_escolar}}</strong>
+                        <span ng-if="estudios.noValidCiclo" class="label label-danger">SIN CICLO ESCOLAR ACTIVO</span>
                     </div>
                 </div>
                
@@ -50,22 +52,24 @@
                 <div class="">
                     <div class="card-content">
                         <div class="text-center">
-                        <p>Ciclo escolar:
-                            <select ng-model="estudios.busqueda.ciclo_escolar" ng-change="estudios.cambiaFiltro()">
+                        <p><label>Ciclo escolar:</label>
+                            <select ng-model="estudios.busqueda.id_ciclo_escolar" ng-change="estudios.cambiaFiltro()">
                             <option value="">-</option>
-                            <option ng-repeat="ciclo in estudios.listaCiclos" value="{{ciclo.ciclo_escolar}}">{{ciclo.ciclo_escolar}}</option>
+                            <option ng-repeat="ciclo in estudios.listaCiclos" value="{{ciclo.id_ciclo_escolar}}">{{ciclo.ciclo_escolar}}</option>
                         </select>
-                            Usuario:
-                        <select ng-model="estudios.busqueda.id_usuario_asignado" ng-change="estudios.cambiaFiltro()">
+                            <label ng-if="tipoUsuario==='1'" ng-show="rolUsuario==='1'">Usuario:</label>
+                            <select ng-if="tipoUsuario==='1'" ng-show="rolUsuario==='1'"  ng-model="estudios.busqueda.id_usuario_asignado" ng-change="estudios.cambiaFiltro()">
                             <option value="">-</option>
                             <option ng-repeat="usuario in estudios.listaEmpleados" value="{{usuario.id_usuario}}">{{usuario.nombre}}</option>
                         </select>
-                            Estatus:
-                        <select ng-model="estudios.busqueda.id_estatus_estudio" ng-change="estudios.cambiaFiltro()">
+                        <label ng-if="tipoUsuario==='1'" >Estatus:</label>
+                        <select ng-if="tipoUsuario==='1'" ng-model="estudios.busqueda.id_estatus_estudio" ng-change="estudios.cambiaFiltro()">
                             <option value="">-</option>
                             <option ng-repeat="es in estudios.listaEstatus" value="{{es.id_estatus}}">{{es.nombre}}</option>
                         </select>
-                            </p>
+                            
+                        </p>
+                            
                         </div>
                     </div>
                 </div>
@@ -80,7 +84,7 @@
                         </div>
                         <div class="card-content table-responsive" ng-if="estudios.listaEstudiosMostrar.length > 0">
                                     <table class="table table-hover table-striped" cellspacing="0" width="100%">
-                                        <thead >
+                                        <thead class="text-primary" >
                                             <tr style="background-color: gainsboro">
                                                 <th class="text-center">FOLIO</th>
                                                 <th class="text-center">Familia</th>
@@ -196,17 +200,27 @@
         </div>
     </div>
 
-<!-- modal_dependiente -->
+<!-- modal_agendar -->
 <div class="modal fade ativa-scroll" id="modal_agendar" role="dialog">
     <div class="modal-dialog modal-lg">
         <!-- Modal content-->
         <div class="modal-content pagination-centered text-center">
-            <div class="modal-header">
-                <button type="button" class="close cros_close_modal" data-dismiss="modal">&times;</button>
-                <h5>Agendar estudio</h5>
-            </div>
             <div class="modal-body">
-                <div class="row">
+<div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header" data-background-color="orange">
+                               <button type="button" class="close cros_close_modal" data-dismiss="modal">&times;</button>
+                               <h5>Agendar estudio</h5>
+				
+				<p class="category">Agendar estudio, si no contesta ó pospone la fecha, presione la opción "Reagendar para despues" y añada un comentario del motivo.</p>
+                
+                            </div>
+                            <hr>
+                            <div class="card-content">
+							<form>
+				
+				<div class="row">
                         <div class="col-md-5">
                             <div class="form-group label-floating">
                                     <label class="control-label">Familia:</label>
@@ -353,67 +367,89 @@
                             </div>
                         </div>
                     </div>
-            
-            
-                    <div class="clearfix"></div>
-            </div>
+				
+							<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+							<button type="button" class="btn btn-primary " ng-click="estudios.agendarEstudio()">Si agendado</button>
+							<button type="button" class="btn btn-warning " ng-click="estudios.reagendarEstudio()">Reagendar para despúes</button>
+							</form>
 
-            <div class="row">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary " ng-click="estudios.agendarEstudio()">Si agendado</button>
-                <button type="button" class="btn btn-warning " ng-click="estudios.reagendarEstudio()">Reagendar para despúes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- modal_dependiente -->
+<!-- modal_si_agendo -->
 <div class="modal fade ativa-scroll" id="modal_agendar_entrevista" role="dialog">
     <div class="modal-dialog modal-lg">
         <!-- Modal content-->
         <div class="modal-content pagination-centered text-center">
-            <div class="modal-header">
-                <button type="button" class="close cros_close_modal" data-dismiss="modal">&times;</button>
-                <h5>Datos entrevista:</h5>
-            </div>
             <div class="modal-body">
-                <div class="row">
-                    
-                        <div class="col-md-3">
-                            <div class="form-group label-floating">
-                                    <label class="control-label">Fecha de entrevista:</label>
-                                    <input type="date" class="form-control" ng-model="estudios.entrevista.fecha_entrevista">
+<div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header" data-background-color="orange">
+                               <button type="button" class="close cros_close_modal" data-dismiss="modal">&times;</button>
+                
+				<h5>Datos entrevista:</h5>
+				<p class="category">Capture la información solicitada</p>
+                
                             </div>
+                            <hr>
+                            <div class="card-content">
+							<form>
+				<div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group label-floating">
+                                <label class="control-label">Fecha de entrevista:</label>
+                                <input type="date" class="form-control" ng-model="estudios.entrevista.fecha_entrevista">
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group label-floating">
-                                    <label class="control-label">Comentarios:</label>
-                                    <textarea rows="6"  class="form-control" ng-model="estudios.entrevista.comentarios"> </textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group label-floating">
+                                <label class="control-label">Comentarios:</label>
+                                <textarea rows="6"  class="form-control" ng-model="estudios.entrevista.comentarios"> </textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="clearfix"></div>
+
+                <button type="button" class="btn btn-default" ng-click="estudios.cancelar()">Cancelar</button>
+                <button type="button" class="btn btn-primary " ng-click="estudios.agendarSave()">Agendar</button>
+							</form>
+
                             </div>
                         </div>
                     </div>
-                
-                    <div class="clearfix"></div>
-            </div>
-
-            <div class="row">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary " ng-click="estudios.agendarSave()">Agendar</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-<!-- modal_dependiente -->
+<!-- modal_reagendar -->
 <div class="modal fade ativa-scroll" id="modal_reagendar_entrevista" role="dialog">
     <div class="modal-dialog modal-lg">
         <!-- Modal content-->
         <div class="modal-content pagination-centered text-center">
-            <div class="modal-header">
-                <button type="button" class="close cros_close_modal" data-dismiss="modal">&times;</button>
-                <h5>Datos entrevista (reagendar):</h5>
-            </div>
             <div class="modal-body">
+<div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header" data-background-color="orange">
+                               <button type="button" class="close cros_close_modal" data-dismiss="modal">&times;</button>
+                
+				<h5>Datos entrevista (reagendar):</h5>
+				<p class="category">Capture la información solicitada</p>
+                
+                            </div>
+                            <hr>
+                            <div class="card-content">
+							<form>
+				<div class="modal-body">
                 <div class="row">
                         <div class="col-md-3">
                             <div class="form-group label-floating">
@@ -431,26 +467,41 @@
                 
                     <div class="clearfix"></div>
             </div>
+            
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary " ng-click="estudios.reagendarEstudioSave()">Reagendar</button>
+							</form>
 
-            <div class="row">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary " ng-click="estudios.reagendarEstudioSave()">Reagendar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 
-<!-- modal_dependiente -->
+<!-- modal_cancelar_entrevista -->
 <div class="modal fade ativa-scroll" id="modal_cancelar_entrevista" role="dialog">
-    <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-lg">
         <!-- Modal content-->
         <div class="modal-content pagination-centered text-center">
-            <div class="modal-header">
-                <button type="button" class="close cros_close_modal" data-dismiss="modal">&times;</button>
-                <h5>Cancelar entrevista:</h5>
-            </div>
             <div class="modal-body">
+<div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header" data-background-color="orange">
+                               <button type="button" class="close cros_close_modal" data-dismiss="modal">&times;</button>
+                
+				<h5>Cancelar entrevista:</h5>
+				<p class="category">Capture la información solicitada</p>
+                
+                            </div>
+                            <hr>
+                            <div class="card-content">
+							<form>
+				<div class="modal-body">
                 <div class="row">
                         <div class="col-md-3">
                             <div class="form-group label-floating">
@@ -469,9 +520,14 @@
                     <div class="clearfix"></div>
             </div>
 
-            <div class="row">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary " ng-click="estudios.cancelarCitaSave()">Cancelar entrevista</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary " ng-click="estudios.cancelarCitaSave()">Cancelar entrevista</button>
+							</form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -29,8 +29,14 @@
         var scope = this;  
         
         if(EstudiosService.idEstudioSeleccionado===0){
-            EstudiosService.idEstudioSeleccionado=1;
+            EstudiosService.idEstudioSeleccionado=10;
         }
+        
+        var id=0;
+        if($rootScope.tipoUsuario==='2'){
+            id=$rootScope.institucion.id_institucion;
+        }
+        
         if(EstudiosService.idEstudioSeleccionado===0){
             error();
         }
@@ -38,6 +44,11 @@
             mensaje('error', 'Session', 'Tu session ha expirado.');
             location.href='#/login';
         }
+        
+        if($rootScope.tipoUsuario==='2'&&id===undefined){
+            error();
+        }
+        
         
         scope.suma_col=0.00;
         scope.suma_apoyo_soli=0;
@@ -78,7 +89,7 @@
         
         scope.resta_porcentaje=0;
         
-        
+        scope.total_ingresos2=0;
         hide();
         
         scope.calcula=calcula;
@@ -130,24 +141,22 @@
         scope.egresos.total_egresos=0;
         scope.egresos.diferencia_egre_ingre=0;
         
-        var id=0;
-        if($rootScope.tipoUsuario==='2'){
-            id=$rootScope.institucion.id_institucion;
-        }
+        
         load();
        
         function sumaCol(){
-            
             for(var i=0; i<scope.estudio.hijos.length; i++){
                 scope.suma_col+=parseFloat(scope.estudio.hijos[i].colegiatura_pasado);
+                console.log('Colegiatura: '+parseFloat(scope.estudio.hijos[i].colegiatura_pasado));
                 scope.suma_apoyo_soli+=parseFloat(scope.estudio.hijos[i].apoyo_solicitado);
+                console.log('Apoyo sol: '+parseFloat(scope.estudio.hijos[i].apoyo_solicitado));
             }
-            
+            /*
             for(var i=0; i<scope.estudio.hijos.length; i++){
                 var x=parseFloat(scope.estudio.hijos[i].colegiatura_pasado)/scope.suma_col;
                 console.log(x);
             }
-            
+            */
         }
         
         
@@ -191,6 +200,11 @@
                                 scope.estudio.dueno_papa=scope.estudio.padres[i].dueno;
                                 scope.estudio.antiguedad_papa=scope.estudio.padres[i].antiguedad;
                                 scope.estudio.sueldo_papa=scope.estudio.padres[i].sueldo_neto;
+                                if(scope.estudio.padres[i].finado==='1'){
+                                    scope.estudio.finado_papa=true;
+                                }else{
+                                    scope.estudio.finado_papa=false;
+                                }
                             }
                             if(scope.estudio.padres[i].tipo_persona==='MAMA'){
                                 scope.estudio.id_mama=scope.estudio.padres[i].id_padre_familia;
@@ -209,6 +223,11 @@
                                 scope.estudio.dueno_mama=scope.estudio.padres[i].dueno;
                                 scope.estudio.antiguedad_mama=scope.estudio.padres[i].antiguedad;
                                 scope.estudio.sueldo_mama=scope.estudio.padres[i].sueldo_neto;
+                                if(scope.estudio.padres[i].finado==='1'){
+                                    scope.estudio.finado_mama=true;
+                                }else{
+                                    scope.estudio.finado_mama=false;
+                                }
                             }
                         }
 
@@ -232,14 +251,13 @@
                         scope.egresos=response.egresos[0];
                         parseEgresos();
                     }
-                    if(response.documentos.length>0){
-                        setBool();		
-                    }
+                    setBool();
                     calculaEgresos();
                     
                 },
-                function(error){
-                    console.log('Error al obtener el detalle: '+error);
+                function(error1){
+                    console.log('Error al obtener el detalle: '+error1);
+                    error();
                 }
             );
         }//end load
@@ -254,32 +272,38 @@
         function calcula(){
             var suma=0;
             
-            suma+=scope.ingresos.ingreso_otros_miembros;
+            /*suma+=scope.ingresos.ingreso_otros_miembros;
             suma+=scope.ingresos.ingreso_renta;
             suma+=scope.ingresos.ingreso_honorarios;
             suma+=scope.ingresos.ingreso_inversiones;
             suma+=scope.ingresos.ingreso_pensiones;
             suma+=scope.ingresos.ingreso_ventas;
             suma+=scope.ingresos.otros_ingresos;
-            scope.ingresos.total_otros_ingresos=suma;
+            scope.ingresos.total_otros_ingresos=suma;*/
             
+            
+            /*scope.total_ingresos2=scope.ingresos.sueldo_papa+scope.ingresos.sueldo_mama+scope.ingresos.otros_ingresos;
             scope.ingresos.total_ingresos=scope.ingresos.sueldo_papa+scope.ingresos.sueldo_mama+scope.ingresos.total_otros_ingresos;
             var n=scope.estudio.dependientes.length+scope.estudio.hijos.length+2;
+            scope.ingresos.ingreso_percapita=scope.ingresos.total_ingresos/n;*/
+            
+            var n=scope.estudio.dependientes.length+scope.estudio.hijos.length;
+            scope.total_ingresos2=scope.ingresos.total_otros_ingresos;
+            if(scope.estudio.finado_papa===false){
+                scope.total_ingresos2+=scope.ingresos.sueldo_papa;
+                n++;
+            }else{
+                scope.ingresos.sueldo_papa=0;
+            }
+            
+            if(scope.estudio.finado_mama===false){
+                console.log('Entro mama');
+                scope.total_ingresos2+=scope.ingresos.sueldo_mama;
+                n++;
+            }else{
+                scope.ingresos.sueldo_mama=0;
+            }
             scope.ingresos.ingreso_percapita=scope.ingresos.total_ingresos/n;
-            
-            
-            if(scope.ingresos.ingreso_percapita>15000){
-                scope.ingresos.clasificacion='A';
-            }
-            if(scope.ingresos.ingreso_percapita>8000&&scope.ingresos.ingreso_percapita<14999){
-                scope.ingresos.clasificacion='B';
-            }
-            if(scope.ingresos.ingreso_percapita<8000){
-                scope.ingresos.clasificacion='C';
-            }
-            if(scope.ingresos.ingreso_percapita<8000){
-                scope.ingresos.clasificacion='C-';
-            }
             
         }
         
@@ -341,10 +365,11 @@
             scope.egresos.total_egresos+=parseFloat(scope.egresos.pago_tdc_mensual);
             scope.egresos.total_egresos+=parseFloat(scope.egresos.vestido_calzado);
             scope.egresos.total_egresos+=parseFloat(scope.egresos.medico_medicinas);
+            scope.egresos.diversion_entretenimiento+=scope.egresos.vacaciones;
             scope.egresos.total_egresos+=parseFloat(scope.egresos.diversion_entretenimiento);
             scope.egresos.total_egresos+=parseFloat(scope.egresos.clubes_deportivos);
             scope.egresos.total_egresos+=parseFloat(scope.egresos.seguros);
-            scope.egresos.total_egresos+=parseFloat(scope.egresos.vacaciones);
+            //scope.egresos.total_egresos+=parseFloat(scope.egresos.vacaciones);
             scope.egresos.total_egresos+=parseFloat(scope.egresos.otros2);
             scope.egresos.total_egresos+=parseFloat(scope.egresos.total_servicios);
             
@@ -371,8 +396,12 @@
             
             scope.diferencia_2=scope.ingresos.total_ingresos-scope.total_2;
             
-            scope.porcentaje=(scope.suma_col/scope.estudio.ingresos[0].total_ingresos)*100;
-            if(scope.porcentaje>=33){
+            //scope.porcentaje=(scope.suma_col/scope.estudio.ingresos[0].total_ingresos)*100;
+            var sueldo=scope.total_ingresos2;
+            console.log('sueldo'+scope.total_ingresos2);
+            scope.porcentaje=(scope.suma_col/sueldo)*100;
+            console.log('por: '+scope.porcentaje);
+            if(scope.porcentaje>=30){
                 scope.factor1=3.33;
             }else{
                 if(scope.porcentaje<=10){
@@ -383,71 +412,70 @@
             }
             console.log('Factor1: '+scope.factor1);
             
+            console.log(scope.ingresos.clasificacion);
             if(scope.ingresos.clasificacion==='C'){
                 scope.factor2=3.33;
+            }else if(scope.ingresos.clasificacion==='A'){
+                scope.factor2=1.11;
             }else{
-                if(scope.ingresos.clasificacion==='A'){
-                    scope.factor2=1.11;
-                }else{
-                    scope.factor2=2.22;
-                }
+                scope.factor2=2.22;
             }
-            
             console.log('Factor2: '+scope.factor2);
             
-            if(scope.estudio.hijos.length>=5){
+            var hijos=parseInt(scope.estudio.hijos.length);
+            console.log('hijos: '+scope.estudio.hijos.length);
+            if(hijos>=5){
                 scope.factor3=3.33;
+            }else if(hijos<=2){
+                scope.factor3=1.11;
             }else{
-                if(scope.ingresos.clasificacion<=2){
-                    scope.factor3=1.11;
-                }else{
-                    scope.factor3=2.22;
-                }
+                scope.factor3=2.22;
             }
-            
             console.log('Factor3: '+scope.factor3);
-            
             scope.necesidad=scope.factor1+scope.factor2+scope.factor3;
             console.log('Necesidad: '+scope.necesidad);
             
+            console.log('-----------------------------');
+            console.log(scope.evaluacion.apreciacion);
             if(scope.evaluacion.apreciacion==='NADA CONFIABLE'){
                 scope.factor1_1=0;
+            }else if(scope.evaluacion.apreciacion==='POCO CONFIABLE'){
+                scope.factor1_1=2.22;
+            }else{
+                scope.factor1_1=3.33;
             }
-                if(scope.evaluacion.apreciacion==='POCO CONFIABLE'){
-                    scope.factor1_1=2.22;
-                }else{
-                    scope.factor1_1=3.33;
-                }
-            
-            
             console.log('factor 1_1: '+scope.factor1_1);
-            console.log(scope.evaluacion.discrepancia);
             
+            console.log('-----------------------------');
+            console.log(scope.evaluacion.discrepancia);
             if(scope.evaluacion.discrepancia==='NINGUNA'){
                 scope.factor2_2=3.33;
+            }else if(scope.evaluacion.discrepancia==='GRAVE'){
+                scope.factor2_2=1.11;
             }else{
-                if(scope.evaluacion.discrepancia==='GRAVE'){
-                    scope.factor2_2=1.11;
-                }else{
-                    scope.factor2_2=2.22;
-                }
+                scope.factor2_2=2.22;
             }
             console.log('factor 2_2: '+scope.factor2_2);
+            console.log('-----------------------------');
+            
+            console.log('Suma docs: '+scope.suma_docs);
             scope.factor3_3=(scope.suma_docs*3.3)/13;
             console.log('factor 3_3: '+scope.factor3_3);
             
             scope.confiabilidad=scope.factor1_1+scope.factor2_2+scope.factor3_3;
-         
+            console.log(scope.confiabilidad);
             scope.calif_globlal=(scope.necesidad*.8)+(scope.confiabilidad*.2);
             
-            scope.resta_porcentaje=(scope.suma_col/scope.estudio.ingresos[0].total_ingresos);
+            //scope.resta_porcentaje=(scope.suma_col/scope.estudio.ingresos[0].total_ingresos);
+            scope.resta_porcentaje=(scope.suma_col/scope.total_ingresos2);
             scope.resta_porcentaje-=.20;
             //scope.resta_porcentaje=Math.ceil(scope.resta_porcentaje);;
             console.log('resta porcen: '+scope.resta_porcentaje);
             
             console.log('ingre: '+scope.estudio.ingresos[0].total_ingresos);
-            scope.factorN=scope.estudio.ingresos[0].total_ingresos*scope.resta_porcentaje;
-            scope.factorN=Math.ceil(scope.factorN);
+            //scope.factorN=scope.estudio.ingresos[0].total_ingresos*scope.resta_porcentaje;
+            scope.factorN=scope.total_ingresos2*scope.resta_porcentaje;
+            //scope.factorN=Math.ceil(scope.factorN);
             console.log('total n: '+scope.factorN);
             scope.suma_apoyo_suge=0;
             for (var i = 0; i < scope.estudio.hijos.length; i++) {
@@ -457,140 +485,122 @@
                 scope.suma_apoyo_suge+=scope.estudio.hijos[i].apoyo_sugerido;
             }
             
-            
         }
         
         function setBool(){
+            console.log('000000000000000000000000000000000000');
             scope.suma_docs=0;
+            console.log(scope.documentos.id_documento_familia);
+            if(scope.documentos.id_documento_familia===undefined||scope.documentos.id_documento_familia===null){
+                scope.suma_docs=13*1.01;
+            }
             if(scope.documentos.carta_no_adeudo==='1'){
                scope.documentos.carta_no_adeudo=true;
             }
-            
             if(scope.documentos.carta_no_adeudo==='0'){
                 scope.documentos.carta_no_adeudo=false;
                 scope.suma_docs+=1.01;
-                console.log('sumo 1');
             }
             
             if(scope.documentos.firma_reglamento==='1'){
                 scope.documentos.firma_reglamento=true;
-                
             }
             if(scope.documentos.firma_reglamento==='0'){
                 scope.documentos.firma_reglamento=false;
                 scope.suma_docs+=1.01;
-                console.log('sumo 2');
             }
             
             if(scope.documentos.nomina_carta==='1'){
                 scope.documentos.nomina_carta=true;
-                
             }
             if(scope.documentos.nomina_carta==='0'){
                 scope.documentos.nomina_carta=false;
                 scope.suma_docs+=1.01;
-                console.log('sumo 3');
             }
             
             if(scope.documentos.poliza==='1'){
                 scope.documentos.poliza=true;
-                
             }
             if(scope.documentos.poliza==='0'){
                 scope.documentos.poliza=false;
                 scope.suma_docs+=1.01;
-                console.log('sumo 4');
             }
             
             if(scope.documentos.estado_cuenta==='1'){
                 scope.documentos.estado_cuenta=true;
-                
             }
             if(scope.documentos.estado_cuenta==='0'){
                 scope.documentos.estado_cuenta=false;
                 scope.suma_docs+=1.01;
-                console.log('sumo 5');
             }
             
             if(scope.documentos.recibos_renta==='1'){
                 scope.documentos.recibos_renta=true;
-                
             }
             if(scope.documentos.recibos_renta==='0'){
                 scope.documentos.recibos_renta=false;
                 scope.suma_docs+=1.01;
-                console.log('sumo 6');
             }
             
             if(scope.documentos.facturas_hospital==='1'){
                 scope.documentos.facturas_hospital=true;
-                
             }
             if(scope.documentos.facturas_hospital==='0'){
                 scope.documentos.facturas_hospital=false;
                 scope.suma_docs+=1.01;
-                console.log('sumo 7');
             }
            
-             if(scope.documentos.comprobante_finiquito==='1'){
+            if(scope.documentos.comprobante_finiquito==='1'){
                 scope.documentos.comprobante_finiquito=true;
-                
             }
             if(scope.documentos.comprobante_finiquito==='0'){
                 scope.documentos.comprobante_finiquito=false;
                 scope.suma_docs+=1.01;
-                console.log('sumo 8');
             }
             
             if(scope.documentos.demandas_judiciales==='1'){
                 scope.documentos.demandas_judiciales=true;
-                
             }
             if(scope.documentos.demandas_judiciales==='0'){
                 scope.documentos.demandas_judiciales=false;
-                //scope.suma_docs+=1.01;
-                console.log('sumo 9');
+                scope.suma_docs+=1.01;
             }
 
             if(scope.documentos.servicios==='1'){
                 scope.documentos.servicios=true;
-                
             }
             if(scope.documentos.servicios==='0'){
                 scope.documentos.servicios=false;
                 scope.suma_docs+=1.01;
-                console.log('sumo 10');
             }
             
             if(scope.documentos.pagos_credito_hipo==='1'){
                 scope.documentos.pagos_credito_hipo=true;
-                scope.suma_docs+=1.01;
+                console.log('Falto pagos credi');
             }
             if(scope.documentos.pagos_credito_hipo==='0'){
                 scope.documentos.pagos_credito_hipo=false;
                 scope.suma_docs+=1.01;
-                console.log('sumo 11');
             }
             
             if(scope.documentos.pagos_credito_auto==='1'){
                 scope.documentos.pagos_credito_auto=true;
-                //scope.suma_docs+=1.01;
             }
             if(scope.documentos.pagos_credito_auto==='0'){
                 scope.documentos.pagos_credito_auto=false;
                 scope.suma_docs+=1.01;
-                console.log('sumo 12');
             }
             
             if(scope.documentos.otros==='1'){
                 scope.documentos.otros=true;
+                console.log('Falto otros');
             }
             if(scope.documentos.otros==='0'){
                 scope.documentos.otros=false;
                 scope.suma_docs+=1.01;
-                console.log('sumo 13');
             }
         }
+        
         function parseIngresos(){
             scope.ingresos.ingreso_otros_miembros=parseFloat(scope.ingresos.ingreso_otros_miembros);
             scope.ingresos.ingreso_renta=parseFloat(scope.ingresos.ingreso_renta);
@@ -604,11 +614,9 @@
             scope.ingresos.sueldo_mama=parseFloat(scope.ingresos.sueldo_mama);
             scope.ingresos.ingreso_percapita=parseFloat(scope.ingresos.ingreso_percapita);
             scope.ingresos.total_ingresos=parseFloat(scope.ingresos.total_ingresos);
-
         }
         
         function parseEgresos(){
-            console.log(scope.egresos);
             scope.egresos.alimentacion_despensa=parseFloat(scope.egresos.alimentacion_despensa);
             scope.egresos.renta=parseFloat(scope.egresos.renta);
             scope.egresos.credito_hipotecario=parseFloat(scope.egresos.credito_hipotecario);
@@ -637,6 +645,7 @@
             scope.egresos.total_egresos=parseFloat(scope.egresos.total_egresos);
             scope.egresos.diferencia_egre_ingre=parseFloat(scope.egresos.diferencia_egre_ingre);
         }
+        
     };//end controller
 
 })();

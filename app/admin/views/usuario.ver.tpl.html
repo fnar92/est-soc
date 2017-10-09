@@ -18,6 +18,7 @@
                             <th class="text-center">Nombre</th>
                             <th class="text-center">Email</th>
                             <th class="text-center">Rol</th>
+                            <th class="text-center">Estatus</th>
                             <th class="text-center">Opciones</th>
                         </thead>
                         <tbody>
@@ -28,12 +29,16 @@
                                     <span ng-if="u.rol==='1'" class="label label-success">{{u.rol | tipoAdmin }}</span>
                                     <span ng-if="u.rol==='2'" class="label label-info">{{u.rol | tipoAdmin }}</span>
                                 </td>
+                                <td> 
+                                    <span ng-if="u.estatus==='1'" class="label label-warning">{{u.estatus | estatusUsuario }}</span>
+                                    <span ng-if="u.estatus==='0'" class="label label-default">{{u.estatus | estatusUsuario }}</span>
+                                </td>
                                 <td>
                                     
                                     <button type="button" class="btn btn-primary btn-sm" ng-click="obj.verActualizarUsuario(u)">
                                         <span class="glyphicon glyphicon-eye-open"></span>
                                     </button>
-                                    <button type="button" class="btn btn-danger btn-sm" ng-disabled="u.id_usuario===idUser" ng-click="obj.eliminarUsuario(u)">
+                                    <button type="button" class="btn btn-danger btn-sm" ng-disabled="u.id_usuario===user.id_usuario" ng-click="obj.eliminarUsuario(u)">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </button>
                                     
@@ -54,7 +59,7 @@
 
 
 
-    <!-- modal_comentario-->
+    <!-- modal add user-->
     <div class="modal fade ativa-scroll" id="modal_agregar_usuario" role="dialog">
         <div class="modal-dialog modal-lg">
             <!-- Modal content-->
@@ -72,23 +77,23 @@
                                         </div>
                                         <hr>
                                         <div class="card-content">
-                                            <form>
+                                            <form name="myForm">
                                                 <div class="row">
                                                     <div class="col-md-4">
-                                                        <div class="form-group label-floating">
+                                                        <div class="form-group ">
                                                                 <label class="control-label">Nombre:</label>
                                                                 <input type="text" class="form-control" ng-model="obj.usuario.nombre">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <div class="form-group label-floating">
+                                                        <div class="form-group ">
                                                                 <label class="control-label">Apellido paterno:</label>
                                                                 <input type="text" class="form-control" ng-model="obj.usuario.apellido_paterno">
                                                         </div>
                                                     </div>
 
                                                     <div class="col-md-4">
-                                                        <div class="form-group label-floating">
+                                                        <div class="form-group ">
                                                                 <label class="control-label">Apellido materno:</label>
                                                                 <input type="text" class="form-control" ng-model="obj.usuario.apellido_materno" >
                                                         </div>
@@ -97,13 +102,17 @@
 
                                                 <div class="row">
                                                     <div class="col-md-4">
-                                                        <div class="form-group label-floating">
+                                                        <div class="form-group ">
                                                                 <label class="control-label">Username: </label>
-                                                                <input type="text" class="form-control" ng-model="obj.usuario.username" ng-disabled="obj.updateUsuario">
+                                                                <input type="text" class="form-control" ng-model="obj.usuario.username"
+                                                                       required ng-change="obj.checkUser()" ng-disabled="obj.updateUsuario">
+                                                            <div ng-show="obj.checkingUser">checking....</div>
+                                                            <div ng-show="obj.validUser" class="label label-success">Nombre de usuario disponible</div>
+                                                            <div ng-show="obj.NotvalidUser" class="label label-danger">Nombre de usuario NO disponible</div>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <div class="form-group label-floating">
+                                                        <div class="form-group ">
                                                                 <label class="control-label">Email:</label>
                                                                 <input type="text" class="form-control" ng-model="obj.usuario.email">
                                                         </div>
@@ -123,7 +132,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="row">
+                                                <div class="row" ng-show="obj.nuevoUsuario">
                                                 <span>* Asegurese de verificar los datos capturados, ya que el sistema notificara al nuevo usuario atravez de un correo 
                                                     electrónico en el cual también estaran contenidos los datos de acceso al sistema.</span>
                                                 </div>

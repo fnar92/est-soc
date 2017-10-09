@@ -25,14 +25,26 @@
         show();
         //Check session
         AuthenticationService.isAuth();
+        UserService.loadUser();
         
         var scope = this;  
-        if(EstudiosService.idEstudioSeleccionado===0){
-            EstudiosService.idEstudioSeleccionado=1;
+        var id=0;
+        if($rootScope.tipoUsuario==='2'){
+            id=$rootScope.institucion.id_institucion;
         }
+        
+        if(EstudiosService.idEstudioSeleccionado===0){
+            EstudiosService.idEstudioSeleccionado=10;
+        }
+        
         if(EstudiosService.idEstudioSeleccionado===0){
             error();
         }
+        
+        if($rootScope.tipoUsuario==='2'&&id===undefined){
+            error();
+        }
+        
         if (!$localStorage.globals||!$rootScope.isAuth) {
             mensaje('error', 'Session', 'Tu session ha expirado.');
             location.href='#/login';
@@ -46,6 +58,7 @@
         scope.propiedad={};
         scope.comentario={};
         scope.listaEmpleado=[];
+        scope.listaEstatus=[];
         scope.empleadoAsignado={};
         scope.ingresos={};
         scope.egresos={};
@@ -93,6 +106,9 @@
         scope.asignarShow=asignarShow;
         scope.asignarEmpleado=asignarEmpleado;
         
+        scope.cambiarEstatusView=cambiarEstatusView;
+        scope.cambiarEstatus=cambiarEstatus;
+        
         /*ingresos*/
         scope.guardarIngresos=guardarIngresos;
         
@@ -122,6 +138,13 @@
         scope.calculaEgresosServicios=calculaEgresosServicios;
         scope.calculaEgresosTotal=calculaEgresosTotal;
         
+        scope.updateCals=function(){
+            scope.calcula();
+            scope.calculaEgresos();
+            scope.calculaEgresosServicios();
+            scope.calculaEgresosTotal();
+        };
+        scope.estudio.total_depen=0;
         scope.ingresos.ingreso_otros_miembros=0;
         scope.ingresos.ingreso_renta=0;
         scope.ingresos.ingreso_honorarios=0;
@@ -163,10 +186,6 @@
         scope.egresos.total_egresos=0;
         scope.egresos.diferencia_egre_ingre=0;
         
-        var id=0;
-        if($rootScope.tipoUsuario==='2'){
-            id=$rootScope.institucion.id_institucion;
-        }
         load();
         
         function verReporte(){
@@ -257,11 +276,72 @@
             console.log(f+' -> '+x[2]+'/'+x[1]+'/'+x[0]);
             return x[2]+'/'+x[1]+'/'+x[0];
         }
+        
+        function setPapas(){
+            if(scope.estudio.padres.length>0){
+                for(var i=0; i<scope.estudio.padres.length; i++){
+                    if(scope.estudio.padres[i].tipo_persona==='PAPA'){
+                        scope.estudio.id_papa=scope.estudio.padres[i].id_padre_familia;
+                        scope.estudio.nombre_papa=scope.estudio.padres[i].nombre;
+                        scope.estudio.apellido_paterno_papa=scope.estudio.padres[i].apellido_paterno;
+                        scope.estudio.apellido_materno_papa=scope.estudio.padres[i].apellido_materno;
+                        scope.estudio.fecha_nacimiento_papa=fecha(scope.estudio.padres[i].fecha_nacimiento);
+                        scope.estudio.correo_papa=scope.estudio.padres[i].correo;
+                        scope.estudio.rfc_papa=scope.estudio.padres[i].rfc;
+                        scope.estudio.celular_papa=scope.estudio.padres[i].celular;
+                        scope.estudio.profesion_papa=scope.estudio.padres[i].profesion;
+                        scope.estudio.ocupacion_papa=scope.estudio.padres[i].ocupacion;
+                        scope.estudio.empresa_papa=scope.estudio.padres[i].empresa;
+                        scope.estudio.puesto_papa=scope.estudio.padres[i].puesto;
+                        scope.estudio.giro_papa=scope.estudio.padres[i].giro;
+                        scope.estudio.dueno_papa=scope.estudio.padres[i].dueno;
+                        scope.estudio.antiguedad_papa=scope.estudio.padres[i].antiguedad;
+                        scope.estudio.sueldo_papa=scope.estudio.padres[i].sueldo_neto;
+                        if(scope.estudio.padres[i].finado==='1'){
+                            scope.estudio.finado_papa=true;
+                        }else{
+                            scope.estudio.finado_papa=false;
+                        }
+                    }
+                    if(scope.estudio.padres[i].tipo_persona==='MAMA'){
+                        scope.estudio.id_mama=scope.estudio.padres[i].id_padre_familia;
+                        scope.estudio.nombre_mama=scope.estudio.padres[i].nombre;
+                        scope.estudio.apellido_paterno_mama=scope.estudio.padres[i].apellido_paterno;
+                        scope.estudio.apellido_materno_mama=scope.estudio.padres[i].apellido_materno;
+                        scope.estudio.fecha_nacimiento_mama=fecha(scope.estudio.padres[i].fecha_nacimiento);
+                        scope.estudio.correo_mama=scope.estudio.padres[i].correo;
+                        scope.estudio.rfc_mama=scope.estudio.padres[i].rfc;
+                        scope.estudio.celular_mama=scope.estudio.padres[i].celular;
+                        scope.estudio.profesion_mama=scope.estudio.padres[i].profesion;
+                        scope.estudio.ocupacion_mama=scope.estudio.padres[i].ocupacion;
+                        scope.estudio.empresa_mama=scope.estudio.padres[i].empresa;
+                        scope.estudio.puesto_mama=scope.estudio.padres[i].puesto;
+                        scope.estudio.giro_mama=scope.estudio.padres[i].giro;
+                        scope.estudio.dueno_mama=scope.estudio.padres[i].dueno;
+                        scope.estudio.antiguedad_mama=scope.estudio.padres[i].antiguedad;
+                        scope.estudio.sueldo_mama=scope.estudio.padres[i].sueldo_neto;
+                        if(scope.estudio.padres[i].finado==='1'){
+                            scope.estudio.finado_mama=true;
+                        }else{
+                            scope.estudio.finado_mama=false;
+                        }
+                    }
+                }
+            }
+        }
         function load(){
             EstudiosService.obtenerDetalleEstudio(EstudiosService.idEstudioSeleccionado, id).then(
                 function(response){
+                    EstudiosService.obtenerEstatusCat().then(
+                        function(response){
+                            scope.listaEstatus=response.data;
+                        },
+                        function(err){
+                                console.log('Error al obtener cat estatus'+err);
+                        }
+                    );
                     scope.estudio=response.data;
-
+                    
                     if(response.data.evaluacion.length>0){
                         scope.evaluacion=scope.estudio.evaluacion[0];
                     }
@@ -272,59 +352,14 @@
                     
                     scope.estudio.fecha_nacimiento_papa=fecha(scope.estudio.fecha_nacimiento_papa);
                     scope.estudio.fecha_nacimiento_mama=fecha(scope.estudio.fecha_nacimiento_mama);
-                    if(scope.estudio.padres.length>0){
-
-                        for(var i=0; i<scope.estudio.padres.length; i++){
-                            if(scope.estudio.padres[i].tipo_persona==='PAPA'){
-                                scope.estudio.id_papa=scope.estudio.padres[i].id_padre_familia;
-                                scope.estudio.nombre_papa=scope.estudio.padres[i].nombre;
-                                scope.estudio.apellido_paterno_papa=scope.estudio.padres[i].apellido_paterno;
-                                scope.estudio.apellido_materno_papa=scope.estudio.padres[i].apellido_materno;
-                                //scope.estudio.edad_papa=scope.estudio.padres[i].edad;
-                                scope.estudio.fecha_nacimiento_papa=fecha(scope.estudio.padres[i].fecha_nacimiento);
-                                scope.estudio.correo_papa=scope.estudio.padres[i].correo;
-                                scope.estudio.rfc_papa=scope.estudio.padres[i].rfc;
-                                scope.estudio.celular_papa=scope.estudio.padres[i].celular;
-                                scope.estudio.profesion_papa=scope.estudio.padres[i].profesion;
-                                scope.estudio.ocupacion_papa=scope.estudio.padres[i].ocupacion;
-                                scope.estudio.empresa_papa=scope.estudio.padres[i].empresa;
-                                scope.estudio.puesto_papa=scope.estudio.padres[i].puesto;
-                                scope.estudio.giro_papa=scope.estudio.padres[i].giro;
-                                scope.estudio.dueno_papa=scope.estudio.padres[i].dueno;
-                                scope.estudio.antiguedad_papa=scope.estudio.padres[i].antiguedad;
-                                scope.estudio.sueldo_papa=scope.estudio.padres[i].sueldo_neto;
-                            }
-                            if(scope.estudio.padres[i].tipo_persona==='MAMA'){
-                                scope.estudio.id_mama=scope.estudio.padres[i].id_padre_familia;
-                                scope.estudio.nombre_mama=scope.estudio.padres[i].nombre;
-                                scope.estudio.apellido_paterno_mama=scope.estudio.padres[i].apellido_paterno;
-                                scope.estudio.apellido_materno_mama=scope.estudio.padres[i].apellido_materno;
-                                //scope.estudio.edad_mama=scope.estudio.padres[i].edad;
-                                scope.estudio.fecha_nacimiento_mama=fecha(scope.estudio.padres[i].fecha_nacimiento);
-                                scope.estudio.correo_mama=scope.estudio.padres[i].correo;
-                                scope.estudio.rfc_mama=scope.estudio.padres[i].rfc;
-                                scope.estudio.celular_mama=scope.estudio.padres[i].celular;
-                                scope.estudio.profesion_mama=scope.estudio.padres[i].profesion;
-                                scope.estudio.ocupacion_mama=scope.estudio.padres[i].ocupacion;
-                                scope.estudio.empresa_mama=scope.estudio.padres[i].empresa;
-                                scope.estudio.puesto_mama=scope.estudio.padres[i].puesto;
-                                scope.estudio.giro_mama=scope.estudio.padres[i].giro;
-                                scope.estudio.dueno_mama=scope.estudio.padres[i].dueno;
-                                scope.estudio.antiguedad_mama=scope.estudio.padres[i].antiguedad;
-                                scope.estudio.sueldo_mama=scope.estudio.padres[i].sueldo_neto;
-                            }
-                        }
-
-                    }
-
-
+                    setPapas();
                     scope.estudio.sueldo_papa=parseFloat(scope.estudio.sueldo_papa);
                     scope.estudio.sueldo_mama=parseFloat(scope.estudio.sueldo_mama);
                     scope.ingresos.sueldo_papa=scope.estudio.sueldo_papa;
                     scope.ingresos.sueldo_mama=scope.estudio.sueldo_mama;
 
 
-
+                    scope.updateCals();
                     if(response.data.ingresos.length>0){
                         scope.ingresos=response.data.ingresos[0];
                         parseIngresos();
@@ -349,8 +384,9 @@
                         }
                     );
                 },
-                function(error){
-                    console.log('Error al obtener el detalle: '+error);
+                function(error1){
+                    console.log('Error al obtener el detalle: '+error1);
+                    error();
                 }
             );
         }//end load
@@ -399,7 +435,6 @@
         }
         
         function guardarHijo(){
-            console.log(scope.hijo);
             scope.hijo.id_estudio=scope.estudio.id_estudio;
             scope.hijo.folio_estudio=scope.estudio.folio_estudio;
             if(scope.banderaActualizar){
@@ -634,10 +669,14 @@
             $("#modal_asignar").modal('show');
         };
         
+        function cambiarEstatusView (){
+            $("#modal_cambiar_status").modal('show');
+        };
+        
         function asignarEmpleado (){
             scope.empleadoAsignado.id_estudio=scope.estudio.id_estudio;
             scope.empleadoAsignado.id_usuario_asigno=$localStorage.globals.id;
-            scope.empleadoAsignado.id_estatus_estudio=2;
+            scope.empleadoAsignado.id_estatus_estudio='2';
             console.log(scope.empleadoAsignado);
             confirmaMsj(
                 "Confirmación de solicitud",
@@ -651,6 +690,30 @@
                                 mensaje('success', 'Aviso.', 'Se asigno el estudio al usuario correctamente.');
                                 $("#modal_asignar").modal('hide');
                                 scope.empleadoAsignado={};
+                            },
+                            function(error){
+                                console.log('Error al guardar hijo: '+error);
+                            }
+                        );
+                    },
+                "No",
+                    function(){}
+            );
+        };
+        
+        function cambiarEstatus (){
+            var obj={};
+            obj.id_estudio=scope.estudio.id_estudio;
+            obj.id_estatus_estudio=scope.estudio.id_estatus_estudio;
+            confirmaMsj(
+                "Confirmación de solicitud",
+                "¿Actualizar estatus del estudio?",
+                "Si",
+                    function(){
+                        EstudiosService.actualizarEstudio(obj).then(
+                            function(response){
+                                mensaje('success', 'Aviso.', 'Se cambio el estatus del estudio correctamente.');
+                                $("#modal_cambiar_status").modal('hide');
                             },
                             function(error){
                                 console.log('Error al guardar hijo: '+error);
@@ -692,7 +755,7 @@
                 obj.antiguedad=scope.estudio.antiguedad_papa;
                 obj.sueldo_neto=scope.estudio.sueldo_papa;
                 obj.fecha_nacimiento=scope.estudio.fecha_nacimiento_papa;
-
+                obj.finado=scope.estudio.finado_papa;
                 console.log(obj);
                 confirmaMsj(
                     "Confirmación de solicitud",
@@ -705,45 +768,7 @@
                                 $q.all(promesas).then(
                                     function(response){
                                         scope.estudio.padres=response[0].data;
-                                        console.log(response[0].data);
-                                        for(var i=0; i<scope.estudio.padres.length; i++){
-                                            if(scope.estudio.padres[i].tipo_persona==='PAPA'){
-                                                scope.estudio.id_papa=scope.estudio.padres[i].id_padre_familia;
-                                                scope.estudio.nombre_papa=scope.estudio.padres[i].nombre;
-                                                scope.estudio.apellido_paterno_papa=scope.estudio.padres[i].apellido_paterno;
-                                                scope.estudio.apellido_materno_papa=scope.estudio.padres[i].apellido_materno;
-                                                scope.estudio.edad_papa=scope.estudio.padres[i].edad;
-                                                scope.estudio.correo_papa=scope.estudio.padres[i].correo;
-                                                scope.estudio.rfc_papa=scope.estudio.padres[i].rfc;
-                                                scope.estudio.celular_papa=scope.estudio.padres[i].celular;
-                                                scope.estudio.profesion_papa=scope.estudio.padres[i].profesion;
-                                                scope.estudio.ocupacion_papa=scope.estudio.padres[i].ocupacion;
-                                                scope.estudio.empresa_papa=scope.estudio.padres[i].empresa;
-                                                scope.estudio.puesto_papa=scope.estudio.padres[i].puesto;
-                                                scope.estudio.giro_papa=scope.estudio.padres[i].giro;
-                                                scope.estudio.dueno_papa=scope.estudio.padres[i].dueno;
-                                                scope.estudio.antiguedad_papa=scope.estudio.padres[i].antiguedad;
-                                                scope.estudio.sueldo_papa=scope.estudio.padres[i].sueldo_neto;
-                                            }
-                                            if(scope.estudio.padres[i].tipo_persona==='MAMA'){
-                                                scope.estudio.id_mama=scope.estudio.padres[i].id_padre_familia;
-                                                scope.estudio.nombre_mama=scope.estudio.padres[i].nombre;
-                                                scope.estudio.apellido_paterno_mama=scope.estudio.padres[i].apellido_paterno;
-                                                scope.estudio.apellido_materno_mama=scope.estudio.padres[i].apellido_materno;
-                                                scope.estudio.edad_mama=scope.estudio.padres[i].edad;
-                                                scope.estudio.correo_mama=scope.estudio.padres[i].correo;
-                                                scope.estudio.rfc_mama=scope.estudio.padres[i].rfc;
-                                                scope.estudio.celular_mama=scope.estudio.padres[i].celular;
-                                                scope.estudio.profesion_mama=scope.estudio.padres[i].profesion;
-                                                scope.estudio.ocupacion_mama=scope.estudio.padres[i].ocupacion;
-                                                scope.estudio.empresa_mama=scope.estudio.padres[i].empresa;
-                                                scope.estudio.puesto_mama=scope.estudio.padres[i].puesto;
-                                                scope.estudio.giro_mama=scope.estudio.padres[i].giro;
-                                                scope.estudio.dueno_mama=scope.estudio.padres[i].dueno;
-                                                scope.estudio.antiguedad_mama=scope.estudio.padres[i].antiguedad;
-                                                scope.estudio.sueldo_mama=scope.estudio.padres[i].sueldo_neto;
-                                            }
-                                        }
+                                        setPapas();
                                         scope.estudio.sueldo_papa=parseFloat(scope.estudio.sueldo_papa);
                                         scope.estudio.sueldo_mama=parseFloat(scope.estudio.sueldo_mama);
                                         scope.ingresos.sueldo_papa=scope.estudio.sueldo_papa;
@@ -783,6 +808,7 @@
                     obj.sueldo_neto=scope.estudio.sueldo_papa;
                     obj.tipo_persona='PAPA';
                     obj.fecha_nacimiento=scope.estudio.fecha_nacimiento_papa;
+                    obj.finado=scope.estudio.finado_papa;
                     console.log(obj);
                    
                     confirmaMsj(
@@ -796,45 +822,7 @@
                                     $q.all(promesas).then(
                                         function(response){
                                             scope.estudio.padres=response[0].data;
-                                            console.log(scope.estudio.padres);
-                                            for(var i=0; i<scope.estudio.padres.length; i++){
-                                                if(scope.estudio.padres[i].tipo_persona==='PAPA'){
-                                                    scope.estudio.id_papa=scope.estudio.padres[i].id_padre_familia;
-                                                    scope.estudio.nombre_papa=scope.estudio.padres[i].nombre;
-                                                    scope.estudio.apellido_paterno_papa=scope.estudio.padres[i].apellido_paterno;
-                                                    scope.estudio.apellido_materno_papa=scope.estudio.padres[i].apellido_materno;
-                                                    scope.estudio.edad_papa=scope.estudio.padres[i].edad;
-                                                    scope.estudio.correo_papa=scope.estudio.padres[i].correo;
-                                                    scope.estudio.rfc_papa=scope.estudio.padres[i].rfc;
-                                                    scope.estudio.celular_papa=scope.estudio.padres[i].celular;
-                                                    scope.estudio.profesion_papa=scope.estudio.padres[i].profesion;
-                                                    scope.estudio.ocupacion_papa=scope.estudio.padres[i].ocupacion;
-                                                    scope.estudio.empresa_papa=scope.estudio.padres[i].empresa;
-                                                    scope.estudio.puesto_papa=scope.estudio.padres[i].puesto;
-                                                    scope.estudio.giro_papa=scope.estudio.padres[i].giro;
-                                                    scope.estudio.dueno_papa=scope.estudio.padres[i].dueno;
-                                                    scope.estudio.antiguedad_papa=scope.estudio.padres[i].antiguedad;
-                                                    scope.estudio.sueldo_papa=scope.estudio.padres[i].sueldo_neto;
-                                                }
-                                                if(scope.estudio.padres[i].tipo_persona==='MAMA'){
-                                                    scope.estudio.id_mama=scope.estudio.padres[i].id_padre_familia;
-                                                    scope.estudio.nombre_mama=scope.estudio.padres[i].nombre;
-                                                    scope.estudio.apellido_paterno_mama=scope.estudio.padres[i].apellido_paterno;
-                                                    scope.estudio.apellido_materno_mama=scope.estudio.padres[i].apellido_materno;
-                                                    scope.estudio.edad_mama=scope.estudio.padres[i].edad;
-                                                    scope.estudio.correo_mama=scope.estudio.padres[i].correo;
-                                                    scope.estudio.rfc_mama=scope.estudio.padres[i].rfc;
-                                                    scope.estudio.celular_mama=scope.estudio.padres[i].celular;
-                                                    scope.estudio.profesion_mama=scope.estudio.padres[i].profesion;
-                                                    scope.estudio.ocupacion_mama=scope.estudio.padres[i].ocupacion;
-                                                    scope.estudio.empresa_mama=scope.estudio.padres[i].empresa;
-                                                    scope.estudio.puesto_mama=scope.estudio.padres[i].puesto;
-                                                    scope.estudio.giro_mama=scope.estudio.padres[i].giro;
-                                                    scope.estudio.dueno_mama=scope.estudio.padres[i].dueno;
-                                                    scope.estudio.antiguedad_mama=scope.estudio.padres[i].antiguedad;
-                                                    scope.estudio.sueldo_mama=scope.estudio.padres[i].sueldo_neto;
-                                                }
-                                            }
+                                            setPapas();
                                             scope.estudio.sueldo_papa=parseFloat(scope.estudio.sueldo_papa);
                                             scope.estudio.sueldo_mama=parseFloat(scope.estudio.sueldo_mama);
                                             scope.ingresos.sueldo_papa=scope.estudio.sueldo_papa;
@@ -877,6 +865,7 @@
                 obj.antiguedad=scope.estudio.antiguedad_mama;
                 obj.sueldo_neto=scope.estudio.sueldo_mama;
                 obj.fecha_nacimiento=scope.estudio.fecha_nacimiento_mama;
+                obj.finado=scope.estudio.finado_mama;
                 console.log(obj);
                 confirmaMsj(
                     "Confirmación de solicitud",
@@ -886,44 +875,7 @@
                             FamiliaService.actualizarPapa(obj).then(
                                 function(response){
                                     scope.estudio.padres=response.data;
-                                    for(var i=0; i<scope.estudio.padres.length; i++){
-                                        if(scope.estudio.padres[i].tipo_persona==='PAPA'){
-                                            scope.estudio.id_papa=scope.estudio.padres[i].id_padre_familia;
-                                            scope.estudio.nombre_papa=scope.estudio.padres[i].nombre;
-                                            scope.estudio.apellido_paterno_papa=scope.estudio.padres[i].apellido_paterno;
-                                            scope.estudio.apellido_materno_papa=scope.estudio.padres[i].apellido_materno;
-                                            scope.estudio.edad_papa=scope.estudio.padres[i].edad;
-                                            scope.estudio.correo_papa=scope.estudio.padres[i].correo;
-                                            scope.estudio.rfc_papa=scope.estudio.padres[i].rfc;
-                                            scope.estudio.celular_papa=scope.estudio.padres[i].celular;
-                                            scope.estudio.profesion_papa=scope.estudio.padres[i].profesion;
-                                            scope.estudio.ocupacion_papa=scope.estudio.padres[i].ocupacion;
-                                            scope.estudio.empresa_papa=scope.estudio.padres[i].empresa;
-                                            scope.estudio.puesto_papa=scope.estudio.padres[i].puesto;
-                                            scope.estudio.giro_papa=scope.estudio.padres[i].giro;
-                                            scope.estudio.dueno_papa=scope.estudio.padres[i].dueno;
-                                            scope.estudio.antiguedad_papa=scope.estudio.padres[i].antiguedad;
-                                            scope.estudio.sueldo_papa=scope.estudio.padres[i].sueldo_neto;
-                                        }
-                                        if(scope.estudio.padres[i].tipo_persona==='MAMA'){
-                                            scope.estudio.id_mama=scope.estudio.padres[i].id_padre_familia;
-                                            scope.estudio.nombre_mama=scope.estudio.padres[i].nombre;
-                                            scope.estudio.apellido_paterno_mama=scope.estudio.padres[i].apellido_paterno;
-                                            scope.estudio.apellido_materno_mama=scope.estudio.padres[i].apellido_materno;
-                                            scope.estudio.edad_mama=scope.estudio.padres[i].edad;
-                                            scope.estudio.correo_mama=scope.estudio.padres[i].correo;
-                                            scope.estudio.rfc_mama=scope.estudio.padres[i].rfc;
-                                            scope.estudio.celular_mama=scope.estudio.padres[i].celular;
-                                            scope.estudio.profesion_mama=scope.estudio.padres[i].profesion;
-                                            scope.estudio.ocupacion_mama=scope.estudio.padres[i].ocupacion;
-                                            scope.estudio.empresa_mama=scope.estudio.padres[i].empresa;
-                                            scope.estudio.puesto_mama=scope.estudio.padres[i].puesto;
-                                            scope.estudio.giro_mama=scope.estudio.padres[i].giro;
-                                            scope.estudio.dueno_mama=scope.estudio.padres[i].dueno;
-                                            scope.estudio.antiguedad_mama=scope.estudio.padres[i].antiguedad;
-                                            scope.estudio.sueldo_mama=scope.estudio.padres[i].sueldo_neto;
-                                        }
-                                    }
+                                    setPapas();
                                     scope.estudio.sueldo_papa=parseFloat(scope.estudio.sueldo_papa);
                                     scope.estudio.sueldo_mama=parseFloat(scope.estudio.sueldo_mama);
                                     scope.ingresos.sueldo_papa=scope.estudio.sueldo_papa;
@@ -961,6 +913,7 @@
                 obj.sueldo_neto=scope.estudio.sueldo_mama;
                 obj.tipo_persona='MAMA';
                 obj.fecha_nacimiento=scope.estudio.fecha_nacimiento_mama;
+                obj.finado=scope.estudio.finado_mama;
                 console.log(obj);
                 confirmaMsj(
                     "Confirmación de solicitud",
@@ -970,44 +923,7 @@
                             FamiliaService.guardarPapa(obj).then(
                                 function(response){
                                     scope.estudio.padres=response.data;
-                                    for(var i=0; i<scope.estudio.padres.length; i++){
-                                        if(scope.estudio.padres[i].tipo_persona==='PAPA'){
-                                            scope.estudio.id_papa=scope.estudio.padres[i].id_padre_familia;
-                                            scope.estudio.nombre_papa=scope.estudio.padres[i].nombre;
-                                            scope.estudio.apellido_paterno_papa=scope.estudio.padres[i].apellido_paterno;
-                                            scope.estudio.apellido_materno_papa=scope.estudio.padres[i].apellido_materno;
-                                            scope.estudio.edad_papa=scope.estudio.padres[i].edad;
-                                            scope.estudio.correo_papa=scope.estudio.padres[i].correo;
-                                            scope.estudio.rfc_papa=scope.estudio.padres[i].rfc;
-                                            scope.estudio.celular_papa=scope.estudio.padres[i].celular;
-                                            scope.estudio.profesion_papa=scope.estudio.padres[i].profesion;
-                                            scope.estudio.ocupacion_papa=scope.estudio.padres[i].ocupacion;
-                                            scope.estudio.empresa_papa=scope.estudio.padres[i].empresa;
-                                            scope.estudio.puesto_papa=scope.estudio.padres[i].puesto;
-                                            scope.estudio.giro_papa=scope.estudio.padres[i].giro;
-                                            scope.estudio.dueno_papa=scope.estudio.padres[i].dueno;
-                                            scope.estudio.antiguedad_papa=scope.estudio.padres[i].antiguedad;
-                                            scope.estudio.sueldo_papa=scope.estudio.padres[i].sueldo_neto;
-                                        }
-                                        if(scope.estudio.padres[i].tipo_persona==='MAMA'){
-                                            scope.estudio.id_mama=scope.estudio.padres[i].id_padre_familia;
-                                            scope.estudio.nombre_mama=scope.estudio.padres[i].nombre;
-                                            scope.estudio.apellido_paterno_mama=scope.estudio.padres[i].apellido_paterno;
-                                            scope.estudio.apellido_materno_mama=scope.estudio.padres[i].apellido_materno;
-                                            scope.estudio.edad_mama=scope.estudio.padres[i].edad;
-                                            scope.estudio.correo_mama=scope.estudio.padres[i].correo;
-                                            scope.estudio.rfc_mama=scope.estudio.padres[i].rfc;
-                                            scope.estudio.celular_mama=scope.estudio.padres[i].celular;
-                                            scope.estudio.profesion_mama=scope.estudio.padres[i].profesion;
-                                            scope.estudio.ocupacion_mama=scope.estudio.padres[i].ocupacion;
-                                            scope.estudio.empresa_mama=scope.estudio.padres[i].empresa;
-                                            scope.estudio.puesto_mama=scope.estudio.padres[i].puesto;
-                                            scope.estudio.giro_mama=scope.estudio.padres[i].giro;
-                                            scope.estudio.dueno_mama=scope.estudio.padres[i].dueno;
-                                            scope.estudio.antiguedad_mama=scope.estudio.padres[i].antiguedad;
-                                            scope.estudio.sueldo_mama=scope.estudio.padres[i].sueldo_neto;
-                                        }
-                                    }
+                                    setPapas();
                                     scope.estudio.sueldo_papa=parseFloat(scope.estudio.sueldo_papa);
                                     scope.estudio.sueldo_mama=parseFloat(scope.estudio.sueldo_mama);
                                     scope.ingresos.sueldo_papa=scope.estudio.sueldo_papa;
@@ -1219,7 +1135,7 @@
         
         function guardarIngresos(){
             console.log(scope.ingresos);
-            calcula();
+            scope.calcula();
             scope.ingresos.id_estudio=scope.estudio.id_estudio;
             scope.ingresos.folio_estudio=scope.estudio.folio_estudio;
             scope.ingresos.id_familia=scope.estudio.id_familia;
@@ -1509,7 +1425,6 @@
         
         function calcula(){
             var suma=0;
-            
             suma+=scope.ingresos.ingreso_otros_miembros;
             suma+=scope.ingresos.ingreso_renta;
             suma+=scope.ingresos.ingreso_honorarios;
@@ -1519,22 +1434,31 @@
             suma+=scope.ingresos.otros_ingresos;
             scope.ingresos.total_otros_ingresos=suma;
             
-            scope.ingresos.total_ingresos=scope.ingresos.sueldo_papa+scope.ingresos.sueldo_mama+scope.ingresos.total_otros_ingresos;
-            var n=scope.estudio.dependientes.length+scope.estudio.hijos.length+2;
+            var n=scope.estudio.dependientes.length+scope.estudio.hijos.length;
+            scope.ingresos.total_ingresos=scope.ingresos.total_otros_ingresos;
+            
+            if(scope.estudio.finado_papa===false){
+                scope.ingresos.total_ingresos+=scope.ingresos.sueldo_papa;
+                n++;
+            }else{
+                scope.ingresos.sueldo_papa=0;
+            }
+            
+            if(scope.estudio.finado_mama===false){
+                scope.ingresos.total_ingresos+=scope.ingresos.sueldo_mama;
+                n++;
+            }else{
+                scope.ingresos.sueldo_mama=0;
+            }
+            scope.estudio.total_depen=n;
             scope.ingresos.ingreso_percapita=scope.ingresos.total_ingresos/n;
             
-            
-            if(scope.ingresos.ingreso_percapita>15000){
-                scope.ingresos.clasificacion='A';
-            }
-            if(scope.ingresos.ingreso_percapita>8000&&scope.ingresos.ingreso_percapita<14999){
-                scope.ingresos.clasificacion='B';
-            }
-            if(scope.ingresos.ingreso_percapita<8000){
+            if(scope.ingresos.ingreso_percapita<=10000){
                 scope.ingresos.clasificacion='C';
-            }
-            if(scope.ingresos.ingreso_percapita<8000){
-                scope.ingresos.clasificacion='C-';
+            }else if(scope.ingresos.ingreso_percapita>=20000){
+                scope.ingresos.clasificacion='A';
+            }else{
+                scope.ingresos.clasificacion='B';
             }
             console.log('Calculo ingresos');
         }
@@ -1704,7 +1628,7 @@
         function parseIngresos(){
             scope.ingresos.ingreso_otros_miembros=parseFloat(scope.ingresos.ingreso_otros_miembros);
             scope.ingresos.ingreso_renta=parseFloat(scope.ingresos.ingreso_renta);
-            scope.ingresos.ingreso_honorarios=parseFloat(scope.ingresos.ingreso_inversiones);
+            scope.ingresos.ingreso_honorarios=parseFloat(scope.ingresos.ingreso_honorarios);
             scope.ingresos.ingreso_inversiones=parseFloat(scope.ingresos.ingreso_inversiones);
             scope.ingresos.ingreso_pensiones=parseFloat(scope.ingresos.ingreso_pensiones);
             scope.ingresos.ingreso_ventas=parseFloat(scope.ingresos.ingreso_ventas);

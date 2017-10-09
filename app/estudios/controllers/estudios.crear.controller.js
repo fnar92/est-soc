@@ -16,7 +16,7 @@
             location.href='#/login';
         }
         
-        if($rootScope.tipoUsuario===2){
+        if($rootScope.tipoUsuario==='2'){
             if($rootScope.user.id_institucion===undefined){
                 error();
                 location.href='#/';
@@ -71,6 +71,7 @@
        
         function accionInicial(){
             scope.bandera_menu=false;
+            scope.buscar_familias();
         };
         
         function regresar(){
@@ -81,7 +82,10 @@
         function buscar_familias(){
             scope.bandera_busco=false;
             scope.load=true;
-            EstudiosService.obtenerFamilias($rootScope.user.id_institucion, scope.filtroFamilia)
+            var obj={};
+            obj.id_institucion=$rootScope.user.id_institucion;
+            obj.filtro_familia=scope.filtroFamilia;
+            EstudiosService.obtenerFamilias(obj)
                 .then(
                     function(response){
                         scope.load=false;
@@ -106,10 +110,10 @@
                             var fam=scope.listaFamiliasEncontradas[i];
                             //alert(json());
                             fam.estudio=estudio[xx];
+                            
                             temp.push(fam);
                         }
                         scope.listaFamiliasEncontradas=temp;
-                        console.log(scope.listaFamiliasEncontradas);
                     },
                     function(error){
                         scope.load=false;
@@ -165,6 +169,7 @@
         
         function guardarSolicitudAccion(){
             //Insertar familia nueva
+            window.scrollTo(0, 0); 
             show();
             if(scope.familia.id_familia===undefined){
                 scope.familia.id_institucion= parseInt($rootScope.user.id_institucion);
@@ -176,14 +181,13 @@
                         }else{
                             //Guardar el estudio
                             scope.estudio.id_estatus_estudio=1;//Enviado para solicitud
-                            scope.estudio.id_institucion_solicito= parseInt($rootScope.user.id_institucion);
+                            scope.estudio.id_institucion_solicito=$rootScope.user.id_institucion;
+                            scope.estudio.id_institucion_familia=$rootScope.institucion.id_institucion;
                             scope.estudio.id_familia=response.data.id_familia;
                             scope.estudio.clave_institucion=$rootScope.institucion.clave_institucion;
-                            scope.estudio.institucion_familia=$rootScope.institucion.clave_institucion;
-                            scope.estudio.institucion_solicito=$rootScope.institucion.clave_institucion;
                             scope.estudio.id_usuario_asignado=0;
                             scope.estudio.id_usuario_asigno=0;
-                            scope.estudio.ciclo_escolar=scope.cicloEscolar.ciclo_escolar;
+                            scope.estudio.id_ciclo_escolar=scope.cicloEscolar.id_ciclo_escolar;
                             EstudiosService.guardarEstudio(scope.estudio).then(
                                 function(response){
                                     if(response.data.id_estudio===undefined){
@@ -218,13 +222,13 @@
                 
             }else{
                 if(scope.familia.id_familia!==undefined&&scope.estudio.id_estudio===undefined){
-                    scope.estudio.ciclo_escolar=scope.cicloEscolar.ciclo_escolar;
+                    scope.estudio.id_ciclo_escolar=scope.cicloEscolar.id_ciclo_escolar;
                     scope.estudio.id_estatus_estudio=1;//Enviado para solicitud
                     scope.estudio.id_institucion_solicito= parseInt($rootScope.user.id_institucion);
                     scope.estudio.id_familia=scope.familia.id_familia;
-                    scope.estudio.clave_institucion=scope.familia.clave_institucion;
-                    scope.estudio.institucion_familia=scope.estudio.clave_institucion;
-                    scope.estudio.institucion_solicito=$rootScope.institucion.clave_institucion;
+                    scope.estudio.clave_institucion=$rootScope.institucion.clave_institucion;
+                    scope.estudio.id_institucion_familia=scope.familia.id_institucion;
+                    scope.estudio.id_institucion_solicito=$rootScope.institucion.id_institucion;
                     scope.estudio.id_usuario_asignado=0;
                     scope.estudio.id_usuario_asigno=0;
                     delete scope.familia.clave_institucion;

@@ -163,7 +163,7 @@ form[role=login] {
 			  <img ng-if="ctrlLogin.dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
 			  
 			  <div>
-				<a href="#">Olvide mi contraseña</a>
+                              <a href="#" ng-click="ctrlLogin.recuperarPassword()">Olvide mi contraseña</a>
 			  </div>
 			  
 			</form>
@@ -181,5 +181,47 @@ form[role=login] {
 
 	</div>
             
+            <div class="modal fade ativa-scroll" id="modal_pass" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content pagination-centered text-center">
+                <div class="modal-body">
+
+                    <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header" data-background-color="orange">
+                                            <button type="button" class="close cros_close_modal" data-dismiss="modal">&times;</button>
+                                            <h4 >Recuperar contraseña</h4>
+                                            <p class="category">Completa la información</p>
+                                        </div>
+                                        <hr>
+                                        <div class="card-content">
+                                            <form>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group label-floating">
+                                                                <label class="control-label">Email o username:</label>
+                                                                <input type="text" class="form-control" ng-model="ctrlLogin.email_pass">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                <span>* Se enviara un correo electrónico con su nueva contraseña, posteriormente cambiela por alguna que recuerde facilmente.</span>
+                                                </div>
+
+                                                <button type="button" class="btn btn-primary pull-right" ng-click="ctrlLogin.resetPassword()">Recuperar contraseña</button>
+                                                <button type="button" class="btn btn-default pull-right" data-dismiss="modal" ng-click="ctrlLogin.cancelPass()">Cancelar</button>
+                                                <div class="clearfix"></div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 </body>

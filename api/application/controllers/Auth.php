@@ -38,4 +38,10 @@ class Auth extends CI_Controller {
         $this->session->sess_destroy();
         echo json_encode(array('status'=>'200', 'message'=>'Session destroyed.'));
     }
+    
+    public function recover() {
+        $params = json_decode(file_get_contents('php://input'),true);
+        $username = $params['email_pass'];
+        echo json_encode($this->auth_model->recover($username));
+    }
 }

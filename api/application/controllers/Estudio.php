@@ -9,8 +9,9 @@ class Estudio extends CI_Controller {
         
     }
     
-    public function getFamilias($idInstitucion,$familia) {
-        echo json_encode($this->estudio_model->getFamilias($idInstitucion, $familia));
+    public function getFamilias() {
+        $data = json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->estudio_model->getFamilias($data));
     }
     
     public function saveFamilia() {
@@ -160,13 +161,39 @@ class Estudio extends CI_Controller {
     }
     
     public function cancelEstudioInstitucion($idEstudioInstitucion) {
-        $data['id_estudio_institucion']=$idEstudioInstitucion;
-        $data['estatus']=2;
-        echo json_encode(
-                array(
-                    "status"=>$this->estudio_model->updateEstudioInstitucion($data)
-                )
-            );
+        $this->db->where('borrado', 0);
+        $this->db->where('id_estudio_institucion', $idEstudioInstitucion);
+        $q= $this->db->get('estudios_instituciones')->row();
+        
+        $idEstudio=$q->id_estudio;
+        
+        $this->db->where('borrado', 0);
+        $this->db->where('id_estudio', $idEstudio);
+        $q2=$this->db->get('estudio')->row();
+        
+        $this->db->where('borrado', 0);
+        $this->db->where('id_estudio', $idEstudio);
+        $this->db->where('estatus', 1);
+        $this->db->set('fecha_modificacion', date("Y-m-d H:i:s"));
+        $this->db->where('id_institucion !=', $q->id_institucion);
+        $q=$this->db->get('estudios_instituciones');
+
+        if($q->num_rows()==0){
+            $this->db->where('id_estudio', $idEstudio);
+            $this->db->set('borrado', 1);
+            $this->db->set('fecha_modificacion', date("Y-m-d H:i:s"));
+            $this->db->update('estudio');
+
+            $this->db->where('id_estudio_institucion', $idEstudioInstitucion);
+            $this->db->set('estatus', 2);
+            $this->db->set('fecha_modificacion', date("Y-m-d H:i:s"));
+            $this->db->update('estudios_instituciones');
+        }else{
+            $this->db->where('id_estudio_institucion', $idEstudioInstitucion);
+            $this->db->set('estatus', 2);
+            $this->db->set('fecha_modificacion', date("Y-m-d H:i:s"));
+            $this->db->update('estudios_instituciones');
+        }
     }
     
     public function saveIngresos() {

@@ -1,0 +1,275 @@
+
+<div class="container-fluid" ng-controller="FamController as scope">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header" data-background-color="blue">
+                    <h4 >Familias</h4>
+                    <p class="category">En esta sección podrás administrar las familias registradas en el sistema.</p>
+                </div>
+                
+                <!--<div class="card-content">
+                    <button type="button" class="btn btn-success" ng-click="scope.agregarInstitucion()">Crear nueva institución</button>
+                </div>
+                -->
+                <div class="card-content table-responsive">
+                    <table class="table">
+                        <thead class="text-primary">
+                            <th class="text-center">ID</th>
+                            <th class="text-center">Clave</th>
+                            <th class="text-center">Nombre</th>
+                            <th class="text-center">Institucion</th>
+                            <th class="text-center">Opciones</th>
+                        </thead>
+                        <tbody>
+                            <tr class="text-center" ng-repeat="f in scope.familias">
+                                <td>{{f.id_familia}}</td>
+                                <td>
+                                    <div ng-if="f.clave_familia===''||f.clave_familia===null">
+                                        -
+                                    </div>
+                                    <div ng-if="f.clave_familia!==''&&f.clave_familia!==null">
+                                       {{f.clave_familia}}
+                                    </div>
+                                    
+                                </td>
+                                <td>{{f.familia}}</td>
+                                <td><span class="small">
+                                                    {{f.calle}}, 
+                                                    {{f.num_ext}}, 
+                                                    {{f.num_int}},
+                                                    {{f.num_int}},
+                                                    {{f.colonia}},
+                                                    {{f.localidad}},
+                                                    {{f.municipio}},
+                                                    {{f.estado}}
+                                                    </span></td>
+                                <td>{{f.clave_institucion}}</td>
+                                <td>
+                                    <button title="Actualizar información" type="button" class="btn btn-primary btn-sm" ng-click="scope.verActualizarFamilia(f)">
+                                        <span class="glyphicon glyphicon-eye-open"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-sm" ng-click="scope.eliminarFamilia(f)">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </button>
+                                    
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+
+
+
+
+
+    <!-- modal add user-->
+    <div class="modal fade ativa-scroll" id="modal_familia_update" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content pagination-centered text-center">
+                <div class="modal-body">
+
+                    <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header" data-background-color="orange">
+                                            <button type="button" class="close cros_close_modal" data-dismiss="modal">&times;</button>
+                                            <h4>Actualizar datos familia</h4>
+                                            <p class="category">Completa la información</p>
+                                        </div>
+                                        <hr>
+                                        <div class="card-content">
+                                            <form>
+                                                <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group ">
+                                    <label class="control-label">Familia:</label>
+                                    <input type="text" class="form-control" ng-model="scope.familia.familia" ng-change="scope.familia.familia=scope.familia.familia.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group ">
+                                    <label class="control-label">Institución:</label>
+                                    <input type="text" class="form-control" value="{{scope.familia.clave_institucion}}"  disabled>
+                            </div>
+                        </div>
+                                                    
+                                                    <div class="col-md-3">
+                            <div class="form-group ">
+                                    <label class="control-label">Clave familia</label>
+                                    <input type="text" class="form-control" ng-model="scope.familia.clave_familia">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group ">
+                                    <label class="control-label">No. de hijos CET:</label>
+                                    <input type="text" class="form-control" ng-model="scope.familia.num_hijos_cet" >
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group ">
+                                    <label class="control-label">No. de hijos CEE:</label>
+                                    <input type="text" class="form-control" ng-model="scope.familia.num_hijos_cee">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h4 class="text-left">Domicilio:</h4>
+                    
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group ">
+                                    <label class="control-label">Calle:</label>
+                                    <input type="text" class="form-control" ng-model="scope.familia.calle" ng-change="scope.familia.calle=scope.familia.calle.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group ">
+                                    <label class="control-label">Número exterior:</label>
+                                    <input type="text" class="form-control" ng-model="scope.familia.num_ext">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group ">
+                                    <label class="control-label">Número interior:</label>
+                                    <input type="text" class="form-control" ng-model="scope.familia.num_int">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group ">
+                                        <label class="control-label">Colonia:</label>
+                                    <input type="text" class="form-control" ng-model="scope.familia.colonia" ng-change="scope.familia.colonia=scope.familia.colonia.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group ">
+                                    <label class="control-label">Localidad:</label>
+                                    <input type="text" class="form-control" ng-model="scope.familia.localidad" ng-change="scope.familia.localidad=scope.familia.localidad.toUpperCase();">
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="form-group ">
+                                        <label class="control-label">Municipio:</label>
+                                    <input type="text" class="form-control" ng-model="scope.familia.municipio" ng-change="scope.familia.colonia=scope.familia.colonia.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group ">
+                                    <label class="control-label">Estado:</label>
+                                    <input type="text" class="form-control" ng-model="scope.familia.estado" ng-change="scope.familia.localidad=scope.familia.localidad.toUpperCase();">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <div class="form-group ">
+                                    <label class="control-label">Telefono casa:</label>
+                                    <input type="text" class="form-control" ng-model="scope.familia.telefono_casa" ng-change="scope.familia.localidad=scope.familia.localidad.toUpperCase();">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h4 class="text-left">Datos padres:</h4>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group ">
+                                    <label class="control-label">Nombre papa:</label>
+                                    <input type="text" class="form-control" ng-model="scope.familia.nombre_papa" ng-change="scope.familia.nombre_papa=scope.familia.nombre_papa.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group ">
+                                    <label class="control-label">Apellido paterno:</label>
+                                    <input type="text" class="form-control" ng-model="scope.familia.apellido_paterno_papa" ng-change="scope.familia.apellido_paterno_papa=scope.familia.apellido_paterno_papa.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group ">
+                                    <label class="control-label">Apellido materno:</label>
+                                    <input type="text" class="form-control" ng-model="scope.familia.apellido_materno_papa" ng-change="scope.familia.apellido_materno_papa=scope.familia.apellido_materno_papa.toUpperCase();">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group ">
+                                    <label class="control-label">RFC:</label>
+                                    <input type="text" class="form-control" ng-model="scope.familia.rfc_papa" ng-change="scope.familia.rfc_papa=scope.familia.rfc_papa.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group ">
+                                    <label class="control-label">Celular:</label>
+                                    <input type="text" class="form-control" ng-model="scope.familia.celular_papa" ng-change="scope.familia.celular_papa=scope.familia.celular_papa.toUpperCase();">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group ">
+                                    <label class="control-label">Nombre mama:</label>
+                                    <input type="text" class="form-control" ng-model="scope.familia.nombre_mama" ng-change="scope.familia.nombre_mama=scope.familia.nombre_mama.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group ">
+                                    <label class="control-label">Apellido paterno:</label>
+                                    <input type="text" class="form-control" ng-model="scope.familia.apellido_paterno_mama" ng-change="scope.familia.apellido_paterno_mama=scope.familia.apellido_paterno_mama.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group ">
+                                    <label class="control-label">Apellido materno:</label>
+                                    <input type="text" class="form-control" ng-model="scope.familia.apellido_materno_mama" ng-change="scope.familia.apellido_materno_mama=scope.familia.apellido_materno_mama.toUpperCase();">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group ">
+                                    <label class="control-label">RFC:</label>
+                                    <input type="text" class="form-control" ng-model="scope.familia.rfc_mama" ng-change="scope.familia.rfc_mama=scope.familia.rfc_mama.toUpperCase();">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group ">
+                                    <label class="control-label">Celular:</label>
+                                    <input type="text" class="form-control" ng-model="scope.familia.celular_mama" ng-change="scope.familia.celular_mama=scope.familia.celular_mama.toUpperCase();">
+                            </div>
+                        </div>
+                    </div>
+                                                <button type="button" class="btn btn-primary pull-right" ng-click="scope.guardarFamilia()">Guardar datos</button>
+                                                <button type="button" class="btn btn-default pull-right" ng-click="scope.cancelar()">Cancelar</button>
+                                                <div class="clearfix"></div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+</div>

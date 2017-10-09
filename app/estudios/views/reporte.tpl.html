@@ -29,7 +29,12 @@
 <div id="contenido">
 <div class="row text-center"><br></div>
 <div class="row">
-    <p class="text-center centrar" style="color: red; font-weight: bold;">ESTUDIO SOCIOECONÓMICO 2016 - 2017</p>
+    <p class="text-center centrar" style="color: red; font-weight: bold;">ESTUDIO SOCIOECONÓMICO {{scope.estudio.ciclo_escolar}}
+        <strong style="float: right; color: #003399; margin-right: 20%">Fecha Estudio:
+            <span  class="border" ng-if="scope.estudio.fecha_entrevista!==null&&scope.estudio.fecha_entrevista!==undefined"> {{scope.estudio.fecha_entrevista | toJSDate}}</span>
+            <span  class="border" ng-if="scope.estudio.fecha_entrevista===null||scope.estudio.fecha_entrevista===undefined"> - </span>
+        </strong>
+    </p>
 </div>
 
 <table class="centrar">
@@ -120,7 +125,7 @@
                 <p style="padding: 0px 10px;" class="border" ng-if="papa.tipo_persona==='PAPA'">{{papa.fecha_nacimiento | toJSDate}}</p>
             </div>
             <div ng-repeat="papa in scope.estudio.padres" >
-                <p style="padding: 0px 10px;" class="border" ng-if="papa.tipo_persona==='PAPA'">{{papa.puesto}}</p>
+                <p style="padding: 0px 10px;" class="border" ng-if="papa.tipo_persona==='PAPA'">{{papa.ocupacion}}</p>
             </div>
         </td>
         <td rowspan="3" style="
@@ -221,7 +226,7 @@
         <td style="font-size: 10px; text-align: right"><strong>Total</strong></td>
         <td></td>
         <td><p  style="    width: 120px;
-    text-align: center;" class="border">$ {{scope.estudio.ingresos[0].total_ingresos | number:2}}</p></td>
+    text-align: center;" class="border">$ {{scope.total_ingresos2 | number:2}}</p></td>
     </tr>
     <tr>
         <td>Servicios</td>
@@ -274,7 +279,7 @@
         <td ><p style="
             padding: 0px;
             margin: 0px; width: 100px; text-align: center; margin: auto; background: gainsboro
-            " class="border">{{(scope.suma_col/scope.estudio.ingresos[0].total_ingresos)*100 | number:0}} %</p></td>
+            " class="border">{{(scope.suma_col/scope.total_ingresos2)*100 | number:0}} %</p></td>
     </tr>
     
     <tr>
@@ -492,8 +497,14 @@
 </div>
 <div style="font-size: 11px">
     <ul>
-        <li ng-repeat="comm in scope.estudio.comentarios"> <span >{{comm.comentario}}</span></li>
+        <li ng-repeat="comm in scope.estudio.comentarios" ng-if="comm.tipo==='GENERAL'" > <span >{{comm.comentario}}</span></li>
     </ul>
+</div>
+
+<div class="row border" style="float: right; width: 30%;margin-right: 30px">
+    <p class="text-center" style="
+    margin-bottom: 0px;
+"><strong>Ciclo Escolar {{scope.estudio.ciclo_escolar}}</strong></p>
 </div>
 
 </div>

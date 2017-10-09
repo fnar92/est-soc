@@ -52,6 +52,15 @@ angular.module('app').filter('nospace', function () {
                 return 'Usuario';
         }
     };
+}).filter('estatusUsuario', function(){
+    return function (tipo) {
+        switch (tipo){
+            case '1':
+                return 'Activo';
+            case '0':
+                return 'Inactivo';
+        }
+    };
 });
 angular
         .module('app')
@@ -63,34 +72,56 @@ angular
                 };
             });
 /* Diretivas */
-angular.module('app').directive("resize", function () {
+angular.module('app')
+.directive("resize", function () {
     return function (scope, element, attrs) {
         element.bind("mousedown", function () {
             scope.resize(element);
             scope.$apply();
         });
     };
-}).directive("remove", function () {
+})
+        
+.directive("remove", function () {
     return function (scope, element, attrs) {
         element.bind("mousedown", function () {
             scope.remove(element);
             scope.$apply();
         });
     };
-}).directive('fileModel', ['$parse', function ($parse) {
-        return {
-            restrict: 'A',
-            link: function (scope, element, attrs) {
-                var model = $parse(attrs.fileModel);
-                var modelSetter = model.assign;
+})
+       
+.directive('fileModel', ['$parse', function ($parse) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var model = $parse(attrs.fileModel);
+            var modelSetter = model.assign;
 
-                element.bind('change', function () {
-                    scope.$apply(function () {
-                        modelSetter(scope, element[0].files[0]);
-                    });
+            element.bind('change', function () {
+                scope.$apply(function () {
+                    modelSetter(scope, element[0].files[0]);
                 });
-            }
-        };
-    }]);
+            });
+        }
+    };
+}])
+    
+.directive('pwCheck', [function () {
+    return {
+      require: 'ngModel',
+      link: function (scope, elem, attrs, ctrl) {
+        var firstPassword = '#' + attrs.pwCheck;
+        elem.add(firstPassword).on('keyup', function () {
+          scope.$apply(function () {
+            var v = elem.val()===$(firstPassword).val();
+            ctrl.$setValidity('pwmatch', v);
+          });
+        });
+      }
+    }
+  }])
+  
+;
 
 

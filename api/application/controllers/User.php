@@ -26,4 +26,14 @@ class User extends CI_Controller {
         echo json_encode($this->user_model->getEmpleados());
     }
     
+    public function updateUser() {
+        $data=json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->user_model->updateUser($data));
+    }
+    
+    public function checkUser() {
+        $data=json_decode(file_get_contents('php://input'),true);
+        echo json_encode($this->user_model->checkUser($data));
+    }
+    
 }

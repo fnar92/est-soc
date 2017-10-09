@@ -1,7 +1,8 @@
 <?php
 header('Content-Type: application/json');
 backup_tables('hrwise.com.mx','hrwistoz','mx-fn@paco','hrwistoz_estudios_soc');
-
+//backup_tables('fnar.com','root','','est_soc_temp');
+//backup_tables('hrwise.com.mx','hrwistoz','mx-fn@paco','hrwistoz_est_temp');
 /* backup the db OR just a table */
 function backup_tables($host,$user,$pass,$name,$tables = '*')
 {

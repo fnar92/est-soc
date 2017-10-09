@@ -8,7 +8,9 @@
     function UsuarioController ($localStorage, AdminService, $rootScope, $state, $mdDialog, $mdToast, DialogService, RestService, AuthenticationService, Constants, UserService, $q) {
         /* jshint validthis: true */
         console.log('init usuario controller');
-        
+        var scope = this; 
+        scope.user={};
+        scope.institucion={};
         //Check session
         AuthenticationService.isAuth();
         if (!$localStorage.globals||!$rootScope.isAuth) {
@@ -16,14 +18,33 @@
             location.href='#/login';
         }
         
-        if($rootScope.tipoUsuario===2){
-            if($rootScope.user.id_institucion===undefined){
+        UserService.getUser().then(
+            function(response){
+                scope.user=$rootScope.user=response.data.usuario;
+                if($rootScope.tipoUsuario==='2'){
+                    scope.institucion=$rootScope.institucion=response.data.institucion;
+                }
+                hide();
+            }, function(error){
+                console.log('Error al guardar completar la solicitud: '+error);
+            }
+        );
+
+        if($rootScope.tipoUsuario==='2'){
+            if($rootScope.user===undefined||$rootScope.user.id_institucion===undefined){
                 error();
                 location.href='#/';
             }
         }
         
-        var scope = this;  
+        if ($localStorage.globals) {
+            $rootScope.isAuth=true;
+            $rootScope.tipoUsuario=$localStorage.globals.type;
+            $rootScope.rolUsuario=$localStorage.globals.role;
+        }
+        
+        
+         
         show();
         
         scope.cargaUsuarios=cargaUsuarios;
@@ -37,9 +58,59 @@
         scope.usuario={};
         scope.nuevoUsuario=true;
         scope.updateUsuario=false;
+        scope.checkUser=checkUser;
+        
+        scope.validUser=false;
+        scope.checkingUser=false;
+        scope.NotvalidUser=false;
         
         scope.cargaUsuarios();
         
+
+        function checkUser(){
+            console.log(scope.usuario.username);
+            if(scope.updateUsuario){
+                return;
+            }
+            if(scope.usuario.username===undefined){
+                scope.validUser=false;
+                scope.NotvalidUser=false;
+                scope.checkingUser=false;
+                return;
+            }
+            if(scope.usuario.username!==null||scope.usuario.username!==""||scope.usuario.username!==undefined){
+                scope.checkingUser=false;
+                scope.NotvalidUser=false;
+                scope.checkingUser=true;
+                var data={};
+                data.tipo_usuario=$rootScope.tipoUsuario;
+                data.username=scope.usuario.username;
+                UserService.checkUser(data).then(
+                    function (response){
+                        var data=response.data;                
+                        if(data===1){
+                            scope.NotvalidUser=true;
+                            scope.validUser=false;
+                        }else if(data===0){
+                            scope.NotvalidUser=false;
+                            scope.validUser=true;
+                        }
+                        scope.checkingUser=false;
+                    }, 
+                    function (err){
+                        console.log('Error al buscar username');
+                        scope.validUser=false;
+                        scope.NotvalidUser=false;
+                        scope.checkingUser=false;
+                    }
+                );
+            }else{
+                scope.validUser=false;
+                scope.NotvalidUser=false;
+                scope.checkingUser=false;
+            }
+            
+        }
         function cargaUsuarios(){
             AdminService.getUserList($rootScope.tipoUsuario, $rootScope.user.id_institucion).then(
                 function(response){
@@ -57,6 +128,7 @@
         function agregarUsuario(){
             scope.nuevoUsuario=true;
             scope.updateUsuario=false;
+            scope.usuario={};
             $("#modal_agregar_usuario").modal('show');
         }
         
@@ -79,12 +151,11 @@
                             show();
                             var promesas=[];
                             promesas.push(AdminService.updateUser(obj));
-                            promesas.push(AdminService.getUserList($rootScope.tipoUsuario, $rootScope.user.id_institucion));
                             $q.all(promesas)
                                 .then(
                                     function(response){
                                         mensaje('success', 'Aviso.', 'Se actualizaron los datos del usuario correctamente.');
-                                        scope.usuarios=response[1].data;
+                                        scope.usuarios=response[0].data;
                                         scope.cancelar();
                                         hide();
                                     }, function(error){
@@ -97,6 +168,11 @@
                 );
             }
             if(scope.nuevoUsuario){
+                if(scope.usuario.username===undefined||
+                        scope.usuario.username===""||scope.NotvalidUser){
+                    mensaje('error', 'Error de validación', 'Verifique sus datos');
+                    return;
+                }
                 confirmaMsj(
                     "Confirmación de solicitud",
                     "¿Crear nuevo usuario?",
@@ -105,15 +181,15 @@
                             var obj=scope.usuario;
                             obj.tipo_usuario=$rootScope.tipoUsuario;
                             obj.id_institucion=$rootScope.user.id_institucion;
+                            obj.estatus=0;
                             show();
                             var promesas=[];
                             promesas.push(AdminService.addUser(obj));
-                            promesas.push(AdminService.getUserList($rootScope.tipoUsuario, $rootScope.user.id_institucion));
                             $q.all(promesas)
                                 .then(
                                     function(response){
                                         mensaje('success', 'Aviso.', 'Se dio de alta al nuevo usuario correctamente.');
-                                        scope.usuarios=response[1].data;
+                                        scope.usuarios=response[0].data;
                                         scope.cancelar();
                                         hide();
                                     }
@@ -136,12 +212,11 @@
                         show();
                         var promesas=[];
                         promesas.push(AdminService.deleteUser(obj));
-                        promesas.push(AdminService.getUserList($rootScope.tipoUsuario, $rootScope.user.id_institucion));
                         $q.all(promesas)
                             .then(
                                 function(response){
                                     mensaje('success', 'Aviso.', 'Se eliminó al usuario correctamente.');
-                                    scope.usuarios=response[1].data;
+                                    scope.usuarios=response[0].data;
                                     scope.cancelar();
                                     hide();
                                 }
@@ -156,6 +231,9 @@
             scope.usuario={};
             scope.nuevoUsuario=true;
             scope.updateUsuario=false;
+            scope.validUser=false;
+            scope.NotvalidUser=false;
+            scope.checkingUser=false;
             $("#modal_agregar_usuario").modal('hide');
         }
         

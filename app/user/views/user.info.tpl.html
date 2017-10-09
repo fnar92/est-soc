@@ -1,0 +1,126 @@
+<style>
+    .flota{
+        float: right;
+    margin-left: 35px;
+    }
+</style>
+<div class="container-fluid" ng-controller="UserController as scope">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header" data-background-color="blue">
+                    <h4>Mis datos</h4>
+                        <p class="category">En esta sección podrás actualizar tus datos</p>
+                    </div>
+                <div class="card-content">
+                <form>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group ">
+                                    <label class="control-label">Nombre:</label>
+                                    <input type="text" class="form-control" ng-model="scope.user.nombre">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group ">
+                                    <label class="control-label">Apellido paterno:</label>
+                                    <input type="text" class="form-control" ng-model="scope.user.apellido_paterno">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group ">
+                                    <label class="control-label">Apellido materno:</label>
+                                    <input type="text" class="form-control" ng-model="scope.user.apellido_materno" >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group ">
+                                    <label class="control-label">Username: </label>
+                                    <input type="text" class="form-control" ng-model="scope.user.username" ng-disabled="true">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                    <label class="control-label">Email:</label>
+                                    <input type="text" class="form-control" ng-model="scope.user.email">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-primary pull-right" ng-click="scope.updateInfo()">Actualizar mis datos</button>
+                    <div class="clearfix"></div>
+                </form>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        <div class="col-md-4"><br>
+            <div class="card card-profile">
+                <div class="card-avatar">
+                        <a href="#">
+                            <img class="img" src="assets/img/user.png" />
+                        </a>
+                </div>
+
+                <div class="content">
+                    <h6 class="category text-gray">
+                        <span ng-if="scope.user.rol==='1'" class="label label-success">{{scope.user.rol | tipoAdmin }}</span>
+                        <span ng-if="scope.user.rol==='2'" class="label label-info">{{scope.user.rol | tipoAdmin }}</span>
+                    </h6>
+                    <h4 class="card-title">{{scope.user.nombre}} {{scope.user.apellido_paterno}} {{scope.user.apellido_materno}}</h4>
+                        <p class="card-content">
+                            Sistema de captura de estudios socioeconomicos HRWise
+                        </p>
+                    <h6 class="category text-gray">
+                        <span ng-if="tipoUsuario==='2'" class="label label-primary">{{scope.institucion.nombre_institucion }}</span>
+                        <span ng-if="tipoUsuario==='1'" class="label label-primary">HRWise</span>
+                    </h6>
+                        <!--<a href="#pablo" class="btn btn-primary btn-round">Follow</a>-->
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header" data-background-color="orange">
+                    <h4>Cambiar contraseña</h4>
+                </div>
+                <div class="card-content">
+                    <form name="myForm">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group ">
+                                        <label class="control-label">Nueva contraseña:</label>
+                                        <input type="password" id="pw1" name="pw1" class="form-control" ng-model="scope.pw1" ng-required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group ">
+                                        <label class="control-label">Confirma la nueva contraseña:</label>
+                                        <input type="password" id="pw2" name="pw2" class="form-control" ng-model="scope.pw2" ng-required pw-check='pw1'>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="msg-block danger" style="color: red" ng-show="myForm.$error"> <span class="msg-error" ng-show="myForm.pw2.$error.pwmatch">La contraseña no coincide.</span> 
+            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary pull-right" ng-click="scope.guardarPassword()">Cambiar contraseña</button>
+                    <div class="clearfix"></div>
+                        
+                    </form>
+                    
+                
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

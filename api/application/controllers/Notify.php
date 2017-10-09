@@ -8,7 +8,6 @@ class Notify extends CI_Controller {
     }
     
     public function send() {
-        $this->load->library('Email');
         $mail = new Email();
         $data=array();
         
@@ -36,4 +35,17 @@ class Notify extends CI_Controller {
         //echo json_encode($data);
         $mail->notify($data);
     }
+    
+    public function notify($key="") {
+        if($key=="paco"){
+            if(json_decode(file_get_contents('php://input'),true)){
+                $params = json_decode(file_get_contents('php://input'),true);
+                $mail = new Email();
+                echo json_encode($mail->notify($params));
+                return;
+            }
+        }
+        exit('No access');
+    }
+    
 }
