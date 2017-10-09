@@ -54,7 +54,9 @@ date_default_timezone_set('America/Mexico_City');
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
-	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
+        //define('ENVIRONMENT', 'dev');
+        //define('ENVIRONMENT', 'local');
+	define('ENVIRONMENT', 'prod');
 
 /*
  *---------------------------------------------------------------
@@ -66,22 +68,32 @@ date_default_timezone_set('America/Mexico_City');
  */
 switch (ENVIRONMENT)
 {
-	case 'development':
-		error_reporting(-1);
-		ini_set('display_errors', 1);
+	case 'dev':
+            define('URL_FRONT','http://fnar.com:8087/est-soc/#/');
+            define('URL_BACK','http://fnar.com:8087/est-soc/api');
+            error_reporting(-1);
+            ini_set('display_errors', 1);
 	break;
 
-	case 'testing':
-	case 'production':
-		ini_set('display_errors', 0);
-		if (version_compare(PHP_VERSION, '5.3', '>='))
-		{
-			error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_USER_NOTICE & ~E_USER_DEPRECATED);
-		}
-		else
-		{
-			error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_NOTICE);
-		}
+	case 'local':
+            define('URL_FRONT','http://hrwise.local/est-soc/#/');
+            define('URL_BACK','http://hrwise.local/est-soc/api');
+            
+            error_reporting(-1);
+            ini_set('display_errors', 1);
+	break;
+	case 'prod':
+            define('URL_FRONT','http://www.hrwise.com.mx/est-soc/#/');
+            define('URL_BACK','http://www.hrwise.com.mx/est-soc/api');
+            ini_set('display_errors', 0);
+            if (version_compare(PHP_VERSION, '5.3', '>='))
+            {
+                    error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_USER_NOTICE & ~E_USER_DEPRECATED);
+            }
+            else
+            {
+                    error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_NOTICE);
+            }
 	break;
 
 	default:

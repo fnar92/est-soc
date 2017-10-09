@@ -11,7 +11,6 @@
         
         //Check session
         AuthenticationService.isAuth();
-        console.log('auth: '+$rootScope.isAuth);
         var scope = this;  
         scope.user={};
         scope.tipoUsuario=0;
@@ -24,47 +23,22 @@
         scope.push=push;
         
         if ($localStorage.globals) {
-            console.log($localStorage.globals);
             $rootScope.isAuth=true;
             $rootScope.tipoUsuario=$localStorage.globals.type;
             $rootScope.rolUsuario=$localStorage.globals.role;
-        }
-        
-        if($rootScope.isAuth){
-            console.log('entro a buscar');
-            show();
+            
             UserService.getUser().then(
                 function(response){
-                    console.log('se obtuvo el usuario');
-                    $rootScope.user=response.data;
-                    scope.user=response.data;
-                    $rootScope.user=response.data;
-                    if(response.data.id_institucion!==undefined){
-                        show();
-                        UserService.getInstitucion(response.data.id_institucion).then(
-                            function(response){
-                                console.log('se obtuvo la institucion');
-                                scope.institucion=response.data;
-                                $rootScope.institucion=response.data;
-                                hide();
-                            }, function(){
-                                console.log('Error al obtener la institucion');
-                                error();
-                            }
-                        );
-                    }else{
-                        hide();
+                    scope.user=$rootScope.user=response.data.usuario;
+                    if($rootScope.tipoUsuario==='2'){
+                        scope.institucion=$rootScope.institucion=response.data.institucion;
                     }
-                    
-                }, function(){
-                    console.log('Error al obtener el usuario');
-                    error();
+                    hide();
+                }, function(error){
+                    console.log('Error al completar la solicitud: '+error);
                 }
             );
         }
-        
-        
-        
         
          /*$mdDialog.show({
                 templateUrl: 'app/login/views/login.tpl.html',
@@ -84,9 +58,9 @@
                         show();
                         RestService.get(Constants.BaseURLBack+'/pull.php', '').then(
                             function(response){
-                                hide();
+                                
                                 mensaje('success', 'Importar datos.', 'Los datos se importaron correctamente, se actualizara el sistema, espere...',5000);
-                                setTimeout(function(){window.location.reload(true);}, 6000);
+                                setTimeout(function(){hide(); window.location.reload(true);}, 6000);
                             },
                             function(error){
                                 hide();
@@ -114,9 +88,9 @@
 
                         $q.all(promesas).then(
                             function(response){
-                                hide();
+                                
                                 mensaje('success', 'Exportar datos.', 'Los datos se exportaron correctamente, verifíquelos en el servidor. <br> Se actualizara el sistema, espere...',6000);
-                                setTimeout(function(){window.location.reload(true);}, 5000);
+                                setTimeout(function(){hide();window.location.reload(true);}, 5000);
                             }, 
                             function (error){
                                 hide();
@@ -140,8 +114,15 @@
             $mdDialog.show(confirm).then(function() {
                 RestService.get(Constants.BaseURLBack + '/auth/logout','','');  
                 AuthenticationService.ClearCredentials();
-                $rootScope.isAuth=false;
                 $rootScope.user={};
+                $rootScope.isAuth=false;
+                $rootScope.dev=false;
+                $rootScope.tipoUsuario=0;
+                $rootScope.rolUsuario=0;
+                $rootScope.institucion={};
+                $rootScope.isLocal=false;
+                $rootScope.idEstudioReporte=0;
+                $rootScope.idUser=0;
                 window.location.href='#/login';
                  //window.location.reload();
                 //$state.go('/home');

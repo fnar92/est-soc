@@ -33,7 +33,7 @@
     <script src="assets/libs/ie/modernizr.js" ></script>
     <script src='assets/js/jquery/jquery-migrate.min-ver=1.2.1.js'></script>
     
-    
+   <link rel="stylesheet" href="assets/css/bootstrap/bootstrap.min.css">
 	
     <!-- js angular -->
     <script src="assets/libs/angular/1.5.8/angular.min.js"></script>        
@@ -82,7 +82,7 @@
     <script src="app/utils/services/validations/validation.service.js"></script>
     <script src="app/utils/services/shared.service.js"></script>
     <!-- endinject -->   
-
+    
     <!-- inject: login js -->
     <script src="app/login/services/login.service.js"></script>
     <script src="app/login/controllers/login.controller.js"></script>
@@ -112,7 +112,30 @@
     <script src="app/estudios/controllers/estudios.reporte.controller.js"></script>
     <!-- endinject -->
     
+    <!-- inject: admin js -->
+    <script src="app/admin/services/admin.service.js"></script>
+    <script src="app/admin/controllers/admin.controller.js"></script>
+    <script src="app/admin/controllers/usuario.controller.js"></script>
+    <script src="app/admin/controllers/institucion.controller.js"></script>
+    <script src="app/admin/controllers/cat.controller.js"></script>
+    <script src="app/admin/controllers/fam.controller.js"></script>
+    <!-- endinject -->
+    
+    <!-- inject: user js -->
+    <script src="app/user/controllers/user.controller.js"></script>
+    <!-- endinject -->
+    
     <script>
+        function hide(){
+            window.scrollTo(0, 0);
+            $("#loading").hide();
+        };
+
+        function show(){
+            window.scrollTo(0, 0);
+            $("#loading").show();
+        };
+        
 	function mensaje(tipo, titulo, mensaje, duracion) {
 		console.log('[Action] Mensaje');
 		if (typeof duracion === "undefined") {

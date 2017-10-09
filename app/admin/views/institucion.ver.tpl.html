@@ -1,0 +1,249 @@
+
+<div class="container-fluid" ng-controller="InstitucionController as scope">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header" data-background-color="blue">
+                    <h4 >Instituciones</h4>
+                    <p class="category">En esta sección podrás administrar las instituciones y asi mismo los usuarios que pertenecen a estas.</p>
+                </div>
+                
+                <div class="card-content">
+                    <button type="button" class="btn btn-success" ng-click="scope.agregarInstitucion()">Crear nueva institución</button>
+                </div>
+                
+                <div class="card-content table-responsive">
+                    <table class="table">
+                        <thead class="text-primary">
+                            <th class="text-center">Clave</th>
+                            <th class="text-center">Nombre</th>
+                            <th class="text-center">Opciones</th>
+                        </thead>
+                        <tbody>
+                            <tr class="text-center" ng-repeat="i in scope.instituciones">
+                                <td>{{i.clave_institucion}}</td>
+                                <td>{{i.nombre_institucion}}</td>
+                                
+                                <td>
+                                    
+                                    <button title="Actualizar información" type="button" class="btn btn-primary btn-sm" ng-click="scope.verActualizarInstitucion(i)">
+                                        <span class="glyphicon glyphicon-eye-open"></span>
+                                    </button>
+                                    <button title="Ver usuarios" type="button" class="btn btn-warning btn-sm" ng-click="scope.verUsuariosInstitucion(i)">
+                                        <span class="glyphicon glyphicon-user"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-sm" ng-click="scope.eliminarInstitucion(i)">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </button>
+                                    
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+
+
+
+
+
+    <!-- modal add user-->
+    <div class="modal fade ativa-scroll" id="modal_agregar_institucion" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content pagination-centered text-center">
+                <div class="modal-body">
+
+                    <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header" data-background-color="orange">
+                                            <button type="button" class="close cros_close_modal" data-dismiss="modal">&times;</button>
+                                            <h4 ng-show="scope.nuevaInstitucion">Agregar nueva institución</h4>
+                                            <h4 ng-show="scope.updateInstitucion">Actualizar información de: {{ scope.institucion.nombre_institucion }}</h4>
+                                            <p class="category">Completa la información</p>
+                                        </div>
+                                        <hr>
+                                        <div class="card-content">
+                                            <form>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group ">
+                                                            <label class="control-label">Clave institución:</label>
+                                                            <input type="text" class="form-control" ng-model="scope.institucion.clave_institucion">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group ">
+                                                            <label class="control-label">Nombre institución:</label>
+                                                            <input type="text" class="form-control" ng-model="scope.institucion.nombre_institucion">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <button type="button" class="btn btn-primary pull-right" ng-click="scope.guardarInstitucion()">Guardar institución</button>
+                                                <button type="button" class="btn btn-default pull-right" ng-click="scope.cancelar()">Cancelar</button>
+                                                <div class="clearfix"></div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- modal add user-->
+    <div class="modal fade ativa-scroll" id="modal_usuarios_institucion" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content pagination-centered text-center">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header" data-background-color="orange">
+                                    <button type="button" class="close cros_close_modal" data-dismiss="modal">&times;</button>
+                                    <h4>Usuarios de: {{ scope.institucion.nombre_institucion }}</h4>
+                                </div>
+                                <hr>
+                                <div class="card-content table-responsive">
+                                    <table class="table">
+                                        <thead class="text-primary">
+                                            <th class="text-center">Nombre</th>
+                                            <th class="text-center">Email</th>
+                                            <th class="text-center">Rol</th>
+                                            <th class="text-center">Estatus</th>
+                                            <th class="text-center">Opciones</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="text-center" ng-repeat="u in scope.listaUsuarios">
+                                                <td>{{u.nombre}} {{u.apellido_paterno}} {{u.apellido_materno}}</td>
+                                                <td>{{u.email}}</td>
+                                                <td> 
+                                                    <span ng-if="u.rol==='1'" class="label label-success">{{u.rol | tipoAdmin }}</span>
+                                                    <span ng-if="u.rol==='2'" class="label label-info">{{u.rol | tipoAdmin }}</span>
+                                                </td>
+                                                <td> 
+                                                    <span ng-if="u.estatus==='1'" class="label label-warning">{{u.estatus | estatusUsuario }}</span>
+                                                    <span ng-if="u.estatus==='0'" class="label label-default">{{u.estatus | estatusUsuario }}</span>
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-danger btn-sm" ng-click="scope.eliminarUsuario(u)">
+                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                    </button>
+
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    
+                                    <button type="button" class="btn btn-primary pull-right" ng-click="scope.nuevoUsuarioAdmin()">Nuevo usuario</button>
+                                    <button type="button" class="btn btn-default pull-right" ng-click="scope.cancelar2()">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal add user-->
+    <div class="modal fade ativa-scroll" id="modal_agregar_institucion_usuario" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content pagination-centered text-center">
+                <div class="modal-body">
+
+                    <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header" data-background-color="orange">
+                                            <button type="button" class="close cros_close_modal" data-dismiss="modal">&times;</button>
+                                            <h4>Agregar nuevo usuario a: {{ scope.institucion.nombre_institucion }}</h4>
+                                            <p class="category">Completa la información</p>
+                                        </div>
+                                        <hr>
+                                        <div class="card-content">
+                                            <form>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group ">
+                                                                <label class="control-label">Nombre:</label>
+                                                                <input type="text" class="form-control" ng-model="scope.usuario.nombre">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group ">
+                                                                <label class="control-label">Apellido paterno:</label>
+                                                                <input type="text" class="form-control" ng-model="scope.usuario.apellido_paterno">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <div class="form-group ">
+                                                                <label class="control-label">Apellido materno:</label>
+                                                                <input type="text" class="form-control" ng-model="scope.usuario.apellido_materno" >
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group ">
+                                                                <label class="control-label">Username: </label>
+                                                                <input type="text" class="form-control" ng-model="scope.usuario.username" ng-change="scope.checkUser()">
+                                                                <div ng-show="scope.checkingUser">checking....</div>
+                                                                <div ng-show="scope.validUser" class="label label-success">Nombre de usuario disponible</div>
+                                                                <div ng-show="scope.NotvalidUser" class="label label-danger">Nombre de usuario NO disponible</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group ">
+                                                                <label class="control-label">Email:</label>
+                                                                <input type="text" class="form-control" ng-model="scope.usuario.email">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group ">
+                                                                <label class="control-label">Tipo de usuario: </label>
+                                                                <md-radio-group  ng-model="scope.usuario.rol">
+
+                                                                    <md-radio-button value="1" class="md-primary">Administrador</md-radio-button>
+                                                                    <md-radio-button value="2">Usuario</md-radio-button>
+
+                                                                </md-radio-group>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                <span>* Asegurese de verificar los datos capturados, ya que el sistema notificara al nuevo usuario atravez de un correo 
+                                                    electrónico en el cual también estaran contenidos los datos de acceso al sistema.</span>
+                                                </div>
+
+                                                <button type="button" class="btn btn-primary pull-right" ng-click="scope.guardarUsuarioInstitucion()">Guardar usuario</button>
+                                                <button type="button" class="btn btn-default pull-right" ng-click="scope.cancelar3()">Cancelar</button>
+                                                <div class="clearfix"></div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
