@@ -43,12 +43,9 @@
             return RestService.post(url,'',data);
         }
         
-        function obtenerFamilias(idInstitucion, filterFamilia){
-            if(filterFamilia===undefined|| filterFamilia===''){
-                filterFamilia='all';
-            }
-            var url=Constants.BaseURLBack+'/estudio/getFamilias/'+idInstitucion+'/'+filterFamilia;
-            return RestService.get(url,'');
+        function obtenerFamilias(data){
+            var url=Constants.BaseURLBack+'/estudio/getFamilias';
+            return RestService.post(url,'', data);
         }
         
         function guardarFamilia(data){
@@ -66,7 +63,6 @@
             return RestService.post(url,'',data);
         }
         
-        //function obtenerEstudios(tipoUsuario, rolUsuario, idUsuario, idInstitucion, filterFamilia){
         function obtenerEstudios(params){
             if(params.filtroFamilia===undefined|| params.filtroFamilia===''){
                 params.filtroFamilia='all';
@@ -74,8 +70,6 @@
             if(params.idInstitucion===undefined|| params.idInstitucion===''){
                 params.idInstitucion='0';
             }
-            console.log(JSON.stringify(params));
-            //var url=Constants.BaseURLBack+'/estudio/getEstudios/'+tipoUsuario+'/'+rolUsuario+'/'+idUsuario+'/'+idInstitucion+'/'+filterFamilia;
             var url=Constants.BaseURLBack+'/estudio/getEstudios';
             return RestService.post(url,'', params);
         }

@@ -6,19 +6,23 @@ class Estudio_model extends CI_Model {
         parent::__construct();
     }
     
-    public function getFamilias($idInstitucion, $filterFamilia) {
+    public function getFamilias($data) {
+        $idInstitucion=$data['id_institucion'];
+        $filterFamilia=$data['filtro_familia'];
         if($filterFamilia!='all'){
             $this->db->like('familia', $filterFamilia);
         }
         
         $this->db->join('institucion', 'institucion.id_institucion = familia.id_institucion');
         //$this->db->join('estudios_instituciones', 'institucion.id_institucion = estudios_instituciones.id_institucion');
-        $this->db->order_by('familia.id_familia', 'ASC');
+        $this->db->order_by('familia.familia', 'ASC');
+        $this->db->where('familia.borrado', 0);
+        //$this->db->where('institucion.borrado', 0);
         $familias=$this->db->get('familia')->result();
         $array_familias=array();
         $i=0;
         foreach ($familias as $familia) {
-            $familia->estudio=  $this->getEstudiosFamiliaInstitucion($familia->id_familia, 0, 0, $idInstitucion);
+            $familia->estudio=$this->getEstudiosFamiliaInstitucion($familia->id_familia, 0, 0, $idInstitucion);
             array_push($array_familias, $familia);
             $i++;
         }
@@ -41,6 +45,9 @@ class Estudio_model extends CI_Model {
     public function updateFamilia($data) {
         $this->db->where('id_familia', $data['id_familia']);
         unset($data['id_familia']);
+        if($data['borrado']==='0'){
+            unset($data['borrado']);
+        }
         $data['fecha_modificacion']=date("Y-m-d H:i:s");
         return array('status', $this->db->update('familia', $data));
     }
@@ -53,7 +60,6 @@ class Estudio_model extends CI_Model {
     //Estudio
     public function saveEstudio($data) {
         $data['fecha_estudio']=date("Y-m-d");
-        $data['fecha_modificacion']=date("Y-m-d H:i:s");
         unset($data['pago']);
         unset($data['num_recibo']);
         $this->db->insert('estudio', $data);
@@ -68,7 +74,6 @@ class Estudio_model extends CI_Model {
         return array('status'=>$this->db->update('estudio', $data));
     }
     
-    //public function getEstudios($tipoUsuario, $rolUsuario, $idUsuario, $idInstitucion, $filterFamilia) {
     public function getEstudios($params) {
         $tipoUsuario=$params['tipoUsuario']; 
         $rolUsuario=$params['rolUsuario'];
@@ -80,47 +85,49 @@ class Estudio_model extends CI_Model {
         $ciclos=array();
         $ciclos=$params['ciclos'];
         
-        
-        
         $this->db->select(
                  'es.id_estudio, es.folio_estudio,'
-                .'es.institucion_familia, es.institucion_solicito, es.ciclo_escolar,'
+                .''
                 .'fam.familia,'
                 .'fam.calle, fam.num_ext, fam.num_int, fam.colonia, fam.localidad, fam.municipio, fam.estado,'
                 .'es.fecha_estudio, fecha_entrevista, fecha_reagendar_entrevista, es.id_estatus_estudio, es_in.id_institucion, es.id_familia, es.id_usuario_asignado,'
                 .'es_in.id_estudio_institucion, es_in.estatus');
+        
         $this->db->from('estudio es');
         $this->db->join('estudios_instituciones es_in', 'es.id_estudio = es_in.id_estudio');
         $this->db->join('familia fam', 'es.id_familia = fam.id_familia');
         
-        //$this->db->join('institucion in', 'in.id_institucion = fam.id_institucion');
         if($tipoUsuario=='1'&&$rolUsuario=='2'){
             $this->db->where('es.id_usuario_asignado', $idUsuario);
         }
+        
         if($tipoUsuario=='2'&&$idInstitucion!='0'){
             $this->db->where('es_in.id_institucion', $idInstitucion);
         }
         
-        if(isset($params['cicloEscolar'])){
-            $this->db->where('es.ciclo_escolar', $params['cicloEscolar']);
+        if(isset($params['id_ciclo_escolar'])){
+            $this->db->where('es.id_ciclo_escolar', $params['id_ciclo_escolar']);
         }
         
         if($filterFamilia!='all'){
             $this->db->like('fam.familia', $filterFamilia);
         }
+        
         if($tipoUsuario=='1'){
             $this->db->group_by('es.id_estudio');
-            //$this->db->where('es_in.estatus', 1);
         }
-        
-        $this->db->where('es_in.estatus', 1);
         
         if(count($ciclos)>0){
-            $this->db->where_in('ciclo_escolar', $ciclos);
+            $this->db->where_in('id_ciclo_escolar', $ciclos);
         }
         
+        $this->db->where('es.borrado', 0);
+        $this->db->where('es_in.borrado', 0);
+        $this->db->where('es_in.estatus', 1);
         $this->db->order_by('es.id_estudio');
+        
         $estudios=$this->db->get()->result();
+        //echo $this->db->last_query();
         $array=array();
         foreach ($estudios as $estudio) {
             $estudio->instituciones= $this->getEstudiosFamiliaInstitucion($estudio->id_familia, $estudio->id_institucion,0, $tipoUsuario);
@@ -143,11 +150,12 @@ class Estudio_model extends CI_Model {
         if($idInstitucion!=0){
             $add=",in.clave_institucion";
         }
-        $this->db->select('es_in.id_estudio_institucion, es_in.id_estudio, es.pago, es.ciclo_escolar,'
-                . 'es.num_recibo, es.id_estatus_estudio, es_in.id_institucion'
+        $this->db->select('es_in.id_estudio_institucion, es_in.id_estudio, '
+                . ' es.id_estatus_estudio, es_in.id_institucion, ciclo.ciclo_escolar'
                 . $add);
         $this->db->from('estudios_instituciones es_in');
         $this->db->join('estudio es', 'es.id_estudio = es_in.id_estudio');
+        $this->db->join('cat_ciclo_escolar ciclo', 'es.id_ciclo_escolar = ciclo.id_ciclo_escolar');
         if($idInstitucion!=0||$idEstudio!=0){
             $this->db->join('institucion in', 'in.id_institucion = es_in.id_institucion');
         }
@@ -159,15 +167,6 @@ class Estudio_model extends CI_Model {
         if($idEstudio!=0){
             $this->db->where('es_in.id_estudio', $idEstudio);
         }
-        
-        /*if($tipoUsuario==='2'){
-            $this->db->where('es_in.estatus', 1);
-        }
-        
-        if($tipoUsuario==='1'){
-            $this->db->where('es_in.estatus', 1);
-            $this->db->or_where('es_in.estatus', 2);
-        }*/
         
         $this->db->where('es_in.estatus', 1);
         $this->db->group_by('es_in.id_institucion');
@@ -206,6 +205,7 @@ class Estudio_model extends CI_Model {
         $this->db->join('familia fam', 'es.id_familia = fam.id_familia'); 
         $this->db->join('institucion in', 'fam.id_institucion = in.id_institucion'); 
         $this->db->join('estudios_instituciones ei', 'ei.id_estudio = es.id_estudio'); 
+        $this->db->join('cat_ciclo_escolar c', 'c.id_ciclo_escolar = es.id_ciclo_escolar'); 
         $this->db->where('es.id_estudio', $idEstudio);
         if($idInstitucion!=='0'){
             $this->db->where('ei.id_institucion', $idInstitucion);
@@ -229,6 +229,7 @@ class Estudio_model extends CI_Model {
     }
     /*hijos*/
     public function getHijosFamilia($idFamilia, $idEstudio){
+        $this->db->where('borrado', 0);
         $this->db->where('id_familia', $idFamilia);
         $this->db->where('id_estudio', $idEstudio);
         $this->db->order_by('fecha_registro');
@@ -236,7 +237,6 @@ class Estudio_model extends CI_Model {
     }
     
     public function saveHijo($data){
-        $data['fecha_registro']=date('Y-m-d H:i:s');
         $this->db->insert('hijo_familia', $data);
         return $this->getHijosFamilia($data['id_familia'], $data['id_estudio']);
         
@@ -244,18 +244,22 @@ class Estudio_model extends CI_Model {
     
     public function deleteHijo($data){
         $this->db->where('id_hijo_familia', $data['id_hijo_familia']);
-        $this->db->delete('hijo_familia'); 
+        $this->db->set('borrado', 1);
+        $this->db->update('hijo_familia'); 
         return $this->getHijosFamilia($data['id_familia'], $data['id_estudio']);
     }
     
     public function updateHijo($data){
         $this->db->where('id_hijo_familia', $data['id_hijo_familia']);
         unset($data['id_hijo_familia']);
+        unset($data['borrado']);
+        $data['fecha_modificacion']=date("Y-m-d H:i:s");
         $this->db->update('hijo_familia', $data); 
         return $this->getHijosFamilia($data['id_familia'], $data['id_estudio']);
     }
     /*dependientes*/
     public function getDependientesFamilia($idFamilia, $idEstudio){
+        $this->db->where('borrado', 0);
         $this->db->where('id_familia', $idFamilia);
         $this->db->where('id_estudio', $idEstudio);
         return $this->db->get('dependiente_familia')->result();
@@ -269,18 +273,21 @@ class Estudio_model extends CI_Model {
     
     public function deleteDependiente($data){
         $this->db->where('id_dependiente_economico', $data['id_dependiente_economico']);
-        $this->db->delete('dependiente_familia'); 
+        $this->db->set('borrado', 1);
+        $this->db->update('dependiente_familia'); 
         return $this->getDependientesFamilia($data['id_familia'], $data['id_estudio']);
     }
     
     public function updateDependiente($data){
         $this->db->where('id_dependiente_economico', $data['id_dependiente_economico']);
-        unset($data['id_dependiente_economico']);
+        unset($data['borrado']);
+        $data['fecha_modificacion']=date("Y-m-d H:i:s");
         $this->db->update('dependiente_familia', $data); 
         return $this->getDependientesFamilia($data['id_familia'], $data['id_estudio']);
     }
     /*motivos*/
     public function getMotivosFamilia($idFamilia, $idEstudio){
+        $this->db->where('borrado', 0);
         $this->db->where('id_familia', $idFamilia);
         $this->db->where('id_estudio', $idEstudio);
         return $this->db->get('motivo_familia')->result();
@@ -294,19 +301,23 @@ class Estudio_model extends CI_Model {
     
     public function deleteMotivo($data){
         $this->db->where('id_motivo', $data['id_motivo']);
-        $this->db->delete('motivo_familia'); 
+        $this->db->set('borrado', 1);
+        $this->db->update('motivo_familia'); 
         return $this->getMotivosFamilia($data['id_familia'], $data['id_estudio']);
     }
     
     public function updateMotivo($data){
         $this->db->where('id_motivo', $data['id_motivo']);
         unset($data['id_motivo']);
+        unset($data['borrado']);
+        $data['fecha_modificacion']=date("Y-m-d H:i:s");
         $this->db->update('motivo_familia', $data); 
         return $this->getMotivosFamilia($data['id_familia'], $data['id_estudio']);
     }
     
     /*vehiculos*/
     public function getVehiculosFamilia($idFamilia, $idEstudio){
+        $this->db->where('borrado', 0);
         $this->db->where('id_familia', $idFamilia);
         $this->db->where('id_estudio', $idEstudio);
         return $this->db->get('vehiculo_familia')->result();
@@ -320,19 +331,23 @@ class Estudio_model extends CI_Model {
     
     public function deleteVehiculo($data){
         $this->db->where('id_vehiculo_familia', $data['id_vehiculo_familia']);
-        $this->db->delete('vehiculo_familia'); 
+        $this->db->set('borrado', 1);
+        $this->db->update('vehiculo_familia'); 
         return $this->getVehiculosFamilia($data['id_familia'], $data['id_estudio']);
     }
     
     public function updateVehiculo($data){
         $this->db->where('id_vehiculo_familia', $data['id_vehiculo_familia']);
         unset($data['id_vehiculo_familia']);
+        unset($data['borrado']);
+        $data['fecha_modificacion']=date("Y-m-d H:i:s");
         $this->db->update('vehiculo_familia', $data); 
         return $this->getVehiculosFamilia($data['id_familia'], $data['id_estudio']);
     }
     
     /*propiedades*/
     public function getPropiedadesFamilia($idFamilia, $idEstudio){
+        $this->db->where('borrado', 0);
         $this->db->where('id_familia', $idFamilia);
         $this->db->where('id_estudio', $idEstudio);
         return $this->db->get('propiedad_familia')->result();
@@ -346,13 +361,16 @@ class Estudio_model extends CI_Model {
     
     public function deletePropiedad($data){
         $this->db->where('id_propiedad_familia', $data['id_propiedad_familia']);
-        $this->db->delete('propiedad_familia'); 
+        $this->db->set('borrado', 1);
+        $this->db->update('propiedad_familia'); 
         return $this->getPropiedadesFamilia($data['id_familia'], $data['id_estudio']);
     }
     
     public function updatePropiedad($data){
         $this->db->where('id_propiedad_familia', $data['id_propiedad_familia']);
         unset($data['id_propiedad_familia']);
+        unset($data['borrado']);
+        $data['fecha_modificacion']=date("Y-m-d H:i:s");
         $this->db->update('propiedad_familia', $data); 
         return $this->getPropiedadesFamilia($data['id_familia'], $data['id_estudio']);
     }
@@ -360,10 +378,13 @@ class Estudio_model extends CI_Model {
     public function updateEstudioInstitucion($data) {
         $this->db->where('id_estudio_institucion', $data['id_estudio_institucion']);
         unset($data['id_estudio_institucion']);
+        unset($data['borrado']);
+        $data['fecha_modificacion']=date("Y-m-d H:i:s");
         return $this->db->update('estudios_instituciones', $data); 
     }
     
     public function getIngresosFamilia($idFamilia, $idEstudio) {
+        $this->db->where('borrado', 0);
         $this->db->where('id_familia', $idFamilia);
         $this->db->where('id_estudio', $idEstudio);
         $this->db->order_by('id_ingreso_familia', 'desc');
@@ -378,11 +399,14 @@ class Estudio_model extends CI_Model {
     public function updateIngresos($data) {
         $this->db->where('id_ingreso_familia', $data['id_ingreso_familia']);
         unset($data['id_ingreso_familia']);
+        unset($data['borrado']);
+        $data['fecha_modificacion']=date("Y-m-d H:i:s");
         $this->db->update('ingresos_familia', $data); 
         return $this->getIngresosFamilia($data['id_familia'], $data['id_estudio']); 
     }
     
     public function getPadreFamilia($idFamilia, $idEstudio) {
+        $this->db->where('borrado', 0);
         $this->db->where('id_familia', $idFamilia);
         $this->db->where('id_estudio', $idEstudio);
         $this->db->order_by('id_padre_familia', 'ASC');
@@ -397,11 +421,14 @@ class Estudio_model extends CI_Model {
     public function updatePapa($data) {
         $this->db->where('id_padre_familia', $data['id_padre_familia']);
         unset($data['id_padre_familia']);
+        unset($data['borrado']);
+        $data['fecha_modificacion']=date("Y-m-d H:i:s");
         $this->db->update('padre_familia', $data); 
         return $this->getPadreFamilia($data['id_familia'], $data['id_estudio']); 
     }
     
     public function getEgresosFamilia($idFamilia, $idEstudio) {
+        $this->db->where('borrado', 0);
         $this->db->where('id_familia', $idFamilia);
         $this->db->where('id_estudio', $idEstudio);
         $this->db->order_by('id_egreso_familia', 'desc');
@@ -416,11 +443,14 @@ class Estudio_model extends CI_Model {
     public function updateEgresos($data) {
         $this->db->where('id_egreso_familia', $data['id_egreso_familia']);
         unset($data['id_egreso_familia']);
+        unset($data['borrado']);
+        $data['fecha_modificacion']=date("Y-m-d H:i:s");
         $this->db->update('egresos_familia', $data); 
         return $this->getEgresosFamilia($data['id_familia'], $data['id_estudio']); 
     }
     
     public function getDocumentosFamilia($idFamilia, $idEstudio) {
+        $this->db->where('borrado', 0);
         $this->db->where('id_familia', $idFamilia);
         $this->db->where('id_estudio', $idEstudio);
         $this->db->order_by('id_documento_familia', 'desc');
@@ -435,11 +465,14 @@ class Estudio_model extends CI_Model {
     public function updateDocumentos($data) {
         $this->db->where('id_documento_familia', $data['id_documento_familia']);
         unset($data['id_documento_familia']);
+        unset($data['borrado']);
+        $data['fecha_modificacion']=date("Y-m-d H:i:s");
         $this->db->update('documentos_familia', $data); 
         return $this->getDocumentosFamilia($data['id_familia'], $data['id_estudio']); 
     }
     
     public function getEvaluacionFamilia($idFamilia, $idEstudio) {
+        $this->db->where('borrado', 0);
         $this->db->where('id_familia', $idFamilia);
         $this->db->where('id_estudio', $idEstudio);
         $this->db->order_by('id_evaluacion_familia', 'desc');
@@ -454,6 +487,8 @@ class Estudio_model extends CI_Model {
     public function updateEvaluacion($data) {
         $this->db->where('id_evaluacion_familia', $data['id_evaluacion_familia']);
         unset($data['id_evaluacion_familia']);
+        unset($data['borrado']);
+        $data['fecha_modificacion']=date("Y-m-d H:i:s");
         $this->db->update('evaluacion_familia', $data); 
         return $this->getEvaluacionFamilia($data['id_familia'], $data['id_estudio']); 
     }

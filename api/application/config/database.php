@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'mx-fn.local',
-	'username' => 'root',
-	'password' => '',
-	'database' => 'estudios_soc',
+	'hostname' => 'hrwise.com.mx',
+	'username' => 'hrwistoz',
+	'password' => 'mx-fn@paco',
+	'database' => 'hrwistoz_estudios_soc',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

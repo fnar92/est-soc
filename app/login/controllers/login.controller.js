@@ -20,10 +20,13 @@
         scope.login = login;
         scope.registrar = registrar;
         scope.signup = signup;
+        scope.recuperarPassword=recuperarPassword;
+        scope.resetPassword=resetPassword;
+        scope.cancelPass=cancelPass;
         
         scope.userdata={};
+        scope.email_pass="";
 
-        
         function login() {
             scope.dataLoading = true;
             var objParams = {"username":scope.username, "password":scope.password };
@@ -63,6 +66,38 @@
                 }, 500);
             });
             
+        }
+        
+        function recuperarPassword(){
+            $("#modal_pass").modal('show');
+        }
+        
+        function resetPassword(){
+            show();
+            var url = Constants.BaseURLBack + '/auth/recover';
+            var params={};
+            params.email_pass=scope.email_pass;
+            RestService.post(url,'',params)
+            .then(function(response) {
+                console.log(response);
+                if(response.data.status===200){
+                    mensaje('success', 'Recuperación de contraseña', 'Se restablecio su contraseña, revise tu correo electronico.');
+                }else if(response.data.status!==200){
+                    mensaje('error', 'Recuperación de contraseña', 'Email o nomobre de usuario no valido.');
+                }
+                scope.cancelPass();
+                hide();
+            })
+            .catch(function(err){
+                console.log('Error login: '+err);
+                error();
+                hide();
+            });
+        }
+        
+        function cancelPass(){
+            scope.email_pass="";
+            $("#modal_pass").modal('hide');
         }
         
         function registrar() {

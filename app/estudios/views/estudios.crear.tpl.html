@@ -6,6 +6,16 @@
             <div class="card-header" data-background-color="blue">
                 <p class="category">Solicitud de estudio socioeconomico</p>
                 <h2 class="title">Siga cuidadosamente las instrucciones</h2>
+                <ul ng-show="estudios.opcion==='1'">
+                    <li>Busque a la familia, seleccione y presione "Continuar"</li>
+                    <li>Complete todos los datos</li>
+                    <li>Si aparece la opcion "Solicitar" quiere decir que esa familia esta en proceso de estudio</li>
+                </ul>
+                <ul ng-show="estudios.opcion==='2'">
+                    <li>Esta opción aplica si la familia es de nuevo ingreso</li>
+                    <li>Si ya busco a la familia en la opción "Renovación" y no aparece</li>
+                    <li>Complete todos los datos</li>
+                </ul>
                 
             </div>
             <div class="card-content">
@@ -162,7 +172,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group ">
-                                    <label class="control-label">No. de recibo:</label>
+                                    <label class="control-label">No. de recibo interno:</label>
                                     <input type="text" class="form-control" ng-model="estudios.estudio.num_recibo">
                             </div>
                         </div>

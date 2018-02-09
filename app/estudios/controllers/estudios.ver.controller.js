@@ -16,7 +16,7 @@
         
         scope.listaEstudios=[];
         scope.listaEstudiosMostrar = [];
-        scope.busqueda = {ciclo_escolar:"", id_usuario_asignado:"", id_estatus_estudio:""}
+        scope.busqueda = {id_ciclo_escolar:"", id_usuario_asignado:"", id_estatus_estudio:""}
         scope.cambiaFiltro = cambiaFiltro;
         scope.estudio={};
         scope.familia={};
@@ -48,6 +48,8 @@
         scope.listaCiclos=[];
         scope.listaEmpleado=[];
         scope.listaEstatus=[];
+        scope.noValidCiclo=false;
+        scope.cancelar=cancelar;
        
         if (!$localStorage.globals||!$rootScope.isAuth) {
             mensaje('error', 'Session', 'Tu session ha expirado.');
@@ -57,7 +59,7 @@
             error();
             location.href='#/';
         }
-        if($rootScope.tipoUsuario===2){
+        if($rootScope.tipoUsuario==='2'){
             if($rootScope.user.id_institucion===undefined){
                 error();
                 location.href='#/';
@@ -71,9 +73,6 @@
         parametros.idUsuario=$rootScope.user.id_usuario;
         parametros.idInstitucion=$rootScope.user.id_institucion;
         parametros.filtroFamilia=scope.filtroFamilia;
-
-
-        
         
         var promesas=[];
         promesas.push(EstudiosService.obtenerCicloEscolarCat());
@@ -94,11 +93,25 @@
                     parametros.filtroFamilia=scope.filtroFamilia;
                     
                     scope.cicloEscolar=response[3].data[0];
-                    parametros.cicloEscolar=scope.cicloEscolar.ciclo_escolar;
+                    parametros.id_ciclo_escolar=scope.listaCiclos[scope.listaCiclos.length-1].id_ciclo_escolar;
                     parametros.ciclos=[];
-                    parametros.ciclos.push(scope.cicloEscolar.ciclo_escolar);
-                    scope.seleccionados.push(scope.cicloEscolar.ciclo_escolar);
-                    console.log(scope.seleccionados);
+                    parametros.ciclos.push(scope.listaCiclos[scope.listaCiclos.length-1].id_ciclo_escolar);
+                    scope.seleccionados.push(scope.listaCiclos[scope.listaCiclos.length-1].id_ciclo_escolar);
+                    scope.noValidCiclo=false;
+                    if($rootScope.tipoUsuario==='2'&&scope.cicloEscolar!==undefined){
+                        parametros.id_ciclo_escolar=scope.cicloEscolar.id_ciclo_escolar;
+                        parametros.ciclos=[];
+                        parametros.ciclos.push(scope.cicloEscolar.id_ciclo_escolar);
+                        scope.seleccionados.push(scope.cicloEscolar.id_ciclo_escolar);
+                        scope.noValidCiclo=false;
+                    }else{
+                            parametros.ciclos=[];
+                            scope.noValidCiclo=true;
+                    }
+                    
+                    if(scope.cicloEscolar){
+                        scope.noValidCiclo=false;
+                    }
                     EstudiosService.obtenerEstudios(parametros)
                 .then(
                     function(response){
@@ -129,9 +142,9 @@
                 var banEstatus = false;
                 var banTipo = false;
                 
-                if(scope.busqueda.ciclo_escolar === ""){
+                if(scope.busqueda.id_ciclo_escolar === ""){
                     banNombre = true;
-                }else if(scope.listaEstudios[i].ciclo_escolar ===  scope.busqueda.ciclo_escolar){
+                }else if(scope.listaEstudios[i].id_ciclo_escolar ===  scope.busqueda.id_ciclo_escolar){
                     banNombre = true;
                 };
                 
@@ -152,7 +165,7 @@
                     scope.listaEstudiosMostrar.push(scope.listaEstudios[i]);
                 };
             };
-            console.log("scope.listaEstudiosMostrar:"+scope.listaEstudiosMostrar.length);
+            
             scope.currentPage=0;
         };
         
@@ -161,7 +174,7 @@
             var list=scope.listaCiclos;
             angular.forEach(list, function (value, key) {
                 if (list[key].selected === list[key].ciclo_escolar) {
-                    ciclos.push(list[key].ciclo_escolar);
+                    ciclos.push(list[key].id_ciclo_escolar);
                 }
             });
             
@@ -176,7 +189,16 @@
             parametros.filtroFamilia=scope.filtroFamilia;
             var push=[];
             if(ciclos.length===0){
-                push.push(scope.cicloEscolar.ciclo_escolar);
+                if($rootScope.tipoUsuario==='2'&&scope.noValidCiclo){
+                    push.push(scope.listaCiclos[scope.listaCiclos.length-1].id_ciclo_escolar);
+                }else{
+                    if(scope.cicloEscolar===undefined||scope.cicloEscolar.ciclo_escolar===undefined){
+                        push.push(scope.listaCiclos[scope.listaCiclos.length-1].id_ciclo_escolar);
+                    }else{
+                        push.push(scope.cicloEscolar.id_ciclo_escolar);
+                    }
+                }
+                
             }else{
                 push=ciclos;
             }
@@ -232,6 +254,11 @@
             $("#modal_agendar_entrevista").modal('show');
         }
 
+
+        function cancelar(){
+            scope.entrevista={};
+            $("#modal_agendar_entrevista").modal('hide');
+        }
         function agendarSave(){
             if(scope.entrevista.fecha_entrevista===undefined||scope.entrevista.fecha_entrevista===""){
                 mensaje("alert", 'Error de validación', 'La fecha de entrevista es requerida.');
