@@ -8,15 +8,15 @@ class Email {
     public function notify($data){
         $mode="dev";
         $mail = new PHPMailer(true);
-        $mail->SMTPDebug = false;                                 // Enable verbose debug output
+        /*$mail->SMTPDebug = false;                                 // Enable verbose debug output
         $mail->isSMTP();                                      // Set mailer to use SMTP
-        $mail->Host = 'mx28.hostgator.mx';  // Specify main and backup SMTP servers
-        $mail->SMTPAuth = true;                               // Enable SMTP authentication
+		$mail->SMTPAuth = true;                               // Enable SMTP authentication
+		$mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
+        $mail->Port = 465;  
+		*/
+        $mail->Host = 'hrwise.com.mx';  // Specify main and backup SMTP servers
         $mail->Username = 'estudios@hrwise.com.mx';                 // SMTP username
         $mail->Password = 'estudios2017';                           // SMTP password
-        $mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
-        $mail->Port = 465;      
-        
         $mail->setFrom('estudios@hrwise.com.mx', 'Estudios HRWise');
         $mail->Subject = $data['inssue'];  //Asunto del mensaje
         
@@ -27,7 +27,7 @@ class Email {
         
         $text_dev="";
         if(ENVIRONMENT=="dev"){
-            $mail->addCC("paconoeacevedo@gmail.com", "Admin Estudios");
+            $mail->addCC("francisco.acevedo@infotec.mx", "Admin Estudios");
             $text_dev.="<div style='font-size:8px'>";
             $text_dev.="<hr>";
             $text_dev.="<h3>SIN VALIDEZ OFICIAL, SISTEMA EN DESARROLLO</h3>";

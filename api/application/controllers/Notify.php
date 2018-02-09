@@ -34,6 +34,8 @@ class Notify extends CI_Controller {
               
         //echo json_encode($data);
         $mail->notify($data);
+	
+	
     }
     
     public function notify($key="") {

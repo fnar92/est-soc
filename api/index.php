@@ -54,9 +54,9 @@ date_default_timezone_set('America/Mexico_City');
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
-        //define('ENVIRONMENT', 'dev');
+        define('ENVIRONMENT', 'dev');
         //define('ENVIRONMENT', 'local');
-	define('ENVIRONMENT', 'prod');
+	//define('ENVIRONMENT', 'prod');
 
 /*
  *---------------------------------------------------------------

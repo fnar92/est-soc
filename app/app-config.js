@@ -17,14 +17,14 @@
                     abstract: true,
                     controller: 'DashboardController',
                     controllerAs: 'dash',
-                    templateUrl: 'tpl.html'
+                    templateUrl: 'tpl.html?v='+new Date().getTime()+''
             })
             
             .state('/app.dashboard', { 
                 url: '/',
                 views: {
                     'page': { 
-                        templateUrl: 'app/dashboard/views/dashboard.tpl.html'
+                        templateUrl: 'app/dashboard/views/dashboard.tpl.html?v='+new Date().getTime()+''
                     }
                 }      
             })
@@ -33,7 +33,7 @@
                 url: '/estudios/ver',
                 views: {
                     'page': { 
-                        templateUrl: 'app/estudios/views/estudios.ver.tpl.html'
+                        templateUrl: 'app/estudios/views/estudios.ver.tpl.html?v='+new Date().getTime()+''
                     }
                 }      
             })
@@ -42,7 +42,7 @@
                 url: '/estudios/crear',
                 views: {
                     'page': { 
-                        templateUrl: 'app/estudios/views/estudios.crear.tpl.html'
+                        templateUrl: 'app/estudios/views/estudios.crear.tpl.html?v='+new Date().getTime()+''
                     }
                 }      
             })
@@ -51,10 +51,10 @@
                 url: '/estudios/detalle',
                 views: {
                     'page': { 
-                        templateUrl: 'app/estudios/views/estudios.detalle.tpl.html'
+                        templateUrl: 'app/estudios/views/estudios.detalle.tpl.html?v='+new Date().getTime()+''
                     },
                     'form1': { 
-                        templateUrl: 'app/estudios/views/forms/form1.html'
+                        templateUrl: 'app/estudios/views/forms/form1.html?v='+new Date().getTime()+''
                     }
                 }      
             })
@@ -63,14 +63,14 @@
                 url: '/estudios/reporte',
                 controller: 'EstudiosReporteController',
                 controllerAs: 'scope',
-                templateUrl: 'app/estudios/views/reporte.tpl.html'
+                templateUrl: 'app/estudios/views/reporte.tpl.html?v='+new Date().getTime()+''
             })
             
             .state('/app.admin', { 
                 url: '/admin/index',
                 views: {
                     'page': { 
-                        templateUrl: 'app/admin/views/admin.tpl.html'
+                        templateUrl: 'app/admin/views/admin.tpl.html?v='+new Date().getTime()+''
                     }
                 }      
             })
@@ -79,7 +79,7 @@
                 url: '/admin/usuario/ver',
                 views: {
                     'page': { 
-                        templateUrl: 'app/admin/views/usuario.ver.tpl.html'
+                        templateUrl: 'app/admin/views/usuario.ver.tpl.html?v='+new Date().getTime()+''
                     }
                 }      
             })
@@ -88,7 +88,7 @@
                 url: '/admin/institucion/ver',
                 views: {
                     'page': { 
-                        templateUrl: 'app/admin/views/institucion.ver.tpl.html'
+                        templateUrl: 'app/admin/views/institucion.ver.tpl.html?v='+new Date().getTime()+''
                     }
                 }      
             })
@@ -97,7 +97,7 @@
                 url: '/user/info',
                 views: {
                     'page': { 
-                        templateUrl: 'app/user/views/user.info.tpl.html'
+                        templateUrl: 'app/user/views/user.info.tpl.html?v='+new Date().getTime()+''
                     }
                 }      
             })
@@ -106,7 +106,7 @@
                 url: '/admin/fam/ver',
                 views: {
                     'page': { 
-                        templateUrl: 'app/admin/views/fam.ver.tpl.html'
+                        templateUrl: 'app/admin/views/fam.ver.tpl.html?v='+new Date().getTime()+''
                     }
                 }      
             })
@@ -115,7 +115,7 @@
                 url: '/admin/cat/ver',
                 views: {
                     'page': { 
-                        templateUrl: 'app/admin/views/cat.ver.tpl.html'
+                        templateUrl: 'app/admin/views/cat.ver.tpl.html?v='+new Date().getTime()+''
                     }
                 }      
             })
@@ -123,105 +123,105 @@
             .state('/about', { 
                 url: '/about',
                 controller: '',
-                templateUrl: 'app/home/views/about.tpl.html'
+                templateUrl: 'app/home/views/about.tpl.html?v='+new Date().getTime()+''
             })
             
             .state('/store', { 
                 url: '/store',
                 controller: '',
-                templateUrl: 'app/store/views/store.tpl.html'
+                templateUrl: 'app/store/views/store.tpl.html?v='+new Date().getTime()+''
             })
             
             .state('/account', { 
                 url: '/account',
                 controller: '',
-                templateUrl: 'app/account/views/account.tpl.html'
+                templateUrl: 'app/account/views/account.tpl.html?v='+new Date().getTime()+''
             })
             
             .state('/register', { 
                 url: '/register',
                 controller: '',
-                templateUrl: 'app/login/views/signup.tpl.html'
+                templateUrl: 'app/login/views/signup.tpl.html?v='+new Date().getTime()+''
             })
             
             .state('login', { 
                 url: '/login',
                 controller: '',
-                templateUrl: 'app/login/views/login.tpl.html'
+                templateUrl: 'app/login/views/login.tpl.html?v='+new Date().getTime()+''
             });
             
             /*.state('home', {
 		abstract: true,
-                templateUrl: 'app/tools/main/views/main.tpl.html' 
+                templateUrl: 'app/tools/main/views/main.tpl.html?v='+new Date().getTime()+'' 
             })
             .state('home.configuration-ur', {
 		url: '/configuration-ur',
                 controller: 'DataURController',
                 views: {
-                    '': { templateUrl: 'app/configuration-ur/views/home-configuration-ur.tpl.html'},
+                    '': { templateUrl: 'app/configuration-ur/views/home-configuration-ur.tpl.html?v='+new Date().getTime()+''},
                     'columnListUR@home.configuration-ur': { 
-                        templateUrl: 'app/configuration-ur/views/list-data-ur.tpl.html'
+                        templateUrl: 'app/configuration-ur/views/list-data-ur.tpl.html?v='+new Date().getTime()+''
                     },
                     'columnListOnlyUR@home.configuration-ur': { 
-                        templateUrl: 'app/configuration-ur/views/list-only-ur.tpl.html'
+                        templateUrl: 'app/configuration-ur/views/list-only-ur.tpl.html?v='+new Date().getTime()+''
                     }
                 }      
             })
             .state('home.list-budget-program', {// Cargo pagina: Programa Presupuestario (bolsitas)
 		url: '/list-budget-program',
-		templateUrl: 'app/configuration-pp/views/list-budget-program.tpl.html',
+		templateUrl: 'app/configuration-pp/views/list-budget-program.tpl.html?v='+new Date().getTime()+'',
                 controller: 'BudgetProgramController',
                 controllerAs: 'ctrlBP'
             })
             .state('home.create-budget-program', {// Cargo pagina: Solicitud Programa Presupuestario
 		url: '/create-budget-program',
-		templateUrl: 'app/configuration-pp/views/create-budget-program.tpl.html',
+		templateUrl: 'app/configuration-pp/views/create-budget-program.tpl.html?v='+new Date().getTime()+'',
                 controller: 'CreateBudgetProgramController',
                 controllerAs: 'ctrlCBP'
             })
             .state('home.budget-program', {// Cargo pagina: Proceso de Programa Presupuestario (Diagnostico,MIR y PTA)
 		url: '/budget-program',
-		templateUrl: 'app/budget-program-phases/views/budgets-programs-phases.tpl.html',
+		templateUrl: 'app/budget-program-phases/views/budgets-programs-phases.tpl.html?v='+new Date().getTime()+'',
                 controller: 'BudgetProgramPhasesController',
                 controllerAs: 'ctrlBPPhases'
             })
             .state('home.budget-schedule-setting', {// Cargo pagina: Configuración del programa presupuestario
 		url: '/budget-schedule-setting',
-		templateUrl: 'app/configuration-pp/views/budget-schedule-setting.tpl.html',
+		templateUrl: 'app/configuration-pp/views/budget-schedule-setting.tpl.html?v='+new Date().getTime()+'',
                 controller: 'BudgetScheduleSettingController',
                 controllerAs: 'ctrlBSS'
             })
             .state('home.diagnostic', {// Cargo pagina: Diagnostico
 		url: '/diagnostic',
-		templateUrl: 'app/diagnostic/views/diagnostic.tpl.html',
+		templateUrl: 'app/diagnostic/views/diagnostic.tpl.html?v='+new Date().getTime()+'',
                 controller: 'DiagnosticController',
                 controllerAs: 'ctrlDiag'
             })
             .state('home.mir', {// Cargo pagina: Tabs de la MIR
 		url: '/mir',
-		templateUrl: 'app/mir-tabs/views/mir-tabs.tpl.html'
+		templateUrl: 'app/mir-tabs/views/mir-tabs.tpl.html?v='+new Date().getTime()+''
             })
             .state('home.mir.definition-problem', {// Cargo pagina: Definición  del problema
 		url: '/definition-problem',
-		templateUrl: 'app/mir-definition-problem/views/mir-definition-problem.tpl.html',
+		templateUrl: 'app/mir-definition-problem/views/mir-definition-problem.tpl.html?v='+new Date().getTime()+'',
                 controller: 'MIRDefinitionProblemController',
                 controllerAs:'ctrlMIRDefProb'
             })
             .state('home.mir.problem-tree', {// Cargo pagina: Árbol del problema
 		url: '/problem-tree',
-		templateUrl: 'app/mir-problem-tree/views/mir-problem-tree.tpl.html',
+		templateUrl: 'app/mir-problem-tree/views/mir-problem-tree.tpl.html?v='+new Date().getTime()+'',
                 controller: 'MIRProbTreeController',
                 controllerAs: 'ctrlMIRPTree'
             })
             .state('home.mir.objetive-tree', {// Cargo pagina: Árbol del objetivo
 		url: '/objetive-tree',
-		templateUrl: 'app/mir-objetive-tree/views/mir-objetive-tree.tpl.html',
+		templateUrl: 'app/mir-objetive-tree/views/mir-objetive-tree.tpl.html?v='+new Date().getTime()+'',
                 controller: 'MIRObjTreeController',
                 controllerAs: 'ctrlMIROTree'
             })
             .state('home.mir.matrix', {// Cargo pagina: Matriz 4 x4 MIR
 		url: '/matrix-4x4',
-		templateUrl: 'app/mir-matrix/views/mir-matrix.tpl.html',
+		templateUrl: 'app/mir-matrix/views/mir-matrix.tpl.html?v='+new Date().getTime()+'',
                 controller: 'DataTableMIRController'
             });	*/
     }

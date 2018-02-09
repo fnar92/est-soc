@@ -72,13 +72,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $active_group = 'default';
 $query_builder = TRUE;
-
+if(ENVIRONMENT=='prod'){
+    $host="hrwise.com.mx";
+    $username="fnar";
+    $password="Paco001002.";
+    $bd="fnar_hrwise_est_soc";
+}else if(ENVIRONMENT=='dev'){
+    $host="localhost";
+    $username="root";
+    $password="";
+    $bd="est-soc-2018";
+}
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'hrwise.com.mx',
-	'username' => 'hrwistoz',
-	'password' => 'mx-fn@paco',
-	'database' => 'hrwistoz_estudios_soc',
+	'hostname' => $host,
+	'username' => $username,
+	'password' => $password,
+	'database' => $bd,
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

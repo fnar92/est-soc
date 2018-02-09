@@ -65,7 +65,7 @@
                 location.href='#/';
             }
         }
-        
+        console.log('updating');
         //Traer el periodo/año actual
         var parametros={};
         parametros.tipoUsuario=$rootScope.tipoUsuario;
@@ -105,8 +105,17 @@
                         scope.seleccionados.push(scope.cicloEscolar.id_ciclo_escolar);
                         scope.noValidCiclo=false;
                     }else{
-                            parametros.ciclos=[];
+						if($rootScope.tipoUsuario==='1'&&scope.cicloEscolar!==undefined){
+							parametros.id_ciclo_escolar=scope.cicloEscolar.id_ciclo_escolar;
+							parametros.ciclos=[];
+							parametros.ciclos.push(scope.cicloEscolar.id_ciclo_escolar);
+							scope.seleccionados.push(scope.cicloEscolar.id_ciclo_escolar);
+							scope.noValidCiclo=false;
+						}else{
+							parametros.ciclos=[];
                             scope.noValidCiclo=true;
+						}
+                            
                     }
                     
                     if(scope.cicloEscolar){
